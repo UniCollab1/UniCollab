@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicollab/Drawer.dart';
 import 'assignments.dart';
 import 'recents.dart';
 import 'resources.dart';
@@ -20,22 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text('Mulan Mastni'),
-            ),
-            ListTile(
-              title: Text('Your Information'),
-            ),
-            ListTile(
-              title: Text('Setting'),
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerMain(),
       appBar: AppBar(
         /*leading: IconButton(
           icon: Icon(Icons.menu),
