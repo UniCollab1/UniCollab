@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "194894129294",
+    "project_id": "unicollab-93215",
+    "storage_bucket": "unicollab-93215.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194894129294:android:498704ad47f0eba57301df",
+        "android_client_info": {
+          "package_name": "com.prs.unicollab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194894129294-pen60nnflqh2fheagl5od0o449d80nq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc_8vrm3xx8zNB4CV36jwnCY_DZAgxl6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194894129294-pen60nnflqh2fheagl5od0o449d80nq2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
