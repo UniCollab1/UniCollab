@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "194894129294",
-    "project_id": "unicollab-93215",
-    "storage_bucket": "unicollab-93215.appspot.com"
+    "project_number": "388569707436",
+    "project_id": "collab-627c8",
+    "storage_bucket": "collab-627c8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:194894129294:android:498704ad47f0eba57301df",
+        "mobilesdk_app_id": "1:388569707436:android:6b3e68fdb2bbf33ec30009",
         "android_client_info": {
           "package_name": "com.prs.unicollab"
         }
       },
       "oauth_client": [
         {
-          "client_id": "194894129294-pen60nnflqh2fheagl5od0o449d80nq2.apps.googleusercontent.com",
+          "client_id": "388569707436-rqsb2beebvj3oedo441pr5bs0voegv3i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCc_8vrm3xx8zNB4CV36jwnCY_DZAgxl6I"
+          "current_key": "AIzaSyCTiqsseREqAp-CHX9GDK5Gai9fyhsiOw8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "194894129294-pen60nnflqh2fheagl5od0o449d80nq2.apps.googleusercontent.com",
+              "client_id": "388569707436-rqsb2beebvj3oedo441pr5bs0voegv3i.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
