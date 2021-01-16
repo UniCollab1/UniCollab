@@ -152,7 +152,7 @@ class _LoginState extends State<Login> {
                       }
                     }
                   },
-                  child: Text('LOG IN'),
+                  child: Text('CONTINUE'),
                 ),
               ),
             ],
