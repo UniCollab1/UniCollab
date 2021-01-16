@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -8,7 +8,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
   bool _passwordVisible = true;
+  String email, password;
+  static String errEmail, errPassword;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +33,11 @@ class _LoginState extends State<Login> {
                 ),
               ),
               TextFormField(
+                onChanged: (value) {
+                  email = value;
+                  errEmail = null;
+                },
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   String p =
                       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -44,6 +52,7 @@ class _LoginState extends State<Login> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Email',
+                  errorText: errEmail,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -51,6 +60,10 @@ class _LoginState extends State<Login> {
                 height: 20.0,
               ),
               TextFormField(
+                onChanged: (value) {
+                  password = value;
+                  errPassword = null;
+                },
                 obscureText: _passwordVisible,
                 validator: (value) {
                   if (value.isEmpty) {
@@ -61,6 +74,7 @@ class _LoginState extends State<Login> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
+                  errorText: errPassword,
                   suffixIcon: IconButton(
                     icon: Icon(
                       // Based on passwordVisible state choose the icon
@@ -83,12 +97,59 @@ class _LoginState extends State<Login> {
                 width: 1500.0,
                 height: 50.0,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
+                      //errEmail = null;
+                      //errPassword = null;
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                semanticsLabel: 'Logging you in',
+                              ),
+                            );
+                          });
+                      try {
+                        final user = await _auth.signInWithEmailAndPassword(
+                            email: email, password: password);
+                        if (user != null) {
+                          Navigator.pop(context);
+                          print("Successfully Logged in");
+                          Navigator.pushNamed(context, 'homepage');
+                        }
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          try {
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: email, password: password);
+                            if (newUser != null) {
+                              Navigator.pop(context);
+                              print("Successfully registered");
+                              Navigator.pushNamed(context, 'homepage');
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'weak-password') {
+                              setState(() {
+                                errPassword = e.message;
+                              });
+                              print('Please enter strong password');
+                              Navigator.pop(context);
+                            }
+                          }
+                        } else if (e.code == 'wrong-password') {
+                          setState(() {
+                            errPassword = e.message;
+                          });
+                          print(errPassword);
+                          //Navigator.pop(context);
+                        }
+                        Navigator.pop(context);
+                      } catch (e) {
+                        print(e);
+                        print('in catch');
+                      }
                     }
                   },
                   child: Text('LOG IN'),
