@@ -4,7 +4,9 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('Notices'),
+      child: Center(
+        child: Text('Notices'),
+      ),
     );
   }
 }
