@@ -32,6 +32,8 @@ dependencies:
   firebase_core: ^0.7.0
   firebase_auth: ^0.20.0+1
   cloud_firestore: ^0.16.0
+  random_string: ^2.1.0
+  sweetalert: any
 
 dev_dependencies:
   flutter_test:
