@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'Join.dart';
+import 'create.dart';
 
 class Recent extends StatefulWidget {
   @override
@@ -22,6 +25,9 @@ class RecentFloat extends StatefulWidget {
 }
 
 class _RecentFloatState extends State<RecentFloat> {
+  Join _join = Join();
+  Create _create = Create();
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -32,12 +38,16 @@ class _RecentFloatState extends State<RecentFloat> {
             return SimpleDialog(
               children: [
                 ListTile(
-                  title: Text('Join Class'),
-                  onTap: () {},
+                  title: Text('Create Class'),
+                  onTap: () {
+                    _create.createAlert(context);
+                  },
                 ),
                 ListTile(
-                  title: Text('Create Class'),
-                  onTap: () {},
+                  title: Text('Join Class'),
+                  onTap: () {
+                    _join.joinAlert(context);
+                  },
                 ),
               ],
             );
