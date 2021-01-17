@@ -4,7 +4,9 @@ class Resource extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('Resources'),
+      child: Center(
+        child: Text('Resources'),
+      ),
     );
   }
 }

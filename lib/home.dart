@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:unicollab/Drawer.dart';
+
 import 'assignments.dart';
+import 'notices.dart';
 import 'recents.dart';
 import 'resources.dart';
-import 'notices.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,6 +15,12 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Recent(),
+    Resource(),
+    Notice(),
+    Assignment(),
+  ];
+  final List<Widget> _floatchildren = [
+    RecentFloat(),
     Resource(),
     Notice(),
     Assignment(),
@@ -37,6 +44,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      floatingActionButton: _floatchildren[_currentIndex],
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
