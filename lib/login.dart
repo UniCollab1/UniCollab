@@ -143,9 +143,9 @@ class _LoginState extends State<Login> {
                             errPassword = e.message;
                           });
                           print(errPassword);
-                          //Navigator.pop(context);
+                          Navigator.pop(context);
                         }
-                        Navigator.pop(context);
+                        //Navigator.pop(context);
                       } catch (e) {
                         print(e);
                         print('in catch');
