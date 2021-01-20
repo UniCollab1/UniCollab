@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
               ),
               TextFormField(
                 onChanged: (value) {
-                  email = value;
+                  email = value.trim();
                   errEmail = null;
                 },
                 keyboardType: TextInputType.emailAddress,
@@ -99,8 +99,6 @@ class _LoginState extends State<Login> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      //errEmail = null;
-                      //errPassword = null;
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -120,24 +118,53 @@ class _LoginState extends State<Login> {
                         }
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'user-not-found') {
-                          try {
-                            final newUser =
-                                await _auth.createUserWithEmailAndPassword(
-                                    email: email, password: password);
-                            if (newUser != null) {
-                              Navigator.pop(context);
-                              print("Successfully registered");
-                              Navigator.pushNamed(context, 'homepage');
-                            }
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'weak-password') {
-                              setState(() {
-                                errPassword = e.message;
-                              });
-                              print('Please enter strong password');
-                              Navigator.pop(context);
-                            }
-                          }
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Center(
+                                child: AlertDialog(
+                                  title: Text('Do you want to register?'),
+                                  content: Text(
+                                      'Looks like that you are new to Unicollab. Click register to continue with our services.'),
+                                  actions: [
+                                    FlatButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('CANCEL'),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () async {
+                                        try {
+                                          final newUser = await _auth
+                                              .createUserWithEmailAndPassword(
+                                                  email: email,
+                                                  password: password);
+                                          if (newUser != null) {
+                                            Navigator.pop(context);
+                                            print("Successfully registered");
+                                            Navigator.pushNamed(
+                                                context, 'homepage');
+                                          }
+                                        } on FirebaseAuthException catch (e) {
+                                          if (e.code == 'weak-password') {
+                                            setState(() {
+                                              errPassword = e.message;
+                                            });
+                                            print(
+                                                'Please enter strong password');
+                                            Navigator.pop(context);
+                                          }
+                                        }
+                                      },
+                                      child: Text('REGISTER'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         } else if (e.code == 'wrong-password') {
                           setState(() {
                             errPassword = e.message;
