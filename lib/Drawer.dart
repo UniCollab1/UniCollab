@@ -1,79 +1,78 @@
 import 'package:flutter/material.dart';
 
-class DrawerMain extends StatelessWidget {
+class DrawerMain extends StatefulWidget {
+  @override
+  _DrawerMainState createState() => _DrawerMainState();
+}
+
+class _DrawerMainState extends State<DrawerMain> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
+      child: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          SizedBox(
-            child: Container(
-              child: DrawerHeader(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 50.0,
-                      backgroundColor: Colors.red,
-                      backgroundImage: AssetImage('images/abc.png'),
-                    ),
-                    Text(
-                      'Username',
-                      style: TextStyle(
-                        fontFamily: 'Pacifico',
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
+          Padding(
+            padding: EdgeInsets.zero,
+            child: DrawerHeader(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 35.0,
+                    backgroundColor: Colors.blue,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'someone',
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'someone@gmail.com',
+                  ),
+                ],
               ),
-              color: Colors.blue,
             ),
-            width: double.infinity,
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.account_circle,
+            ),
+            title: Text(
+              'Your Profile',
+            ),
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(
               Icons.settings,
-              color: Colors.black,
             ),
             title: Text(
               'Setting',
-              style: TextStyle(fontSize: 20.0, color: Colors.black),
             ),
-            onTap: null,
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.perm_identity,
-              color: Colors.black,
-            ),
-            title: Text(
-              'Your Profile',
-              style: TextStyle(fontSize: 20.0, color: Colors.black),
-            ),
-            onTap: null,
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(
               Icons.feedback,
-              color: Colors.black,
             ),
             title: Text(
               'Feedback',
-              style: TextStyle(fontSize: 20.0, color: Colors.black),
             ),
-            onTap: null,
+            onTap: () {},
           ),
           ListTile(
             leading: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
+              Icons.exit_to_app,
             ),
             title: Text(
               'Logout',
-              style: TextStyle(fontSize: 20.0, color: Colors.black),
             ),
-            onTap: null,
+            onTap: () {},
           ),
         ],
       ),
