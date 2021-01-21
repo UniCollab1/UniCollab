@@ -50,8 +50,9 @@ class Join {
                   //if class code is not found
                   if (event.docs.isNotEmpty) {
                     var event1 = await _firestore
-                        .collection('classes')
+                        .collection('JoinedClasses')
                         .where("code", isEqualTo: code)
+                        .where("name", isEqualTo: auth.currentUser.email)
                         .get();
                     //If already join class
                     if (event1.docs.isEmpty) {
@@ -61,6 +62,9 @@ class Join {
                           'name': auth.currentUser.email,
                         },
                       );
+                    } else {
+                      print("already in");
+                      print(auth.currentUser.email);
                     }
                     Navigator.pop(context);
                   } else {
