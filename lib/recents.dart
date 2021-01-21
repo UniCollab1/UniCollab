@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Join.dart';
@@ -11,11 +12,64 @@ class Recent extends StatefulWidget {
 class _RecentState extends State<Recent> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+      child: Text("Recents"),
+    ) //ListPage(),
+        );
+  }
+}
+
+class ListPage extends StatefulWidget {
+  @override
+  _ListPageState createState() => _ListPageState();
+}
+
+class _ListPageState extends State<ListPage> {
+  Future getClass() async {
+    var firestore = FirebaseFirestore.instance;
+
+    var qn = await firestore.collection('classes').get();
+    return qn.docs;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      child: Center(
-        child: Text('Recent'),
-      ),
+      child: FutureBuilder(
+          future: getClass(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Text("Loading"),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  print(snapshot.data[index].get("name"));
+                  return ListTile(
+                    isThreeLine: true,
+                    title: Text(snapshot.data[index].get("name")),
+                    subtitle: Text(snapshot.data[index].get("createby")),
+                  );
+                },
+              );
+            }
+          }),
     );
+  }
+}
+
+class DetailPage extends StatefulWidget {
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
