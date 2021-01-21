@@ -15,22 +15,22 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Form(
         key: _formKey,
         child: Container(
           margin: EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.all(30.0),
-                child: Text(
-                  'Welcome to UniCollab',
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                margin: EdgeInsets.only(left: 25.0, right: 25.0),
+                child: Image(
+                  image: AssetImage('images/logo.png'),
                 ),
+              ),
+              SizedBox(
+                height: 20.0,
               ),
               TextFormField(
                 onChanged: (value) {
@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
                 decoration: InputDecoration(
                   labelText: 'Email',
                   errorText: errEmail,
-                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.email),
                 ),
               ),
               SizedBox(
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.vpn_key_sharp),
                   errorText: errPassword,
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -91,10 +91,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SizedBox(
-                height: 20.0,
+                height: 40.0,
               ),
               Container(
-                width: 1500.0,
+                width: 300.0,
                 height: 50.0,
                 child: ElevatedButton(
                   onPressed: () async {
