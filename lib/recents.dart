@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Join.dart';
@@ -13,10 +14,8 @@ class _RecentState extends State<Recent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Text("Recents"),
-    ) //ListPage(),
-        );
+      body: ListPage(),
+    );
   }
 }
 
@@ -26,10 +25,14 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   Future getClass() async {
     var firestore = FirebaseFirestore.instance;
 
-    var qn = await firestore.collection('classes').get();
+    var qn = await firestore
+        .collection('classes')
+        //.where("name", isEqualTo: auth.currentUser.email)
+        .get();
     return qn.docs;
   }
 
@@ -48,10 +51,22 @@ class _ListPageState extends State<ListPage> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   print(snapshot.data[index].get("name"));
-                  return ListTile(
-                    isThreeLine: true,
-                    title: Text(snapshot.data[index].get("name")),
-                    subtitle: Text(snapshot.data[index].get("createby")),
+                  print(auth.currentUser.email);
+                  return Card(
+                    shadowColor: Colors.blue[1000],
+                    child: ListTile(
+                      focusColor: Colors.blue[400],
+                      selectedTileColor: Colors.blue[400],
+                      leading: Icon(
+                        Icons.account_circle,
+                        size: 40,
+                      ),
+                      hoverColor: Colors.blue[400],
+                      title: Text(snapshot.data[index].get("name")),
+                      subtitle: Text(snapshot.data[index].get("createby")),
+                      trailing: Icon(Icons.dehaze_outlined),
+                      onTap: () {},
+                    ),
                   );
                 },
               );
