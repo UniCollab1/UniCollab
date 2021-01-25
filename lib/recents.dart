@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'Join.dart';
 import 'create.dart';
 
@@ -14,12 +15,43 @@ class _RecentState extends State<Recent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListPage(),
+      body: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Classes joined by you',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListPage('join'),
+            TextButton(
+              onPressed: () {},
+              child: Text(
+                'Classes created by you',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ListPage('create'),
+          ],
+        ),
+      ),
     );
   }
 }
 
 class ListPage extends StatefulWidget {
+  final String which;
+  const ListPage(this.which);
   @override
   _ListPageState createState() => _ListPageState();
 }
@@ -27,64 +59,63 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   Future getClass() async {
-    var firestore = FirebaseFirestore.instance;
-
-    var qn = await firestore
-        .collection('classes')
-        //.where("name", isEqualTo: auth.currentUser.email)
-        .get();
-    return qn.docs;
+    var fireStore = FirebaseFirestore.instance;
+    var lol;
+    if (widget.which == 'join') {
+      lol = await fireStore
+          .collection('classes')
+          .where("students", arrayContains: auth.currentUser.email)
+          .get();
+    } else {
+      lol = await fireStore
+          .collection('classes')
+          .where("teachers", arrayContains: auth.currentUser.email)
+          .get();
+    }
+    return lol.docs;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-          future: getClass(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Text("Loading"),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  print(snapshot.data[index].get("name"));
-                  print(auth.currentUser.email);
-                  return Card(
-                    shadowColor: Colors.blue[1000],
-                    child: ListTile(
-                      focusColor: Colors.blue[400],
-                      selectedTileColor: Colors.blue[400],
-                      leading: Icon(
-                        Icons.account_circle,
-                        size: 40,
-                      ),
-                      hoverColor: Colors.blue[400],
-                      title: Text(snapshot.data[index].get("name")),
-                      subtitle: Text(snapshot.data[index].get("createby")),
-                      trailing: Icon(Icons.dehaze_outlined),
-                      onTap: () {},
-                    ),
-                  );
-                },
-              );
-            }
-          }),
+        future: getClass(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                semanticsLabel: 'loading your classes',
+              ),
+            );
+            // ignore: missing_return
+          } else {
+            return Expanded(
+              child: Container(
+                margin: EdgeInsets.all(10.0),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            width: 140.0,
+                            height: 140.0,
+                            color: Colors.grey,
+                          ),
+                          Text(snapshot.data[index].get("subject")),
+                          Text(snapshot.data[index].get("created by"))
+                        ],
+                      );
+                    }),
+              ),
+            );
+          }
+        },
+      ),
     );
-  }
-}
-
-class DetailPage extends StatefulWidget {
-  @override
-  _DetailPageState createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
@@ -94,9 +125,6 @@ class RecentFloat extends StatefulWidget {
 }
 
 class _RecentFloatState extends State<RecentFloat> {
-  Join _join = Join();
-  Create _create = Create();
-
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -109,13 +137,27 @@ class _RecentFloatState extends State<RecentFloat> {
                 ListTile(
                   title: Text('Create Class'),
                   onTap: () {
-                    _create.createAlert(context);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => CreateDialog(),
+                        fullscreenDialog: true,
+                      ),
+                    );
                   },
                 ),
                 ListTile(
                   title: Text('Join Class'),
                   onTap: () {
-                    _join.joinAlert(context);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => JoinDialog(),
+                        fullscreenDialog: true,
+                      ),
+                    );
                   },
                 ),
               ],

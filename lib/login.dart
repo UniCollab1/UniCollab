@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,7 @@ class _LoginState extends State<Login> {
                 },
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  icon: Icon(Icons.vpn_key_sharp),
+                  icon: Icon(Icons.vpn_key),
                   errorText: errPassword,
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -142,6 +143,17 @@ class _LoginState extends State<Login> {
                                                   email: email,
                                                   password: password);
                                           if (newUser != null) {
+                                            await FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(email)
+                                                .set({
+                                              'email': email,
+                                              'first name': null,
+                                              'last name': null,
+                                              'teacher of': [],
+                                              'student of': [],
+                                            });
+                                            Navigator.pop(context);
                                             Navigator.pop(context);
                                             print("Successfully registered");
                                             Navigator.pushNamed(
@@ -156,6 +168,8 @@ class _LoginState extends State<Login> {
                                                 'Please enter strong password');
                                             Navigator.pop(context);
                                           }
+                                        } catch (e) {
+                                          print(e);
                                         }
                                       },
                                       child: Text('REGISTER'),

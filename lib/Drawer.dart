@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DrawerMain extends StatefulWidget {
@@ -6,6 +7,8 @@ class DrawerMain extends StatefulWidget {
 }
 
 class _DrawerMainState extends State<DrawerMain> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  bool mode = false;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,7 +35,7 @@ class _DrawerMainState extends State<DrawerMain> {
                     height: 5,
                   ),
                   Text(
-                    'someone@gmail.com',
+                    auth.currentUser.email,
                   ),
                 ],
               ),
