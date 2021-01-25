@@ -60,7 +60,6 @@ class _JoinDialogState extends State<JoinDialog> {
                               FieldValue.arrayUnion([auth.currentUser.email])
                         });
                         Navigator.pop(context);
-                        Navigator.pop(context);
                       } else {
                         showDialog(
                           context: context,
@@ -73,7 +72,6 @@ class _JoinDialogState extends State<JoinDialog> {
                                 actions: [
                                   FlatButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
                                       Navigator.pop(context);
                                     },
                                     child: Text('Okay'),
@@ -96,7 +94,10 @@ class _JoinDialogState extends State<JoinDialog> {
                               actions: [
                                 FlatButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      code = null;
+                                    });
+
                                     Navigator.pop(context);
                                   },
                                   child: Text('Dismiss'),
