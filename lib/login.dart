@@ -52,9 +52,10 @@ class _LoginState extends State<Login> {
                   return null;
                 },
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Email',
                   errorText: errEmail,
-                  icon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.email),
                 ),
               ),
               SizedBox(
@@ -73,8 +74,9 @@ class _LoginState extends State<Login> {
                   return null;
                 },
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Password',
-                  icon: Icon(Icons.vpn_key),
+                  prefixIcon: Icon(Icons.vpn_key),
                   errorText: errPassword,
                   suffixIcon: IconButton(
                     icon: Icon(

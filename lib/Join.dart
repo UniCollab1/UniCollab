@@ -60,6 +60,7 @@ class _JoinDialogState extends State<JoinDialog> {
                               FieldValue.arrayUnion([auth.currentUser.email])
                         });
                         Navigator.pop(context);
+                        setState(() {});
                       } else {
                         showDialog(
                           context: context,
@@ -122,11 +123,14 @@ class _JoinDialogState extends State<JoinDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              margin: EdgeInsets.all(5.0),
               child: Text('Enter the code given by your teacher'),
             ),
             Container(
+              margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Class code',
                 ),
                 onChanged: (value) {

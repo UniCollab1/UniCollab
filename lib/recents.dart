@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/studentSubject.dart';
+import 'package:unicollab/teacherSubject.dart';
 
 import 'Join.dart';
 import 'create.dart';
@@ -14,36 +16,34 @@ class Recent extends StatefulWidget {
 class _RecentState extends State<Recent> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Classes joined by you',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Classes joined by you',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            ListPage('join'),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Classes created by you',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+          ),
+          ListPage('join'),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'Classes created by you',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            ListPage('create'),
-          ],
-        ),
+          ),
+          ListPage('create'),
+        ],
       ),
     );
   }
@@ -58,8 +58,8 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  var fireStore = FirebaseFirestore.instance;
   Future getClass() async {
-    var fireStore = FirebaseFirestore.instance;
     var lol;
     if (widget.which == 'join') {
       lol = await fireStore
@@ -87,27 +87,65 @@ class _ListPageState extends State<ListPage> {
                 semanticsLabel: 'loading your classes',
               ),
             );
-            // ignore: missing_return
           } else {
-            return Expanded(
+            return SizedBox(
+              height: 200.0,
               child: Container(
-                margin: EdgeInsets.all(10.0),
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.all(10.0),
-                            width: 140.0,
-                            height: 140.0,
-                            color: Colors.grey,
-                          ),
-                          Text(snapshot.data[index].get("subject")),
-                          Text(snapshot.data[index].get("created by"))
-                        ],
+                      return TextButton(
+                        onPressed: () async {
+                          var data = await fireStore
+                              .collection('classes')
+                              .doc(snapshot.data[index].get("class code"))
+                              .get();
+                          if (widget.which == 'join') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => StudentHome(
+                                  data.data(),
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => TeacherHome(
+                                  data.data(),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(5.0),
+                              width: 130.0,
+                              height: 130.0,
+                              color: Colors.grey,
+                            ),
+                            Container(
+                              width: 130.0,
+                              child: Text(
+                                snapshot.data[index].get("subject"),
+                                maxLines: 1,
+                              ),
+                            ),
+                            Container(
+                              width: 130.0,
+                              child: Text(
+                                snapshot.data[index].get("created by"),
+                                maxLines: 1,
+                              ),
+                            )
+                          ],
+                        ),
                       );
                     }),
               ),
@@ -133,9 +171,11 @@ class _RecentFloatState extends State<RecentFloat> {
           context: context,
           builder: (BuildContext context) {
             return SimpleDialog(
+              title: Text('I want to'),
               children: [
                 ListTile(
-                  title: Text('Create Class'),
+                  leading: Icon(Icons.create),
+                  title: Text('Create a class'),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -148,7 +188,8 @@ class _RecentFloatState extends State<RecentFloat> {
                   },
                 ),
                 ListTile(
-                  title: Text('Join Class'),
+                  leading: Icon(Icons.add),
+                  title: Text('Join a class'),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
