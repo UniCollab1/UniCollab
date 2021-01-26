@@ -74,8 +74,10 @@ class _CreateDialogState extends State<CreateDialog> {
         child: Column(
           children: [
             Container(
+              margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Class title',
                 ),
                 onChanged: (value) {
@@ -84,8 +86,10 @@ class _CreateDialogState extends State<CreateDialog> {
               ),
             ),
             Container(
+              margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Subject',
                 ),
                 onChanged: (value) {
@@ -94,8 +98,10 @@ class _CreateDialogState extends State<CreateDialog> {
               ),
             ),
             Container(
+              margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Short name of subject',
                 ),
                 onChanged: (value) {
@@ -104,8 +110,10 @@ class _CreateDialogState extends State<CreateDialog> {
               ),
             ),
             Container(
+              margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
                   labelText: 'Description',
                 ),
                 onChanged: (value) {
