@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/profile.dart';
 
 class DrawerMain extends StatefulWidget {
   @override
@@ -45,7 +48,12 @@ class _DrawerMainState extends State<DrawerMain> {
             title: Text(
               'Your Profile',
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditProfilePage()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(
