@@ -111,6 +111,7 @@ class _ListPageState extends State<ListPage> {
                               ),
                             );
                           } else {
+                            print(data.data());
                             Navigator.push(
                               context,
                               MaterialPageRoute(
