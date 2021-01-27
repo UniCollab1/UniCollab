@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +25,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
   var fname, sname, email;
   var fcon = new TextEditingController();
   var scon = new TextEditingController();
@@ -29,8 +34,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isPasswordTextField = true;
   bool showPassword = false;
 
+  File _image;
+  String imageurl;
+
+  Future getImage() async {
+    print("in getImage");
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+
+        print("Image path $_image");
+      } else {
+        print('No image selected.');
+      }
+    });
+
+    updateImage(context);
+  }
+
   void initState() {
     super.initState();
+    imageurl =
+        "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
     getUserDetail();
   }
 
@@ -38,7 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var firestore = FirebaseFirestore.instance;
     var qn = await firestore
         .collection('users')
-        .where("email", isEqualTo: 'raj@gmail.com')
+        .where("email", isEqualTo: auth.currentUser.email)
         .get();
 
     for (var a in qn.docs) {
@@ -51,9 +79,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
       econ.text = email;
       print(email);
     }
+
+    imageurl =
+        await storage.ref('images/' + auth.currentUser.email).getDownloadURL();
+    setState(() {});
   }
 
-  void updateUserDetail() {}
+  void updateImage(BuildContext context) async {
+    String fileName = 'images/' + auth.currentUser.email;
+    await storage.ref(fileName).putFile(_image);
+
+    setState(() async {
+      print("profile picture uploaded");
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text("profile picture uploaded")));
+      imageurl = await storage.ref(fileName).getDownloadURL();
+    });
+    print('File Uploaded');
+  }
+
+  void updateUserDetail(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    users
+        .doc(auth.currentUser.email)
+        .update({'first name': fcon.text, 'last name': scon.text})
+        .then((value) => print("User updated"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +118,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             Icons.arrow_back,
             color: Colors.white,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
@@ -115,29 +169,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
-                              ))),
+                              image: (_image != null)
+                                  ? FileImage(_image)
+                                  : NetworkImage(
+                                      imageurl,
+                                    ))),
                     ),
                     Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                            color: Colors.blue,
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 4,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           ),
-                          child: Icon(
+                          color: Colors.blue,
+                        ),
+                        child: IconButton(
+                          icon: Icon(
                             Icons.edit,
                             color: Colors.white,
                           ),
-                        )),
+                          onPressed: () {
+                            getImage();
+                          },
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -244,11 +306,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      updateUserDetail(context);
+                      FocusScope.of(context).unfocus();
+
                       setState(() {
                         fname = fcon.text;
                         sname = scon.text;
                         email = econ.text;
-                        updateUserDetail();
+
                         //getClass();
                       });
                     },
@@ -270,39 +335,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? showPassword : false,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.blue,
-                    ),
-                  )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
       ),
     );
   }
