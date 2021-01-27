@@ -102,6 +102,7 @@ class _ListPageState extends State<ListPage> {
                               .doc(snapshot.data[index].get("class code"))
                               .get();
                           if (widget.which == 'join') {
+                            print("redirecting");
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -111,6 +112,7 @@ class _ListPageState extends State<ListPage> {
                               ),
                             );
                           } else {
+                            print("redirecting");
                             Navigator.push(
                               context,
                               MaterialPageRoute(
