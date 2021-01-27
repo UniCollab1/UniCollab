@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:unicollab/CreateMaterial.dart';
 import 'package:unicollab/EditMaterial.dart';
 
+import 'CreateNotice.dart';
+
 class TeacherHome extends StatefulWidget {
   final dynamic code;
   const TeacherHome(this.code);
@@ -50,7 +52,17 @@ class _TeacherHomeState extends State<TeacherHome> {
                     ListTile(
                       leading: Icon(Icons.announcement),
                       title: Text('Notice'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateNotice(widget.code['class code']),
+                            // fullscreenDialog: true,
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.description),

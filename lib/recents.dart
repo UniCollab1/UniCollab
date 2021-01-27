@@ -112,7 +112,7 @@ class _ListPageState extends State<ListPage> {
                               ),
                             );
                           } else {
-                            print("redirecting");
+                            print(data.data());
                             Navigator.push(
                               context,
                               MaterialPageRoute(
