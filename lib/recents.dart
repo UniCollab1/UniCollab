@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unicollab/studentSubject.dart';
 import 'package:unicollab/teacherSubject.dart';
-
 import 'Join.dart';
 import 'create.dart';
 
@@ -220,3 +219,12 @@ class _RecentFloatState extends State<RecentFloat> {
     );
   }
 }
+
+// child: FutureBuilder(
+// future: getClass(),
+// builder: (context, snapshot) {
+//   else {
+// return
+// }
+// },
+// // ),

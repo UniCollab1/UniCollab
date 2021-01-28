@@ -68,6 +68,15 @@ class _GetClassState extends State<GetClass> {
     return lol.docs;
   }
 
+  Future<dynamic> getNotice() async {
+    var lol = await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .collection('notice')
+        .get();
+    return lol.docs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
