@@ -54,6 +54,15 @@ class _StudentMaterialPageState extends State<StudentMaterialPage> {
                   return InputChip(
                     label: Text(files[index].toString()),
                     onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                semanticsLabel: 'Logging you in',
+                              ),
+                            );
+                          });
                       Directory appDocDir =
                           await getApplicationDocumentsDirectory();
                       File downloadToFile =
@@ -61,10 +70,16 @@ class _StudentMaterialPageState extends State<StudentMaterialPage> {
                       print(appDocDir.path);
 
                       try {
-                        await storage
+                        DownloadTask task = storage
                             .ref(
                                 '${widget.code}/general/${files[index].toString()}')
                             .writeToFile(downloadToFile);
+                        task.snapshotEvents.listen((event) {
+                          if (event.state.toString() == "TaskState.success") {
+                            Navigator.pop(context);
+                          }
+                        });
+                        await task;
                       } catch (e) {
                         print(e);
                       }

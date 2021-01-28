@@ -6,27 +6,49 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-class CreateNotice extends StatefulWidget {
+class EditMaterial extends StatefulWidget {
+  final dynamic data;
   final String code;
-  const CreateNotice(this.code);
+  const EditMaterial(this.data, this.code);
   @override
-  _CreateNoticeState createState() => _CreateNoticeState();
+  _EditMaterialState createState() => _EditMaterialState();
 }
 
-class _CreateNoticeState extends State<CreateNotice> {
-  String title, description, id;
+class _EditMaterialState extends State<EditMaterial> {
   FilePickerResult result;
+
   FirebaseStorage storage = FirebaseStorage.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
-  var time;
+  var temp, id;
+  var title = TextEditingController();
+  var description = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    var lol = await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .collection('general')
+        .doc(widget.data.id)
+        .get();
+    temp = lol.data()["files"];
+    setState(() {});
+    title.text = widget.data.get("title");
+    description.text = widget.data.get("description");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Notice'),
+        title: Text('Edit Material'),
         actions: [
           Container(
             margin: EdgeInsets.all(5.0),
@@ -37,6 +59,7 @@ class _CreateNoticeState extends State<CreateNotice> {
                 setState(() {
                   if (result != null) {
                     result.files.forEach((element) {
+                      temp.add(element.name);
                       print(element.path);
                       print(element.name +
                           " " +
@@ -54,46 +77,31 @@ class _CreateNoticeState extends State<CreateNotice> {
             margin: EdgeInsets.all(5.0),
             child: ElevatedButton(
               onPressed: () async {
-                try {
-                  await fireStore
-                      .collection('classes')
-                      .doc(widget.code)
-                      .collection('notice')
-                      .add({
-                    'title': title,
-                    'description': description,
-                    'time': time,
-                    'files': [],
-                  }).then((value) => id = value.id);
-                } catch (e) {
-                  print(e);
-                }
+                id = widget.data.id;
                 if (result != null) {
                   result.files.forEach((element) async {
                     print(element.path);
                     File file = File(element.path);
                     try {
-                      await fireStore
-                          .collection('classes')
-                          .doc(widget.code)
-                          .collection('notice')
-                          .doc(id)
-                          .update({
-                        'files': FieldValue.arrayUnion([element.name])
-                      });
                       await storage
-                          .ref(widget.code + "/notice/" + element.name)
+                          .ref(widget.code + "/general/" + element.name)
                           .putFile(file);
                     } catch (e) {
                       print(e);
                     }
                   });
                 }
+                await fireStore
+                    .collection('classes')
+                    .doc(widget.code)
+                    .collection('general')
+                    .doc(id)
+                    .update({'files': temp});
                 Navigator.pop(context);
               },
               child: Text('Create'),
             ),
-          ),
+          )
         ],
       ),
       body: Container(
@@ -102,61 +110,35 @@ class _CreateNoticeState extends State<CreateNotice> {
           children: [
             Container(
               margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter title for notice';
-                  }
-                  return null;
-                },
+              child: TextField(
+                controller: title,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Title',
                 ),
-                onChanged: (value) {
-                  title = value;
-                },
               ),
             ),
             Container(
               margin: EdgeInsets.all(5.0),
-              child: TextFormField(
+              child: TextField(
+                controller: description,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Description',
                 ),
-                onChanged: (value) {
-                  description = value;
-                },
-              ),
-            ),
-            FlatButton(
-              onPressed: () {
-                DatePicker.showDateTimePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime.now(), onChanged: (date) {
-                  print('change $date');
-                }, onConfirm: (date) {
-                  time = date;
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
-              },
-              child: Text(
-                'Select Time',
-                style: TextStyle(color: Colors.blue),
               ),
             ),
             Expanded(
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: result != null ? result.count : 0,
+                  itemCount: temp != null ? temp.length : 0,
                   itemBuilder: (context, index) {
                     return InputChip(
-                      label: Text(result.names[index].toString()),
+                      label: Text(temp[index].toString()),
                       onDeleted: () {
                         print(index);
                         setState(() {
-                          print('deleted');
-                          result.files.removeAt(index);
+                          temp.removeAt(index);
                         });
                       },
                     );

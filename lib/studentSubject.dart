@@ -52,6 +52,7 @@ class GetClass extends StatefulWidget {
 class _GetClassState extends State<GetClass> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
+
   Future<dynamic> getData() async {
     var lol = await fireStore
         .collection('classes')

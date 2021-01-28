@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unicollab/CreateMaterial.dart';
+import 'package:unicollab/EditMaterial.dart';
 
 import 'CreateNotice.dart';
 
@@ -16,6 +17,15 @@ class TeacherHome extends StatefulWidget {
 class _TeacherHomeState extends State<TeacherHome> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
+
+  Future<dynamic> getData() async {
+    var lol = await fireStore
+        .collection('classes')
+        .doc(widget.code["class code"])
+        .collection('general')
+        .get();
+    return lol.docs;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +94,60 @@ class _TeacherHomeState extends State<TeacherHome> {
                 ],
               ),
             ),
+            Container(
+              child: FutureBuilder(
+                future: getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'loading your classes',
+                      ),
+                      // ignore: missing_return
+                    );
+                  } else {
+                    return SizedBox(
+                      height: 100.0,
+                      child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EditMaterial(
+                                              snapshot.data[index],
+                                              widget.code["class code"]
+                                                  .toString()),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.description),
+                                      title: Text('Material: ' +
+                                          snapshot.data[index].get("title")),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
