@@ -24,8 +24,6 @@ class _TeacherHomeState extends State<TeacherHome> {
         .doc(widget.code["class code"])
         .collection('general')
         .get();
-    print("in teacherSubject");
-    print(lol.docs);
     return lol.docs;
   }
 
@@ -116,14 +114,18 @@ class _TeacherHomeState extends State<TeacherHome> {
                           return Container(
                             child: TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        EditMaterial(
-                                            snapshot.data[index], widget.code),
-                                  ),
-                                );
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EditMaterial(
+                                              snapshot.data[index],
+                                              widget.code["class code"]
+                                                  .toString()),
+                                    ),
+                                  );
+                                });
                               },
                               child: Card(
                                 clipBehavior: Clip.antiAlias,
