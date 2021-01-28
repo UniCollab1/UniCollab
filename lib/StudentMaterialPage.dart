@@ -25,7 +25,7 @@ class _StudentMaterialPageState extends State<StudentMaterialPage> {
   @override
   void initState() {
     super.initState();
-    files = widget.data.get("files");
+    files = widget.data["files"];
   }
 
   @override
@@ -39,12 +39,12 @@ class _StudentMaterialPageState extends State<StudentMaterialPage> {
           children: [
             Container(
               child: Text(
-                widget.data.get("title").toString(),
+                widget.data["title"].toString(),
               ),
             ),
             Container(
               child: Text(
-                widget.data.get("description").toString(),
+                widget.data["description"].toString(),
               ),
             ),
             Expanded(

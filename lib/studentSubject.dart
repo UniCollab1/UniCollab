@@ -53,21 +53,18 @@ class _GetClassState extends State<GetClass> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
 
-  Future<dynamic> getData() async {
-    var lol = await fireStore
-        .collection('classes')
-        .doc(widget.code)
-        .collection('general')
-        .get();
-    return lol.docs;
+  getData() {
+    var lol =
+        fireStore.collection('classes').doc(widget.code).collection('general');
+    return lol;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder(
-        future: getData(),
-        builder: (context, snapshot) {
+      child: StreamBuilder<QuerySnapshot>(
+        stream: getData().snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
@@ -76,11 +73,11 @@ class _GetClassState extends State<GetClass> {
               // ignore: missing_return
             );
           } else {
+            print(snapshot.data);
             return SizedBox(
               height: 100.0,
-              child: ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
+              child: ListView(
+                children: snapshot.data.docs.map((DocumentSnapshot document) {
                   return Container(
                     child: TextButton(
                       onPressed: () {
@@ -89,7 +86,7 @@ class _GetClassState extends State<GetClass> {
                           MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 StudentMaterialPage(
-                                    snapshot.data[index], widget.code),
+                                    document.data(), widget.code),
                           ),
                         );
                       },
@@ -99,15 +96,15 @@ class _GetClassState extends State<GetClass> {
                           children: [
                             ListTile(
                               leading: Icon(Icons.description),
-                              title: Text('Material: ' +
-                                  snapshot.data[index].get("title")),
+                              title:
+                                  Text('Material: ' + document.data()["title"]),
                             ),
                           ],
                         ),
                       ),
                     ),
                   );
-                },
+                }).toList(),
               ),
             );
           }
