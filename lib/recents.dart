@@ -8,6 +8,9 @@ import 'package:unicollab/teacherSubject.dart';
 import 'Join.dart';
 import 'create.dart';
 
+FirebaseAuth auth = FirebaseAuth.instance;
+var fireStore = FirebaseFirestore.instance;
+
 class Recent extends StatefulWidget {
   @override
   _RecentState createState() => _RecentState();
@@ -57,30 +60,82 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  var fireStore = FirebaseFirestore.instance;
-  Future getClass() async {
+  List<TextButton> l1 = [];
+  getClass() {
     var lol;
     if (widget.which == 'join') {
-      lol = await fireStore
+      lol = fireStore
           .collection('classes')
           .where("students", arrayContains: auth.currentUser.email)
-          .get();
+          .snapshots();
     } else {
-      lol = await fireStore
+      lol = fireStore
           .collection('classes')
           .where("teachers", arrayContains: auth.currentUser.email)
-          .get();
+          .snapshots();
     }
-    return lol.docs;
+    return lol;
+  }
+
+  TextButton textButton(data) {
+    return TextButton(
+      onPressed: () async {
+        if (widget.which == 'join') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => StudentHome(
+                data.data(),
+              ),
+            ),
+          );
+        } else {
+          // print(data.data());
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => TeacherHome(
+                data.data(),
+              ),
+            ),
+          );
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.all(5.0),
+            width: 130.0,
+            height: 130.0,
+            color: Colors.grey,
+          ),
+          Container(
+            width: 130.0,
+            child: Text(
+              data.data()['subject'],
+              maxLines: 1,
+            ),
+          ),
+          Container(
+            width: 130.0,
+            child: Text(
+              data.data()['created by'],
+              maxLines: 1,
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder(
-        future: getClass(),
+      child: StreamBuilder(
+        stream: getClass(),
         builder: (context, snapshot) {
+          l1 = [];
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
@@ -88,68 +143,21 @@ class _ListPageState extends State<ListPage> {
               ),
             );
           } else {
+            final All_Data = snapshot.data.docs;
+            for (var data in All_Data) {
+              var tb = textButton(data);
+              l1.add(tb);
+            }
             return SizedBox(
               height: 200.0,
               child: Container(
                 child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return TextButton(
-                        onPressed: () async {
-                          var data = await fireStore
-                              .collection('classes')
-                              .doc(snapshot.data[index].get("class code"))
-                              .get();
-                          if (widget.which == 'join') {
-                            print("redirecting");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => StudentHome(
-                                  data.data(),
-                                ),
-                              ),
-                            );
-                          } else {
-                            print(data.data());
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => TeacherHome(
-                                  data.data(),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(5.0),
-                              width: 130.0,
-                              height: 130.0,
-                              color: Colors.grey,
-                            ),
-                            Container(
-                              width: 130.0,
-                              child: Text(
-                                snapshot.data[index].get("subject"),
-                                maxLines: 1,
-                              ),
-                            ),
-                            Container(
-                              width: 130.0,
-                              child: Text(
-                                snapshot.data[index].get("created by"),
-                                maxLines: 1,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: l1.length,
+                  itemBuilder: (context, index) {
+                    return l1[index];
+                  },
+                ),
               ),
             );
           }
