@@ -81,7 +81,6 @@ class _GetClassState extends State<GetClass> {
                   child: CircularProgressIndicator(
                     semanticsLabel: 'loading your classes',
                   ),
-                  // ignore: missing_return
                 );
               } else {
                 print(snapshot.data);
