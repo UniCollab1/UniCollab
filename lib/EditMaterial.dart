@@ -32,10 +32,16 @@ class _EditMaterialState extends State<EditMaterial> {
   }
 
   void getData() async {
-    temp = widget.data["files"];
+    var lol = await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .collection('general')
+        .doc(widget.data.id)
+        .get();
+    temp = lol.data()["files"];
     setState(() {});
-    title.text = widget.data["title"];
-    description.text = widget.data["description"];
+    title.text = widget.data.get("title");
+    description.text = widget.data.get("description");
   }
 
   @override

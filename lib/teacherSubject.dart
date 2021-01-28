@@ -18,13 +18,13 @@ class _TeacherHomeState extends State<TeacherHome> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
 
-  getData() {
-    var lol = fireStore
+  Future<dynamic> getData() async {
+    var lol = await fireStore
         .collection('classes')
         .doc(widget.code["class code"])
         .collection('general')
-        .snapshots();
-    return lol;
+        .get();
+    return lol.docs;
   }
 
   @override
@@ -95,9 +95,9 @@ class _TeacherHomeState extends State<TeacherHome> {
               ),
             ),
             Container(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: getData(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              child: FutureBuilder(
+                future: getData(),
+                builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(
@@ -108,9 +108,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                   } else {
                     return SizedBox(
                       height: 100.0,
-                      child: ListView(
-                        children:
-                            snapshot.data.docs.map((DocumentSnapshot document) {
+                      child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
                           return Container(
                             child: TextButton(
                               onPressed: () {
@@ -120,7 +120,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           EditMaterial(
-                                              document.data(),
+                                              snapshot.data[index],
                                               widget.code["class code"]
                                                   .toString()),
                                     ),
@@ -134,14 +134,14 @@ class _TeacherHomeState extends State<TeacherHome> {
                                     ListTile(
                                       leading: Icon(Icons.description),
                                       title: Text('Material: ' +
-                                          document.data()["title"]),
+                                          snapshot.data[index].get("title")),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                           );
-                        }).toList(),
+                        },
                       ),
                     );
                   }
