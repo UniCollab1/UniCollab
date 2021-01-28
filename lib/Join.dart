@@ -23,7 +23,6 @@ class _JoinDialogState extends State<JoinDialog> {
                   final _fireStore = FirebaseFirestore.instance;
                   FirebaseAuth auth = FirebaseAuth.instance;
                   bool flag = true;
-
                   try {
                     var event =
                         await _fireStore.collection('classes').doc(code).get();
