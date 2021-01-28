@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unicollab/Drawer.dart';
-
 import 'assignments.dart';
 import 'notices.dart';
 import 'recents.dart';

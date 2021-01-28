@@ -61,56 +61,113 @@ class _GetClassState extends State<GetClass> {
     return lol.docs;
   }
 
+  Future<dynamic> getNotice() async {
+    var lol = await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .collection('notice')
+        .get();
+    return lol.docs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder(
-        future: getData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(
-                semanticsLabel: 'loading your classes',
-              ),
-              // ignore: missing_return
-            );
-          } else {
-            return SizedBox(
-              height: 100.0,
-              child: ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                StudentMaterialPage(
-                                    snapshot.data[index], widget.code),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: Icon(Icons.description),
-                              title: Text('Material: ' +
-                                  snapshot.data[index].get("title")),
+      child: Column(
+        children: [
+          FutureBuilder(
+            future: getData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    semanticsLabel: 'loading your classes',
+                  ),
+                  // ignore: missing_return
+                );
+              } else {
+                return SizedBox(
+                  height: 80.0 * snapshot.data.length,
+                  child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    StudentMaterialPage(
+                                        snapshot.data[index], widget.code),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(Icons.description),
+                                  title: Text('Material: ' +
+                                      snapshot.data[index].get("title")),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+          FutureBuilder(
+            future: getNotice(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    semanticsLabel: 'loading your notice',
+                  ),
+                  // ignore: missing_return
+                );
+              } else {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  StudentMaterialPage(
+                                      snapshot.data[index], widget.code),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          child: ListTile(
+                            leading: Icon(Icons.description),
+                            title: Text(
+                              'Notice: ' + snapshot.data[index].get("title"),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-        },
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
