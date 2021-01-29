@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -22,7 +23,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   var econ = new TextEditingController();
 
   File _image;
-  String imageurl;
+  String imageurl =
+      "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
 
   Future getImage() async {
     print("in getImage");
@@ -44,24 +46,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void initState() {
     super.initState();
-    imageurl =
-        "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
     getUserDetail();
   }
 
   void getUserDetail() async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    _image = File(appDocDir.path + '/' + auth.currentUser.email);
+
+    print("file found");
+    setState(() {
+      print("get image");
+    });
     var qn =
         await fireStore.collection('users').doc(auth.currentUser.email).get();
 
     fcon.text = qn.get("first name");
     scon.text = qn.get("last name");
     econ.text = auth.currentUser.email;
-
-    imageurl =
-        await storage.ref('images/' + auth.currentUser.email).getDownloadURL();
-    setState(() {
-      print("get image");
-    });
   }
 
   void updateImage(BuildContext context) async {

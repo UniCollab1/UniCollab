@@ -1,7 +1,12 @@
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/profile.dart';
+import 'package:unicollab/recents.dart';
+
+import 'login.dart';
 
 class DrawerMain extends StatefulWidget {
   @override
@@ -11,6 +16,24 @@ class DrawerMain extends StatefulWidget {
 class _DrawerMainState extends State<DrawerMain> {
   FirebaseAuth auth = FirebaseAuth.instance;
   bool mode = false;
+  File _image;
+  String imageurl =
+      "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
+
+  void initState() {
+    getImage();
+  }
+
+  Future<void> _signOut() async {
+    await auth.signOut();
+  }
+
+  void getImage() async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    _image = File(appDocDir.path + '/' + auth.currentUser.email);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,7 +48,11 @@ class _DrawerMainState extends State<DrawerMain> {
                 children: [
                   CircleAvatar(
                     radius: 35.0,
-                    backgroundColor: Colors.blue,
+                    backgroundImage: (_image != null)
+                        ? FileImage(_image)
+                        : NetworkImage(
+                            imageurl,
+                          ),
                   ),
                   SizedBox(
                     height: 20,
@@ -82,7 +109,10 @@ class _DrawerMainState extends State<DrawerMain> {
             title: Text(
               'Logout',
             ),
-            onTap: () {},
+            onTap: () {
+              _signOut();
+              Navigator.popUntil(context, ModalRoute.withName("login"));
+            },
           ),
         ],
       ),
