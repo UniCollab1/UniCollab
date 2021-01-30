@@ -59,13 +59,11 @@ class _GetClassState extends State<GetClass> {
     return lol;
   }
 
-  Future<dynamic> getNotice() async {
-    var lol = await fireStore
-        .collection('classes')
-        .doc(widget.code)
-        .collection('notice')
-        .get();
-    return lol.docs;
+  getNotice() {
+    var lol =
+        fireStore.collection('classes').doc(widget.code).collection('notice');
+
+    return lol;
   }
 
   @override
@@ -85,7 +83,7 @@ class _GetClassState extends State<GetClass> {
               } else {
                 print(snapshot.data);
                 return SizedBox(
-                  height: 100.0,
+                  height: 250.0,
                   child: ListView(
                     children:
                         snapshot.data.docs.map((DocumentSnapshot document) {
@@ -121,46 +119,49 @@ class _GetClassState extends State<GetClass> {
               }
             },
           ),
-          FutureBuilder(
-            future: getNotice(),
-            builder: (context, snapshot) {
+          StreamBuilder<QuerySnapshot>(
+            stream: getNotice().snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
-                    semanticsLabel: 'loading your notice',
+                    semanticsLabel: 'loading your Notice',
                   ),
-                  // ignore: missing_return
                 );
               } else {
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  StudentMaterialPage(
-                                      snapshot.data[index], widget.code),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          clipBehavior: Clip.antiAlias,
-                          child: ListTile(
-                            leading: Icon(Icons.description),
-                            title: Text(
-                              'Notice: ' + snapshot.data[index].get("title"),
+                print(snapshot.data);
+                return SizedBox(
+                  height: 250.0,
+                  child: ListView(
+                    children:
+                        snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Container(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    NoticePage(document.data(), widget.code),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(Icons.description),
+                                  title: Text(
+                                      'Notice : ' + document.data()["title"]),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    }).toList(),
+                  ),
                 );
               }
             },

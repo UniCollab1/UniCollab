@@ -27,6 +27,15 @@ class _TeacherHomeState extends State<TeacherHome> {
     return lol;
   }
 
+  getNotice() {
+    var lol = fireStore
+        .collection('classes')
+        .doc(widget.code["class code"])
+        .collection('notice')
+        .snapshots();
+    return lol;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +100,7 @@ class _TeacherHomeState extends State<TeacherHome> {
               child: Column(
                 children: [
                   Center(child: Text(widget.code['subject'])),
+                  Center(child: Text(widget.code['class code'])),
                 ],
               ),
             ),
@@ -101,13 +111,13 @@ class _TeacherHomeState extends State<TeacherHome> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(
-                        semanticsLabel: 'loading your classes',
+                        semanticsLabel: 'loading your Material',
                       ),
                       // ignore: missing_return
                     );
                   } else {
                     return SizedBox(
-                      height: 100.0,
+                      height: 250.0,
                       child: ListView(
                         children:
                             snapshot.data.docs.map((DocumentSnapshot document) {
@@ -120,7 +130,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           EditMaterial(
-                                              document.data(),
+                                              document,
                                               widget.code["class code"]
                                                   .toString()),
                                     ),
@@ -134,6 +144,60 @@ class _TeacherHomeState extends State<TeacherHome> {
                                     ListTile(
                                       leading: Icon(Icons.description),
                                       title: Text('Material: ' +
+                                          document.data()["title"]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            Container(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: getNotice(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'loading your Notice',
+                      ),
+                      // ignore: missing_return
+                    );
+                  } else {
+                    return SizedBox(
+                      height: 250.0,
+                      child: ListView(
+                        children:
+                            snapshot.data.docs.map((DocumentSnapshot document) {
+                          return Container(
+                            child: TextButton(
+                              onPressed: () {
+                                // setState(() {
+                                //   Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (BuildContext context) =>
+                                //           EditMaterial(
+                                //               document.data(),
+                                //               widget.code["class code"]
+                                //                   .toString()),
+                                //     ),
+                                //   );
+                                // });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.description),
+                                      title: Text('Notice: ' +
                                           document.data()["title"]),
                                     ),
                                   ],

@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditMaterial extends StatefulWidget {
-  final dynamic data;
   final String code;
-  const EditMaterial(this.data, this.code);
+  final DocumentSnapshot ds;
+  const EditMaterial(this.ds, this.code);
   @override
   _EditMaterialState createState() => _EditMaterialState();
 }
@@ -32,10 +32,11 @@ class _EditMaterialState extends State<EditMaterial> {
   }
 
   void getData() async {
-    temp = widget.data["files"];
+    var data = widget.ds.data();
+    temp = data["files"];
     setState(() {});
-    title.text = widget.data["title"];
-    description.text = widget.data["description"];
+    title.text = data["title"];
+    description.text = data["description"];
   }
 
   @override
@@ -71,7 +72,7 @@ class _EditMaterialState extends State<EditMaterial> {
             margin: EdgeInsets.all(5.0),
             child: ElevatedButton(
               onPressed: () async {
-                id = widget.data.id;
+                id = widget.ds.id;
                 if (result != null) {
                   result.files.forEach((element) async {
                     print(element.path);
@@ -90,7 +91,11 @@ class _EditMaterialState extends State<EditMaterial> {
                     .doc(widget.code)
                     .collection('general')
                     .doc(id)
-                    .update({'files': temp});
+                    .update({
+                  'files': temp,
+                  'title': title.text,
+                  'description': description.text,
+                });
                 Navigator.pop(context);
               },
               child: Text('Create'),
