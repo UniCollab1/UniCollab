@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void initState() {
+    super.initState();
     getImage();
   }
 

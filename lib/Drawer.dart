@@ -4,9 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/profile.dart';
-import 'package:unicollab/recents.dart';
-
-import 'login.dart';
 
 class DrawerMain extends StatefulWidget {
   @override
@@ -21,6 +18,7 @@ class _DrawerMainState extends State<DrawerMain> {
       "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
 
   void initState() {
+    super.initState();
     getImage();
   }
 

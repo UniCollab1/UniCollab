@@ -62,7 +62,6 @@ class _GetClassState extends State<GetClass> {
   getNotice() {
     var lol =
         fireStore.collection('classes').doc(widget.code).collection('notice');
-
     return lol;
   }
 
@@ -135,6 +134,18 @@ class _GetClassState extends State<GetClass> {
                   child: ListView(
                     children:
                         snapshot.data.docs.map((DocumentSnapshot document) {
+                      final data = snapshot.data.docs;
+                      var now = DateTime.now().millisecondsSinceEpoch / 1000;
+                      for (var d in data) {
+                        if (now > d.data()['time'].seconds) {
+                          fireStore
+                              .collection('classes')
+                              .doc(widget.code)
+                              .collection('notice')
+                              .doc(document.id)
+                              .delete();
+                        }
+                      }
                       return Container(
                         child: TextButton(
                           onPressed: () {
