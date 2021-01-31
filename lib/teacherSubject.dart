@@ -192,18 +192,19 @@ class _TeacherHomeState extends State<TeacherHome> {
                           return Container(
                             child: TextButton(
                               onPressed: () {
-                                // setState(() {
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (BuildContext context) =>
-                                //           EditMaterial(
-                                //               document.data(),
-                                //               widget.code["class code"]
-                                //                   .toString()),
-                                //     ),
-                                //   );
-                                // });
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EditNotice(
+                                              document.data(),
+                                              document.id,
+                                              widget.code["class code"]
+                                                  .toString()),
+                                    ),
+                                  );
+                                });
                               },
                               child: Card(
                                 clipBehavior: Clip.antiAlias,
