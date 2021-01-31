@@ -161,7 +161,6 @@ class EditNotice extends StatefulWidget {
 
 class _EditNoticeState extends State<EditNotice> {
   FilePickerResult result;
-
   FirebaseStorage storage = FirebaseStorage.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
@@ -185,6 +184,16 @@ class _EditNoticeState extends State<EditNotice> {
 
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now().millisecondsSinceEpoch / 1000;
+    if (now > widget.data['time'].seconds) {
+      fireStore
+          .collection('classes')
+          .doc(widget.code)
+          .collection('notice')
+          .doc(widget.id)
+          .delete();
+      Navigator.pop(context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Notice'),
