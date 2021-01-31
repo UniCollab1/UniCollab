@@ -10,6 +10,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
+  var econ = TextEditingController();
+  var pcon = TextEditingController();
   bool _passwordVisible = true;
   String email, password;
   static String errEmail, errPassword;
@@ -34,6 +36,8 @@ class _LoginState extends State<Login> {
                 height: 20.0,
               ),
               TextFormField(
+                autofocus: true,
+                controller: econ,
                 onChanged: (value) {
                   email = value.trim();
                   errEmail = null;
@@ -62,6 +66,7 @@ class _LoginState extends State<Login> {
                 height: 20.0,
               ),
               TextFormField(
+                controller: pcon,
                 onChanged: (value) {
                   password = value;
                   errPassword = null;
@@ -115,6 +120,8 @@ class _LoginState extends State<Login> {
                         final user = await _auth.signInWithEmailAndPassword(
                             email: email, password: password);
                         if (user != null) {
+                          pcon.clear();
+                          econ.clear();
                           Navigator.pop(context);
                           print("Successfully Logged in");
                           Navigator.pushNamed(context, 'homepage');
@@ -157,6 +164,8 @@ class _LoginState extends State<Login> {
                                             });
                                             Navigator.pop(context);
                                             Navigator.pop(context);
+                                            econ.clear();
+                                            pcon.clear();
                                             print("Successfully registered");
                                             Navigator.pushNamed(
                                                 context, 'homepage');

@@ -169,7 +169,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                       if (now > d.data()['time'].seconds) {
                         fireStore
                             .collection('classes')
-                            .doc(widget.code)
+                            .doc(widget.code['class code'])
                             .collection('notice')
                             .doc(d.id)
                             .delete();
@@ -185,7 +185,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                     );
                   } else {
                     return SizedBox(
-                      height: 250.0,
+                      height: 200.0,
                       child: ListView(
                         children:
                             snapshot.data.docs.map((DocumentSnapshot document) {
