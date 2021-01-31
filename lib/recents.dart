@@ -142,8 +142,8 @@ class _ListPageState extends State<ListPage> {
               ),
             );
           } else {
-            final All_Data = snapshot.data.docs;
-            for (var data in All_Data) {
+            final allData = snapshot.data.docs;
+            for (var data in allData) {
               var tb = textButton(data);
               l1.add(tb);
             }
@@ -219,12 +219,3 @@ class _RecentFloatState extends State<RecentFloat> {
     );
   }
 }
-
-// child: FutureBuilder(
-// future: getClass(),
-// builder: (context, snapshot) {
-//   else {
-// return
-// }
-// },
-// // ),
