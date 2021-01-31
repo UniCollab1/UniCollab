@@ -152,8 +152,8 @@ class _GetClassState extends State<GetClass> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    NoticePage(document.data(), widget.code),
+                                builder: (BuildContext context) => NoticePage(
+                                    document.data(), document.id, widget.code),
                               ),
                             );
                           },

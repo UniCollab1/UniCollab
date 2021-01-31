@@ -99,7 +99,8 @@ class _StudentMaterialPageState extends State<StudentMaterialPage> {
 class NoticePage extends StatefulWidget {
   final dynamic data;
   final String code;
-  const NoticePage(this.data, this.code);
+  final String id;
+  const NoticePage(this.data, this.id, this.code);
   @override
   _NoticePageState createState() => _NoticePageState();
 }
@@ -118,6 +119,16 @@ class _NoticePageState extends State<NoticePage> {
 
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now().millisecondsSinceEpoch / 1000;
+    if (now > widget.data['time'].seconds) {
+      fireStore
+          .collection('classes')
+          .doc(widget.code)
+          .collection('notice')
+          .doc(widget.id)
+          .delete();
+      Navigator.pop(context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Notice"),
