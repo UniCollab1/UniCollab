@@ -161,7 +161,21 @@ class _TeacherHomeState extends State<TeacherHome> {
             Container(
               child: StreamBuilder<QuerySnapshot>(
                 stream: getNotice(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data.docs;
+                    var now = DateTime.now().millisecondsSinceEpoch / 1000;
+                    for (var d in data) {
+                      if (now > d.data()['time'].seconds) {
+                        fireStore
+                            .collection('classes')
+                            .doc(widget.code)
+                            .collection('notice')
+                            .doc(d.id)
+                            .delete();
+                      }
+                    }
+                  }
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(

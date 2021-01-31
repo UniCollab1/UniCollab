@@ -80,7 +80,6 @@ class _GetClassState extends State<GetClass> {
                   ),
                 );
               } else {
-                print(snapshot.data);
                 return SizedBox(
                   height: 250.0,
                   child: ListView(
@@ -120,7 +119,21 @@ class _GetClassState extends State<GetClass> {
           ),
           StreamBuilder<QuerySnapshot>(
             stream: getNotice().snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final data = snapshot.data.docs;
+                var now = DateTime.now().millisecondsSinceEpoch / 1000;
+                for (var d in data) {
+                  if (now > d.data()['time'].seconds) {
+                    fireStore
+                        .collection('classes')
+                        .doc(widget.code)
+                        .collection('notice')
+                        .doc(d.id)
+                        .delete();
+                  }
+                }
+              }
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
@@ -128,24 +141,11 @@ class _GetClassState extends State<GetClass> {
                   ),
                 );
               } else {
-                print(snapshot.data);
                 return SizedBox(
                   height: 250.0,
                   child: ListView(
                     children:
                         snapshot.data.docs.map((DocumentSnapshot document) {
-                      final data = snapshot.data.docs;
-                      var now = DateTime.now().millisecondsSinceEpoch / 1000;
-                      for (var d in data) {
-                        if (now > d.data()['time'].seconds) {
-                          fireStore
-                              .collection('classes')
-                              .doc(widget.code)
-                              .collection('notice')
-                              .doc(document.id)
-                              .delete();
-                        }
-                      }
                       return Container(
                         child: TextButton(
                           onPressed: () {
