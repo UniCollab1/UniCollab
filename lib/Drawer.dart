@@ -22,7 +22,7 @@ class _DrawerMainState extends State<DrawerMain> {
     getImage();
   }
 
-  Future<void> _signOut() async {
+  Future<void> signOut() async {
     await auth.signOut();
   }
 
@@ -70,6 +70,17 @@ class _DrawerMainState extends State<DrawerMain> {
           ),
           ListTile(
             leading: Icon(
+              Icons.home,
+            ),
+            title: Text(
+              'Home',
+            ),
+            onTap: () {
+              Navigator.popUntil(context, ModalRoute.withName("homepage"));
+            },
+          ),
+          ListTile(
+            leading: Icon(
               Icons.account_circle,
             ),
             title: Text(
@@ -108,7 +119,7 @@ class _DrawerMainState extends State<DrawerMain> {
               'Logout',
             ),
             onTap: () {
-              _signOut();
+              signOut();
               Navigator.popUntil(context, ModalRoute.withName("login"));
             },
           ),
