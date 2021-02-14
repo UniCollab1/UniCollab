@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:unicollab/CreateMaterial.dart';
 import 'package:unicollab/EditMaterial.dart';
 
+import 'CreateAssignment.dart';
 import 'CreateNotice.dart';
+import 'EditAssignment.dart';
 
 class TeacherHome extends StatefulWidget {
   final dynamic code;
@@ -36,6 +38,15 @@ class _TeacherHomeState extends State<TeacherHome> {
     return lol;
   }
 
+  getAssignment() {
+    var lol = fireStore
+        .collection('classes')
+        .doc(widget.code["class code"])
+        .collection('assignment')
+        .snapshots();
+    return lol;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +65,17 @@ class _TeacherHomeState extends State<TeacherHome> {
                     ListTile(
                       leading: Icon(Icons.assignment),
                       title: Text('Assignment'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateAssignment(widget.code['class code']),
+                            // fullscreenDialog: true,
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.announcement),
@@ -158,7 +179,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                 },
               ),
             ),
-            Container(
+            /*Container(
               child: StreamBuilder<QuerySnapshot>(
                 stream: getNotice(),
                 builder: (context, snapshot) {
@@ -226,7 +247,65 @@ class _TeacherHomeState extends State<TeacherHome> {
                   }
                 },
               ),
-            )
+            ),*/
+            Container(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: getAssignment(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data.docs;
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        semanticsLabel: 'loading your assignment',
+                      ),
+                      // ignore: missing_return
+                    );
+                  } else {
+                    return SizedBox(
+                      height: 200.0,
+                      child: ListView(
+                        children:
+                            snapshot.data.docs.map((DocumentSnapshot document) {
+                          return Container(
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          EditAssignment(
+                                              document,
+                                              document.id,
+                                              widget.code["class code"]
+                                                  .toString()),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.description),
+                                      title: Text('Assignment: ' +
+                                          document.data()["title"]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
