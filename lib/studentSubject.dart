@@ -30,9 +30,9 @@ class _StudentHomeState extends State<StudentHome> {
     super.initState();
     _children = [
       Home(widget.code),
-      Resource(),
-      Notice(),
-      Assignment(),
+      Resource(widget.code),
+      Notice(widget.code),
+      Assignment(widget.code),
     ];
   }
 

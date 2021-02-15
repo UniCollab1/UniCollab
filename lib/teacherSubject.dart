@@ -32,9 +32,9 @@ class _TeacherHomeState extends State<TeacherHome> {
     super.initState();
     _children = [
       THome(widget.code),
-      Resource(),
-      Notice(),
-      Assignment(),
+      Resource(widget.code),
+      Notice(widget.code),
+      Assignment(widget.code),
     ];
   }
 
