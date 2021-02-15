@@ -23,35 +23,58 @@ class _StudentsWorkState extends State<StudentsWork> {
   FirebaseStorage storage = FirebaseStorage.instance;
   var fireStore = FirebaseFirestore.instance;
   var name = 'anonymous';
-
+  var diff;
   void initState() {
     super.initState();
     getStudent();
   }
 
+  Timestamp due;
+  Timestamp submit;
   getStudent() {
-    var student_name = fireStore
-        .collection('users')
-        .doc(widget.email)
-        .get()
-        .then((value) => setState(() {
-              name =
-                  value.data()['first name'] + " " + value.data()['last name'];
-            }));
-    var student = fireStore
-        .collection('classes')
-        .doc(widget.code)
-        .collection('assignment')
-        .doc(widget.id)
-        .collection(widget.email)
-        .snapshots();
+    var student;
+    try {
+      var student_name = fireStore
+          .collection('users')
+          .doc(widget.email)
+          .get()
+          .then((value) => name =
+              value.data()['first name'] + " " + value.data()['last name']);
+
+      student = fireStore
+          .collection('classes')
+          .doc(widget.code)
+          .collection('assignment')
+          .doc(widget.id)
+          .collection(widget.email)
+          .snapshots();
+
+      fireStore
+          .collection('classes')
+          .doc(widget.code)
+          .collection('assignment')
+          .doc(widget.id)
+          .get()
+          .then((value) => due = value.data()['Due Date']);
+
+      fireStore
+          .collection('classes')
+          .doc(widget.code)
+          .collection('assignment')
+          .doc(widget.id)
+          .collection(widget.email)
+          .doc(widget.email)
+          .get()
+          .then((value) => setState(() {
+                submit = value.data()['submit_date'];
+              }));
+    } catch (e) {}
 
     return student;
   }
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
     return Scaffold(
       appBar: AppBar(
         title: Text("work"),
@@ -83,6 +106,15 @@ class _StudentsWorkState extends State<StudentsWork> {
                                 .data.docs[0]
                                 .data()['submit_date']
                                 .microsecondsSinceEpoch)));
+                  })()),
+                  Text((() {
+                    try {
+                      if (submit.compareTo(due) > 0) {
+                        return "Late submission";
+                      }
+                    } catch (e) {
+                      return ('');
+                    }
                   })()),
                   ListView.builder(
                     shrinkWrap: true,
