@@ -9,6 +9,8 @@ import 'package:unicollab/resources.dart';
 
 import 'assignments.dart';
 
+import 'StudentAssignmentPage.dart';
+
 class StudentHome extends StatefulWidget {
   final dynamic code;
   const StudentHome(this.code);
@@ -124,12 +126,20 @@ class _GetClassState extends State<GetClass> {
     return lol;
   }
 
+  getAssignment() {
+    var lol = fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .collection('assignment');
+    return lol;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          StreamBuilder<QuerySnapshot>(
+          /*StreamBuilder<QuerySnapshot>(
             stream: getData().snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -175,8 +185,8 @@ class _GetClassState extends State<GetClass> {
                 );
               }
             },
-          ),
-          StreamBuilder<QuerySnapshot>(
+          ),*/
+          /*StreamBuilder<QuerySnapshot>(
             stream: getNotice().snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -224,6 +234,53 @@ class _GetClassState extends State<GetClass> {
                                   leading: Icon(Icons.description),
                                   title: Text(
                                       'Notice : ' + document.data()["title"]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+            },
+          ),*/
+          StreamBuilder<QuerySnapshot>(
+            stream: getAssignment().snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    semanticsLabel: 'loading your classes',
+                  ),
+                );
+              } else {
+                return SizedBox(
+                  height: 250.0,
+                  child: ListView(
+                    children:
+                        snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Container(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    StudentAssignmentPage(document.data(),
+                                        document.id, widget.code),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Icon(Icons.description),
+                                  title: Text('Assignment: ' +
+                                      document.data()["title"]),
                                 ),
                               ],
                             ),
