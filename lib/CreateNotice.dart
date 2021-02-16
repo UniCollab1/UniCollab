@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:unicollab/mail.dart';
 
 class CreateNotice extends StatefulWidget {
   final String code;
@@ -21,8 +22,31 @@ class _CreateNoticeState extends State<CreateNotice> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
   var time;
+  List<String> recipient;
+  String classname, subject, body;
+  SendMail sendMail;
+  void initState() {
+    super.initState();
+    getStudents();
+  }
+
+  getStudents() async {
+    await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .get()
+        .then((value) => {
+              recipient = value.data()['students'].cast<String>(),
+              classname = value.data()['subject'],
+            });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    subject = "New Notice";
+    body = auth.currentUser.email + " Announce in " + classname;
+    sendMail = SendMail();
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Notice'),
@@ -88,6 +112,7 @@ class _CreateNoticeState extends State<CreateNotice> {
                     }
                   });
                 }
+                sendMail.mail(recipient, subject, body);
                 Navigator.pop(context);
               },
               child: Text('Create'),
