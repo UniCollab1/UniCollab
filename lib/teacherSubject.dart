@@ -9,7 +9,9 @@ import 'package:unicollab/assignments.dart';
 import 'package:unicollab/notices.dart';
 import 'package:unicollab/resources.dart';
 
+import 'CreateAssignment.dart';
 import 'CreateNotice.dart';
+import 'EditAssignment.dart';
 
 class TeacherHome extends StatefulWidget {
   final dynamic code;
@@ -30,9 +32,9 @@ class _TeacherHomeState extends State<TeacherHome> {
     super.initState();
     _children = [
       THome(widget.code),
-      Resource(),
-      Notice(),
-      Assignment(),
+      Resource(widget.code),
+      Notice(widget.code),
+      Assignment(widget.code),
     ];
   }
 
@@ -99,6 +101,15 @@ class _THomeState extends State<THome> {
         .collection('classes')
         .doc(widget.code["class code"])
         .collection('notice')
+        .snapshots();
+    return lol;
+  }
+
+  getAssignment() {
+    var lol = fireStore
+        .collection('classes')
+        .doc(widget.code["class code"])
+        .collection('assignment')
         .snapshots();
     return lol;
   }
@@ -240,7 +251,65 @@ class _THomeState extends State<THome> {
                 }
               },
             ),
-          )
+          ),
+          Container(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: getAssignment(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final data = snapshot.data.docs;
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      semanticsLabel: 'loading your assignment',
+                    ),
+                    // ignore: missing_return
+                  );
+                } else {
+                  return SizedBox(
+                    height: 200.0,
+                    child: ListView(
+                      children:
+                          snapshot.data.docs.map((DocumentSnapshot document) {
+                        return Container(
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        EditAssignment(
+                                            document,
+                                            document.id,
+                                            widget.code["class code"]
+                                                .toString()),
+                                  ),
+                                );
+                              });
+                            },
+                            child: Card(
+                              clipBehavior: Clip.antiAlias,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    leading: Icon(Icons.description),
+                                    title: Text('Assignment: ' +
+                                        document.data()["title"]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
         ],
       ),
     );

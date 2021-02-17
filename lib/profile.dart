@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -46,7 +47,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void initState() {
     super.initState();
-    getUserDetail();
+    setState(() {
+      getUserDetail();
+      getimageurl();
+    });
   }
 
   void getUserDetail() async {
@@ -85,6 +89,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
+  getimageurl() async {
+    String url;
+    try {
+      url = await storage
+          .ref('images/' + auth.currentUser.email)
+          .getDownloadURL();
+      print("in get image url found");
+    } catch (e) {
+      print("notfound");
+      url = await storage.ref('images/download.png').getDownloadURL();
+    }
+    setState(() {
+      imageurl = url;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,11 +140,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: (_image != null)
-                              ? FileImage(_image)
-                              : NetworkImage(
-                                  imageurl,
-                                ),
+                          image: CachedNetworkImageProvider(imageurl),
                         ),
                       ),
                     ),

@@ -20,26 +20,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getImage();
-  }
-
-  Future<void> getImage() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    File downloadToFile =
-        File('${appDocDir.path}/${auth.currentUser.email.toString()}');
-    print(appDocDir.path + '/' + auth.currentUser.email.toString());
-
-    try {
-      await storage
-          .ref('images/' + auth.currentUser.email)
-          .writeToFile(downloadToFile);
-    } catch (e) {
-      print("not found");
-      await storage
-          .ref(
-              "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334")
-          .writeToFile(downloadToFile);
-    }
   }
 
   @override
