@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/mail.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _LoginState extends State<Login> {
   bool _passwordVisible = true;
   String email, password;
   static String errEmail, errPassword;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

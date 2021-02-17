@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/mail.dart';
 
 class CreateMaterial extends StatefulWidget {
   final String code;
@@ -19,8 +20,32 @@ class _CreateMaterialState extends State<CreateMaterial> {
   FirebaseStorage storage = FirebaseStorage.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   var fireStore = FirebaseFirestore.instance;
+  SendMail sendMail;
+  List<String> recipient = [];
+  String subject, body, classname;
+
+  void initState() {
+    super.initState();
+    getStudents();
+  }
+
+  getStudents() async {
+    await fireStore
+        .collection('classes')
+        .doc(widget.code)
+        .get()
+        .then((value) => {
+              recipient = value.data()['students'].cast<String>(),
+              classname = value.data()['subject'],
+            });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    subject = "New Material";
+    body = auth.currentUser.email + " Posted New Material in " + classname;
+    sendMail = SendMail();
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Material'),
@@ -85,6 +110,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
                     }
                   });
                 }
+                // print(recipient);
+                sendMail.mail(recipient, subject, body);
                 Navigator.pop(context);
               },
               child: Text('Create'),
