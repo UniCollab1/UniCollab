@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/app/student%20home/assignment/StudentAssignment.dart';
 import 'package:unicollab/app/student%20home/material/StudentMaterial.dart';
 import 'package:unicollab/app/student%20home/notice/StudentNotice.dart';
 
@@ -106,10 +107,11 @@ class AssignmentCard extends StatelessWidget {
     return Container(
       child: GestureDetector(
         onTap: () {
-          /*Navigator.push(
+          Navigator.push(
             context,
-            CupertinoPageRoute(builder: (_) => AssignmentPage(document, code)),
-          );*/
+            CupertinoPageRoute(
+                builder: (_) => StudentAssignment(document, code)),
+          );
         },
         child: Card(
           elevation: 0.0,

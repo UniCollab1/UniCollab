@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unicollab/app/home/StudentSubjects.dart';
 import 'package:unicollab/app/home/TeacherSubjects.dart';
+import 'package:unicollab/services/firestore_service.dart';
 
 import '../../Drawer.dart';
 import '../../Join.dart';
@@ -14,16 +14,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseStorage storage = FirebaseStorage.instance;
-
   @override
   void initState() {
     super.initState();
   }
 
+  _addUserToFireStore() async {
+    try {
+      final fireStore = Provider.of<FireStoreService>(context, listen: false);
+      await fireStore.addUserToFireStore();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _addUserToFireStore();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
