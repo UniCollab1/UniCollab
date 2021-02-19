@@ -49,7 +49,7 @@ class _TeacherHomeState extends State<TeacherHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Teacher"),
+        title: Text(widget.data.title),
       ),
       floatingActionButton: TeacherCreate(widget.data),
       body: Container(

@@ -19,6 +19,7 @@ class _EditMaterialState extends State<EditMaterial> {
       description = TextEditingController(),
       id,
       data;
+  bool tv = false;
   List<String> result = [];
   List<PlatformFile> files = [];
 
@@ -84,8 +85,13 @@ class _EditMaterialState extends State<EditMaterial> {
           ),
           IconButton(
             onPressed: () {
-              _editMaterial();
-              Navigator.pop(context);
+              setState(() {
+                title.text.isEmpty ? tv = true : tv = false;
+              });
+              if (title.text.isNotEmpty) {
+                _editMaterial();
+                Navigator.pop(context);
+              }
             },
             icon: Icon(Icons.send),
           ),
@@ -115,7 +121,9 @@ class _EditMaterialState extends State<EditMaterial> {
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  labelText: 'Title(required)',
+                                  labelText: 'Title',
+                                  errorText:
+                                      tv ? 'Title can not be empty' : null,
                                   filled: true,
                                 ),
                                 textCapitalization: TextCapitalization.words,
