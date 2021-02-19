@@ -101,117 +101,123 @@ class _StudentAssignmentState extends State<StudentAssignment> {
     return SafeArea(
       child: Container(
         color: Colors.black12,
-        child: Flexible(
-          child: MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: result.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                          child: Text(
-                            'Your submission status:',
-                            style: GoogleFonts.sourceSansPro(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
+        child: Column(
+          children: [
+            Flexible(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: result.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin:
+                                  EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                              child: Text(
+                                'Your submission status:',
+                                style: GoogleFonts.sourceSansPro(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
+                            Container(
+                              margin: EdgeInsets.all(10.0),
+                              child: Text(
+                                status,
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                              child: Text(
+                                'Your marks:',
+                                style: GoogleFonts.sourceSansPro(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(10.0),
+                              child: Text(
+                                grades,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(10.0),
+                              child: Text(
+                                'Attachments: ',
+                                style: GoogleFonts.sourceSansPro(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => takeFile(),
+                              child: Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: Text(
+                                  'Click here to add attachments',
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }
+                      if (result.length == 0) {
+                        return Container(
                           margin: EdgeInsets.all(10.0),
                           child: Text(
-                            status,
+                            'No attachments',
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                          child: Text(
-                            'Your marks:',
-                            style: GoogleFonts.sourceSansPro(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
+                        );
+                      }
+                      return Container(
+                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Card(
+                              elevation: 0.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              shadowColor: Colors.white,
+                              child: Container(
+                                margin: EdgeInsets.all(12.0),
+                                child: Text(
+                                  adjustText(result[index - 1].toString()),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: Text(
-                            grades,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Attachments: ',
-                            style: GoogleFonts.sourceSansPro(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              decoration: TextDecoration.none,
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  result.removeAt(index - 1);
+                                });
+                              },
+                              child: Icon(CupertinoIcons.clear_circled),
                             ),
-                          ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () => takeFile(),
-                          child: Container(
-                            margin: EdgeInsets.all(10.0),
-                            child: Text(
-                              'Click here to add attachments',
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  }
-                  if (result.length == 0) {
-                    return Container(
-                      margin: EdgeInsets.all(10.0),
-                      child: Text(
-                        'No attachments',
-                      ),
-                    );
-                  }
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Card(
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadowColor: Colors.white,
-                          child: Container(
-                            margin: EdgeInsets.all(12.0),
-                            child: Text(
-                              adjustText(result[index - 1].toString()),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              result.removeAt(index - 1);
-                            });
-                          },
-                          child: Icon(CupertinoIcons.clear_circled),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          ),
+                      );
+                    }),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -220,8 +226,29 @@ class _StudentAssignmentState extends State<StudentAssignment> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: _body(),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Assignment'),
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  text: "Instructions",
+                ),
+                Tab(
+                  text: "Submission",
+                )
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              StudentViewAssignment(widget.document, widget.code),
+              submitAssignment(),
+            ],
+          ),
+        ),
       ),
     );
   }
