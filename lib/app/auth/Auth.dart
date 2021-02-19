@@ -13,15 +13,16 @@ class AuthWidget extends StatelessWidget {
     if (userSnapshot.connectionState == ConnectionState.waiting) {
       return Scaffold(
         body: Center(
-          child: CupertinoActivityIndicator(),
+          child: CircularProgressIndicator(),
         ),
       );
     } else if (userSnapshot.connectionState == ConnectionState.active) {
+      print('going to');
       return userSnapshot.hasData ? HomePage() : SignInPage();
     }
     return Scaffold(
       body: Center(
-        child: CupertinoActivityIndicator(),
+        child: CircularProgressIndicator(),
       ),
     );
   }

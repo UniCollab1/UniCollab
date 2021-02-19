@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "388569707436-p0md90r5ojt03pc4s1sai403d21r03jm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.prs.unicollab",
-            "certificate_hash": "b9286ea662e60740eede15f841759ff3a10b6603"
-          }
-        },
-        {
           "client_id": "388569707436-r4jmssb911lr441jiavouag61ihde1vr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
