@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +24,10 @@ class _CreateDialogState extends State<CreateDialog> {
     }
   }
 
-  bool titlevalidation = false,
-      subjectvalidation = false,
-      shortnamevalidation = false;
-  String errormsg;
+  bool titleValidation = false,
+      subjectValidation = false,
+      shortNameValidation = false;
+  String errorMsg;
   var tcon = TextEditingController(),
       scon = TextEditingController(),
       sscon = TextEditingController();
@@ -39,18 +40,18 @@ class _CreateDialogState extends State<CreateDialog> {
         actions: [
           Container(
             margin: EdgeInsets.all(10.0),
-            child: ElevatedButton(
+            child: IconButton(
               onPressed: () async {
                 setState(() {
                   tcon.text.isEmpty
-                      ? titlevalidation = true
-                      : titlevalidation = false;
+                      ? titleValidation = true
+                      : titleValidation = false;
                   scon.text.isEmpty
-                      ? subjectvalidation = true
-                      : subjectvalidation = false;
+                      ? subjectValidation = true
+                      : subjectValidation = false;
                   sscon.text.isEmpty
-                      ? shortnamevalidation = true
-                      : shortnamevalidation = false;
+                      ? shortNameValidation = true
+                      : shortNameValidation = false;
                 });
 
                 if (tcon.text.isNotEmpty &&
@@ -61,74 +62,82 @@ class _CreateDialogState extends State<CreateDialog> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Create'),
+              icon: Icon(Icons.send),
             ),
           ),
         ],
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                controller: tcon,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Class title',
-                  errorText: titlevalidation ? 'Title can not be empty' : null,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  controller: tcon,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Class title',
+                    errorText:
+                    titleValidation ? 'Title can not be empty' : null,
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                  onChanged: (value) {
+                    title = value;
+                  },
                 ),
-                onChanged: (value) {
-                  title = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                controller: scon,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Subject',
-                  errorText:
-                      subjectvalidation ? 'Subject can not be empty' : null,
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  controller: scon,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Subject',
+                    errorText:
+                    subjectValidation ? 'Subject can not be empty' : null,
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                  onChanged: (value) {
+                    subject = value;
+                  },
                 ),
-                onChanged: (value) {
-                  subject = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                maxLength: 5,
-                controller: sscon,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Short name of subject',
-                  errorText: shortnamevalidation
-                      ? 'Short Name can not be empty'
-                      : null,
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  maxLength: 5,
+                  controller: sscon,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Short name of subject',
+                    errorText: shortNameValidation
+                        ? 'Short name can not be empty'
+                        : null,
+                  ),
+                  textCapitalization: TextCapitalization.characters,
+                  onChanged: (value) {
+                    shortName = value;
+                  },
                 ),
-                onChanged: (value) {
-                  shortName = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Description',
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Description',
+                  ),
+                  onChanged: (value) {
+                    description = value;
+                  },
+                  textCapitalization: TextCapitalization.sentences,
                 ),
-                onChanged: (value) {
-                  description = value;
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
