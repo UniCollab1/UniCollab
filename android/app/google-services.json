@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "388569707436",
+    "firebase_url": "https://collab-627c8-default-rtdb.firebaseio.com",
     "project_id": "collab-627c8",
     "storage_bucket": "collab-627c8.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "388569707436-5fdl441oi5jqnu0ekinh5mkifte6cadq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prs.unicollab",
+            "certificate_hash": "6244dd34ccf38c1c3bb55fe8808923c9fdb87557"
+          }
+        },
+        {
+          "client_id": "388569707436-r4jmssb911lr441jiavouag61ihde1vr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prs.unicollab",
+            "certificate_hash": "55cd7ed8d00b31146afc6f380174d6c21908e633"
+          }
+        },
         {
           "client_id": "388569707436-rqsb2beebvj3oedo441pr5bs0voegv3i.apps.googleusercontent.com",
           "client_type": 3
