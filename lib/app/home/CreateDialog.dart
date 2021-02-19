@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +80,7 @@ class _CreateDialogState extends State<CreateDialog> {
                     filled: true,
                     labelText: 'Class title',
                     errorText:
-                    titleValidation ? 'Title can not be empty' : null,
+                        titleValidation ? 'Title can not be empty' : null,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: (value) {
@@ -97,7 +96,7 @@ class _CreateDialogState extends State<CreateDialog> {
                     filled: true,
                     labelText: 'Subject',
                     errorText:
-                    subjectValidation ? 'Subject can not be empty' : null,
+                        subjectValidation ? 'Subject can not be empty' : null,
                   ),
                   textCapitalization: TextCapitalization.words,
                   onChanged: (value) {
