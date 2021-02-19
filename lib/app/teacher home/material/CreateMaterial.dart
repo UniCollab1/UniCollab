@@ -14,6 +14,8 @@ class CreateMaterial extends StatefulWidget {
 
 class _CreateMaterialState extends State<CreateMaterial> {
   var title = TextEditingController(), description = TextEditingController();
+  bool tv = false;
+  bool dv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -81,8 +83,14 @@ class _CreateMaterialState extends State<CreateMaterial> {
               ),
               TextButton(
                 onPressed: () {
-                  _createMaterial();
-                  Navigator.pop(context);
+                  setState(() {
+                    title.text.isEmpty ? tv = true : tv = false;
+                    description.text.isEmpty ? dv = true : dv = false;
+                  });
+                  if (tv && dv) {
+                    _createMaterial();
+                    Navigator.pop(context);
+                  }
                 },
                 child: Icon(Icons.send),
               ),
@@ -113,6 +121,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
                                 controller: title,
                                 decoration: InputDecoration(
                                   hintText: 'Title(required)',
+                                  errorText:
+                                      tv ? 'Value Can\'t Be Empty' : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -124,6 +134,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
                                 controller: description,
                                 decoration: InputDecoration(
                                   hintText: 'Description',
+                                  errorText:
+                                      dv ? 'Value Can\'t Be Empty' : null,
                                 ),
                                 maxLines: null,
                                 minLines: null,

@@ -18,6 +18,9 @@ class _CreateAssignmentState extends State<CreateAssignment> {
       description = TextEditingController(),
       marks = TextEditingController(),
       time;
+  bool tv = false;
+  bool dv = false;
+  bool mv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -45,7 +48,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
 
   takeFile() async {
     FilePickerResult res =
-    await FilePicker.platform.pickFiles(allowMultiple: true);
+        await FilePicker.platform.pickFiles(allowMultiple: true);
 
     setState(() {
       if (res != null) {
@@ -86,6 +89,15 @@ class _CreateAssignmentState extends State<CreateAssignment> {
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  title.text.isEmpty ? tv = true : tv = false;
+                  description.text.isEmpty ? dv = true : dv = false;
+                  marks.text.isEmpty ? mv = true : mv = false;
+                });
+                if (tv && dv && mv) {
+                  _createAssignment();
+                  Navigator.pop(context);
+                }
                 _createAssignment();
                 Navigator.pop(context);
               },
@@ -114,19 +126,27 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  hintText: "Title",
+                                  errorText:
+                                      tv ? 'Value Can\'t Be Empty' : null,
+                                ),
                                 textCapitalization:
-                                TextCapitalization.sentences,
+                                    TextCapitalization.sentences,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: description,
-                                placeholder: 'Description',
+                                decoration: InputDecoration(
+                                  hintText: "Description",
+                                  errorText:
+                                      dv ? 'Value Can\'t Be Empty' : null,
+                                ),
                                 maxLines: null,
                                 minLines: null,
                                 expands: true,
@@ -134,9 +154,13 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: marks,
-                                placeholder: 'Marks',
+                                decoration: InputDecoration(
+                                  hintText: "Marks",
+                                  errorText:
+                                      mv ? 'Value Can\'t Be Empty' : null,
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -159,10 +183,10 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                     minTime: DateTime.now(),
                                     currentTime: DateTime.now(),
                                     locale: LocaleType.en, onConfirm: (date) {
-                                      setState(() {
-                                        time = date;
-                                      });
-                                    });
+                                  setState(() {
+                                    time = date;
+                                  });
+                                });
                               },
                               child: Text(
                                 (time == null)

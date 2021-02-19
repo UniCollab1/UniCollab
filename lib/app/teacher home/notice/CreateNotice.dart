@@ -14,6 +14,8 @@ class CreateNotice extends StatefulWidget {
 }
 
 class _CreateNoticeState extends State<CreateNotice> {
+  bool tv = false;
+  bool dv = false;
   var title = TextEditingController(),
       description = TextEditingController(),
       time;
@@ -81,8 +83,14 @@ class _CreateNoticeState extends State<CreateNotice> {
               ),
               TextButton(
                 onPressed: () {
-                  _createNotice();
-                  Navigator.pop(context);
+                  setState(() {
+                    title.text.isEmpty ? tv = true : tv = false;
+                    description.text.isEmpty ? dv = true : dv = false;
+                  });
+                  if (tv && dv) {
+                    _createNotice();
+                    Navigator.pop(context);
+                  }
                 },
                 child: Icon(Icons.send),
               ),
@@ -110,19 +118,27 @@ class _CreateNoticeState extends State<CreateNotice> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  hintText: "Title(required)",
+                                  errorText:
+                                      tv ? 'Value Can\'t Be Empty' : null,
+                                ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: description,
-                                placeholder: 'Description',
+                                decoration: InputDecoration(
+                                  hintText: "Description",
+                                  errorText:
+                                      dv ? 'Value Can\'t Be Empty' : null,
+                                ),
                                 maxLines: null,
                                 minLines: null,
                                 expands: true,
