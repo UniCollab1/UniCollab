@@ -7,6 +7,7 @@ import 'package:unicollab/services/firebase_auth_service.dart';
 class SignInPage extends StatelessWidget {
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
+      print('presses');
       final auth = Provider.of<FirebaseAuthService>(context, listen: false);
       await auth.signInWithGoogle();
     } catch (e) {
