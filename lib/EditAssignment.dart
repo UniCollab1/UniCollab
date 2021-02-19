@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import 'StudentsWork.dart';
 
@@ -30,6 +27,7 @@ class _EditAssignmentState extends State<EditAssignment> {
 
   @override
   void initState() {
+    super.initState();
     getData();
     getStudentWork();
     setState(() {});
@@ -144,7 +142,7 @@ class _EditAssignmentState extends State<EditAssignment> {
 
   var students_email = [];
   getStudentWork() async {
-    var students = await fireStore
+    await fireStore
         .collection('classes')
         .doc(widget.code)
         .get()

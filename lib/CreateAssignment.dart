@@ -140,7 +140,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
             Row(
               children: [
                 Text("Select Due Date"),
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     DatePicker.showDateTimePicker(context,
                         showTitleActions: true,

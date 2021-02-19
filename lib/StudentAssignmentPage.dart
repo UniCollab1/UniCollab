@@ -1,11 +1,12 @@
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:intl/intl.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -163,8 +164,7 @@ class _StudentAssignmentPageState extends State<StudentAssignmentPage> {
             }
             return '';
           })()),
-          OutlineButton(
-            highlightColor: Colors.blue,
+          OutlinedButton(
             onPressed: () async {
               result = await FilePicker.platform.pickFiles(allowMultiple: true);
               setState(() {
@@ -188,8 +188,7 @@ class _StudentAssignmentPageState extends State<StudentAssignmentPage> {
               ],
             )),
           ),
-          RaisedButton(
-            color: Colors.blue[900],
+          ElevatedButton(
             child: const Text(
               'Submit Assignment',
               style: TextStyle(

@@ -9,7 +9,6 @@ import 'package:unicollab/assignments.dart';
 import 'package:unicollab/notices.dart';
 import 'package:unicollab/resources.dart';
 
-import 'CreateAssignment.dart';
 import 'CreateNotice.dart';
 import 'EditAssignment.dart';
 
@@ -256,9 +255,6 @@ class _THomeState extends State<THome> {
             child: StreamBuilder<QuerySnapshot>(
               stream: getAssignment(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data.docs;
-                }
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: CircularProgressIndicator(

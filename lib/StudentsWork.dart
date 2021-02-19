@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class StudentsWork extends StatefulWidget {
   final String email;
@@ -34,12 +35,8 @@ class _StudentsWorkState extends State<StudentsWork> {
   getStudent() {
     var student;
     try {
-      var student_name = fireStore
-          .collection('users')
-          .doc(widget.email)
-          .get()
-          .then((value) => name =
-              value.data()['first name'] + " " + value.data()['last name']);
+      fireStore.collection('users').doc(widget.email).get().then((value) =>
+          name = value.data()['first name'] + " " + value.data()['last name']);
 
       student = fireStore
           .collection('classes')
