@@ -32,76 +32,79 @@ class _CreateDialogState extends State<CreateDialog> {
         actions: [
           Container(
             margin: EdgeInsets.all(10.0),
-            child: ElevatedButton(
+            child: IconButton(
               onPressed: () async {
                 _createClass(context);
-                /*Navigator.pop(context);
-                Navigator.push(
+                Navigator.pop(context);
+                /*Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) => TeacherHome(classRoom),
                   ),
                 );*/
               },
-              child: Text('Create'),
+              icon: Icon(Icons.send),
             ),
           ),
         ],
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Class title',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Class title',
+                  ),
+                  onChanged: (value) {
+                    title = value;
+                  },
                 ),
-                onChanged: (value) {
-                  title = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Subject',
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Subject',
+                  ),
+                  onChanged: (value) {
+                    subject = value;
+                  },
                 ),
-                onChanged: (value) {
-                  subject = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                maxLength: 5,
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Short name of subject',
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  maxLength: 5,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Short name of subject',
+                  ),
+                  onChanged: (value) {
+                    shortName = value;
+                  },
                 ),
-                onChanged: (value) {
-                  shortName = value;
-                },
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(5.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Description',
+              Container(
+                margin: EdgeInsets.all(5.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: 'Description',
+                  ),
+                  onChanged: (value) {
+                    description = value;
+                  },
                 ),
-                onChanged: (value) {
-                  description = value;
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

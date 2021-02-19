@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unicollab/app/teacher%20home/assignment/EditAssignment.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherAssignment.dart';
 import 'package:unicollab/app/teacher%20home/material/EditMaterial.dart';
 import 'package:unicollab/app/teacher%20home/material/TeacherMaterial.dart';
 import 'package:unicollab/app/teacher%20home/notice/EditNotice.dart';
 import 'package:unicollab/app/teacher%20home/notice/TeacherNotice.dart';
+import 'package:unicollab/services/firestore_service.dart';
 
 class MaterialCard extends StatelessWidget {
   MaterialCard(this.document, this.code);
@@ -38,7 +40,7 @@ class MaterialCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.book,
+              Icons.description,
               size: 40.0,
             ),
             title: Text('Material: ' + data["title"]),
@@ -46,14 +48,7 @@ class MaterialCard extends StatelessWidget {
               data["description"],
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: IconButton(
-              onPressed: () {
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) => ContextMenu(document, code, 0));
-              },
-              icon: Icon(Icons.more_vert),
-            ),
+            trailing: ContextMenu(document, code, 0),
           ),
         ),
       ),
@@ -91,7 +86,7 @@ class NoticeCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.bell,
+              Icons.announcement,
               size: 40.0,
             ),
             title: Text('Notice: ' + data["title"]),
@@ -108,14 +103,7 @@ class NoticeCard extends StatelessWidget {
                 ),
               ],
             ),
-            trailing: IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => ContextMenu(document, code, 1));
-              },
-              icon: Icon(Icons.more_vert),
-            ),
+            trailing: ContextMenu(document, code, 1),
           ),
         ),
       ),
@@ -154,7 +142,7 @@ class AssignmentCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.doc_chart,
+              Icons.assignment,
               size: 40.0,
             ),
             title: Text('Assignment: ' + data["title"]),
@@ -174,14 +162,7 @@ class AssignmentCard extends StatelessWidget {
                 ),
               ],
             ),
-            trailing: IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => ContextMenu(document, code, 2));
-              },
-              icon: Icon(Icons.more_vert),
-            ),
+            trailing: ContextMenu(document, code, 2),
           ),
         ),
       ),
@@ -206,27 +187,32 @@ class ContextMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: Text('I want to'),
-      children: [
-        ListTile(
-          leading: Icon(Icons.assignment),
-          title: Text('Edit'),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => pushTo(),
-                // fullscreenDialog: true,
-              ),
-            );
-          },
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Edit'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => pushTo(),
+                  // fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
         ),
-        ListTile(
-          leading: Icon(Icons.announcement),
-          title: Text('Delete'),
-          onTap: () {},
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Delete'),
+            onTap: () async {
+              var fireStore =
+                  Provider.of<FireStoreService>(context, listen: false);
+              await fireStore.delete(code: code, id: data.id);
+            },
+          ),
         ),
       ],
     );

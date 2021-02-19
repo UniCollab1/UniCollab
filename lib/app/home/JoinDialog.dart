@@ -76,11 +76,12 @@ class _JoinDialogState extends State<JoinDialog> {
         actions: [
           Container(
             margin: EdgeInsets.all(10.0),
-            child: ElevatedButton(
-                onPressed: () async {
-                  _joinClass();
-                },
-                child: Text('Join')),
+            child: IconButton(
+              onPressed: () async {
+                _joinClass();
+              },
+              icon: Icon(Icons.send),
+            ),
           )
         ],
       ),

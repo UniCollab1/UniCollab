@@ -88,9 +88,7 @@ class Student extends StatelessWidget {
             );
           }
           return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: LinearProgressIndicator(),
           );
         },
       ),
