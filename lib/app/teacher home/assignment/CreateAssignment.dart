@@ -18,6 +18,9 @@ class _CreateAssignmentState extends State<CreateAssignment> {
       description = TextEditingController(),
       marks = TextEditingController(),
       time;
+  bool tv = false;
+  bool dv = false;
+  bool mv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -81,6 +84,15 @@ class _CreateAssignmentState extends State<CreateAssignment> {
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  title.text.isEmpty ? tv = true : tv = false;
+                  description.text.isEmpty ? dv = true : dv = false;
+                  marks.text.isEmpty ? mv = true : mv = false;
+                });
+                if (tv && dv && mv) {
+                  _createAssignment();
+                  Navigator.pop(context);
+                }
                 _createAssignment();
                 Navigator.pop(context);
               },
@@ -113,7 +125,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: 'Title(required)',
+
+                                  hintText: "Title",
+                                  errorText:
+                                      tv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -124,7 +140,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               child: TextField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: 'Description',
+
+                                  hintText: "Description",
+                                  errorText:
+                                      dv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 maxLines: null,
                                 minLines: null,
@@ -135,8 +155,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               margin: EdgeInsets.all(10.0),
                               child: TextField(
                                 controller: marks,
-                                decoration: InputDecoration(
-                                  hintText: 'Marks',
+
+                                  hintText: "Marks",
+                                  errorText:
+                                      mv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 keyboardType: TextInputType.number,
                               ),

@@ -14,6 +14,8 @@ class CreateMaterial extends StatefulWidget {
 
 class _CreateMaterialState extends State<CreateMaterial> {
   var title = TextEditingController(), description = TextEditingController();
+  bool tv = false;
+  bool dv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -56,6 +58,41 @@ class _CreateMaterialState extends State<CreateMaterial> {
       appBar: AppBar(
         title: Text('Create a material'),
         actions: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                child: Text(
+                  'Create a Material',
+                  style: GoogleFonts.sourceSansPro(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 25.0,
+              ),
+              TextButton(
+                onPressed: () => takeFile(),
+                child: Icon(Icons.attachment),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    title.text.isEmpty ? tv = true : tv = false;
+                    description.text.isEmpty ? dv = true : dv = false;
+                  });
+                  if (tv && dv) {
+                    _createMaterial();
+                    Navigator.pop(context);
+                  }
+                },
+                child: Icon(Icons.send),
+              ),
+            ],
+
           IconButton(
             onPressed: () => takeFile(),
             icon: Icon(Icons.attachment),
@@ -66,6 +103,7 @@ class _CreateMaterialState extends State<CreateMaterial> {
               Navigator.pop(context);
             },
             icon: Icon(Icons.send),
+
           ),
         ],
       ),
@@ -92,6 +130,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
                                 controller: title,
                                 decoration: InputDecoration(
                                   hintText: 'Title(required)',
+                                  errorText:
+                                      tv ? 'Value Can\'t Be Empty' : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -103,6 +143,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
                                 controller: description,
                                 decoration: InputDecoration(
                                   hintText: 'Description',
+                                  errorText:
+                                      dv ? 'Value Can\'t Be Empty' : null,
                                 ),
                                 maxLines: null,
                                 minLines: null,
