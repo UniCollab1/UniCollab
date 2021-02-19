@@ -35,7 +35,7 @@ class _StudentHomeState extends State<StudentHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Subject'),
+        title: Text(widget.classRoom.title),
       ),
       body: Container(
         color: Colors.black12,

@@ -16,7 +16,7 @@ class StudentMaterial extends StatefulWidget {
 }
 
 class _StudentMaterialState extends State<StudentMaterial> {
-  var files, date;
+  var files, date, title, description, attachments;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -48,14 +48,28 @@ class _StudentMaterialState extends State<StudentMaterial> {
   void initState() {
     super.initState();
     files = widget.data["files"];
-    date = widget.data['created at'].toDate();
+    title = "Material";
+    print(widget.data["edited"]);
+    if (widget.data["edited"]) {
+      title += "(edited)";
+    }
+    title += ": " + widget.data["title"];
+    date = widget.data['created at'].toDate().toString();
+
+    description = "No Description.";
+    if (widget.data["description"] != null) {
+      description = widget.data["description"];
+    }
+    if (files.length == 0) {
+      attachments = "No attachments";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Material'),
+        title: title,
       ),
       body: Container(
         color: Colors.black12,

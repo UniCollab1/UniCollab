@@ -203,7 +203,7 @@ class FireStoreService {
       await fireStore
           .collection('classes')
           .doc(code)
-          .collection('notice')
+          .collection('general')
           .doc(id)
           .delete();
     } catch (e) {

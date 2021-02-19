@@ -30,12 +30,10 @@ class MaterialCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.book,
+              Icons.description,
               size: 40.0,
             ),
-            title: Text(
-                'Material${data["edited"] == true ? ("(Edited)") : ("")}: ' +
-                    data["title"]),
+            title: Text("Material: " + data["title"]),
             subtitle: Text(
               data["description"],
               overflow: TextOverflow.ellipsis,
@@ -73,12 +71,10 @@ class NoticeCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.bell,
+              Icons.announcement,
               size: 40.0,
             ),
-            title: Text(
-                'Notice${data["edited"] == true ? ("(Edited)") : ("")}: ' +
-                    data["title"]),
+            title: Text("Notice: " + data["title"]),
             isThreeLine: data["description"] != null ? true : false,
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,13 +121,11 @@ class AssignmentCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
-              CupertinoIcons.doc_chart,
+              Icons.assignment,
               size: 40.0,
             ),
             isThreeLine: data["description"] != null ? true : false,
-            title: Text(
-                'Assignment${data["edited"] == true ? ("(Edited)") : ("")}: ' +
-                    data["title"]),
+            title: Text("Assignment: " + data["title"]),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -143,7 +137,10 @@ class AssignmentCard extends StatelessWidget {
                   "Marks: " + data['marks'].toString() + " marks",
                 ),
                 Text(
-                  "Deadline: " + data['due date'].toDate().toString(),
+                  "Deadline: " +
+                      ((data['due date'] != null)
+                          ? data['due date'].toDate().toString()
+                          : "No deadline"),
                 ),
               ],
             ),
