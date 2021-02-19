@@ -70,7 +70,7 @@ class _JoinDialogState extends State<JoinDialog> {
                                 content: Text(
                                     'Looks like you are already joined the class.'),
                                 actions: [
-                                  FlatButton(
+                                  TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
@@ -92,7 +92,7 @@ class _JoinDialogState extends State<JoinDialog> {
                               content: Text(
                                   'Class with given code does not found. Try to reach you teacher for correct code.'),
                               actions: [
-                                FlatButton(
+                                TextButton(
                                   onPressed: () {
                                     setState(() {
                                       code = null;

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:unicollab/mail.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -139,14 +138,14 @@ class _LoginState extends State<Login> {
                                   content: Text(
                                       'Looks like that you are new to Unicollab. Click register to continue with our services.'),
                                   actions: [
-                                    FlatButton(
+                                    TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                         Navigator.pop(context);
                                       },
                                       child: Text('CANCEL'),
                                     ),
-                                    FlatButton(
+                                    TextButton(
                                       onPressed: () async {
                                         try {
                                           final newUser = await _auth

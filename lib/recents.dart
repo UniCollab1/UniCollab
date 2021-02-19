@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unicollab/studentSubject.dart';
 import 'package:unicollab/teacherSubject.dart';
-import 'Join.dart';
-import 'create.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 var fireStore = FirebaseFirestore.instance;
@@ -162,60 +160,6 @@ class _ListPageState extends State<ListPage> {
           }
         },
       ),
-    );
-  }
-}
-
-class RecentFloat extends StatefulWidget {
-  @override
-  _RecentFloatState createState() => _RecentFloatState();
-}
-
-class _RecentFloatState extends State<RecentFloat> {
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return SimpleDialog(
-              title: Text('I want to'),
-              children: [
-                ListTile(
-                  leading: Icon(Icons.create),
-                  title: Text('Create a class'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => CreateDialog(),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.add),
-                  title: Text('Join a class'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => JoinDialog(),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-      child: Icon(Icons.add),
     );
   }
 }

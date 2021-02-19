@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/profile.dart';
 
 class DrawerMain extends StatefulWidget {
@@ -16,7 +13,6 @@ class _DrawerMainState extends State<DrawerMain> {
   FirebaseAuth auth = FirebaseAuth.instance;
   bool mode = false;
   FirebaseStorage storage = FirebaseStorage.instance;
-  File _image;
   String imageurl =
       "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
 

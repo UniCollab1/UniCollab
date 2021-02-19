@@ -3,13 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unicollab/Drawer.dart';
-import 'package:unicollab/StudentMaterialPage.dart';
 import 'package:unicollab/notices.dart';
 import 'package:unicollab/resources.dart';
 
-import 'assignments.dart';
-
 import 'StudentAssignmentPage.dart';
+import 'assignments.dart';
 
 class StudentHome extends StatefulWidget {
   final dynamic code;
