@@ -140,7 +140,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                   filled: true,
                                   labelText: 'Marks',
                                   errorText: marksvalidation
-                                      ? 'Title can not be empty'
+                                      ? 'Marks can not be empty'
                                       : null,
                                 ),
                                 keyboardType: TextInputType.number,

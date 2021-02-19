@@ -22,7 +22,9 @@ class _TeacherViewSubmittedAssignmentState
     extends State<TeacherViewSubmittedAssignment> {
   FirebaseStorage storage = FirebaseStorage.instance;
   var grades = TextEditingController(), status, code;
-  var files, date;
+  var files, date, errormsg;
+
+  bool marksvalidation = false;
 
   @override
   void initState() {
@@ -87,7 +89,21 @@ class _TeacherViewSubmittedAssignmentState
             IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
-                _submitGrades();
+                setState(() {
+                  if (grades.text.isEmpty) {
+                    errormsg = "Marks can not be empty";
+                    marksvalidation = true;
+                  } else if (int.parse(grades.text) >
+                      (widget.data.data()['marks'])) {
+                    errormsg =
+                        'Marks Must be less equal to  ${widget.data.data()['marks']}';
+                    marksvalidation = true;
+                  }
+                });
+                if (!marksvalidation) {
+                  _submitGrades();
+                  Navigator.pop(context);
+                }
               },
             ),
           ],
@@ -116,8 +132,11 @@ class _TeacherViewSubmittedAssignmentState
                                   autofocus: true,
                                   controller: grades,
                                   decoration: InputDecoration(
-                                      labelText:
-                                          'Enter marks out of ${widget.data.data()['marks']}'),
+                                    labelText:
+                                        'Enter marks out of ${widget.data.data()['marks']}',
+                                    errorText:
+                                        marksvalidation ? errormsg : null,
+                                  ),
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
