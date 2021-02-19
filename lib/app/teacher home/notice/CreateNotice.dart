@@ -60,33 +60,16 @@ class _CreateNoticeState extends State<CreateNotice> {
       appBar: AppBar(
         title: Text("Create Notice"),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Create a notice',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(Icons.attachment_outlined),
-              ),
-              TextButton(
-                onPressed: () {
-                  _createNotice();
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.send),
-              ),
-            ],
+          TextButton(
+            onPressed: () => takeFile(),
+            child: Icon(Icons.attachment_outlined),
+          ),
+          TextButton(
+            onPressed: () {
+              _createNotice();
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.send),
           ),
         ],
       ),

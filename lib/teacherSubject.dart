@@ -42,7 +42,7 @@ class _TeacherHomeState extends State<TeacherHome> {
     return Scaffold(
       drawer: DrawerMain(),
       appBar: AppBar(
-        title: Text(widget.code["title"]),
+        title: Text(widget.code),
       ),
       floatingActionButton: TeacherFloat(widget.code),
       bottomNavigationBar: BottomNavigationBar(

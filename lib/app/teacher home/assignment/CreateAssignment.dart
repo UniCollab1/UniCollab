@@ -45,7 +45,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
 
   takeFile() async {
     FilePickerResult res =
-    await FilePicker.platform.pickFiles(allowMultiple: true);
+        await FilePicker.platform.pickFiles(allowMultiple: true);
 
     setState(() {
       if (res != null) {
@@ -114,19 +114,25 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Title',
+                                ),
                                 textCapitalization:
-                                TextCapitalization.sentences,
+                                    TextCapitalization.sentences,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: description,
-                                placeholder: 'Description',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Title',
+                                ),
                                 maxLines: null,
                                 minLines: null,
                                 expands: true,
@@ -134,9 +140,12 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: marks,
-                                placeholder: 'Marks',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Title',
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -159,10 +168,10 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                     minTime: DateTime.now(),
                                     currentTime: DateTime.now(),
                                     locale: LocaleType.en, onConfirm: (date) {
-                                      setState(() {
-                                        time = date;
-                                      });
-                                    });
+                                  setState(() {
+                                    time = date;
+                                  });
+                                });
                               },
                               child: Text(
                                 (time == null)
@@ -191,29 +200,39 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                            InputChip(
+                              label: Text(result[index - 1].name.toString()),
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(CupertinoIcons.clear_circled),
                             ),
+                            // Card(
+                            //   elevation: 0.0,
+                            //   shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(10),
+                            //   ),
+                            //   shadowColor: Colors.white,
+                            //   child: Container(
+                            //     margin: EdgeInsets.all(12.0),
+                            //     child: Text(
+                            //       adjustText(result[index - 1].name.toString()),
+                            //       overflow: TextOverflow.ellipsis,
+                            //     ),
+                            //   ),
+                            // ),
+                            // TextButton(
+                            //   onPressed: () {
+                            //     setState(() {
+                            //       print('deleted');
+                            //       result.removeAt(index - 1);
+                            //     });
+                            //   },
+                            //   child: Icon(CupertinoIcons.clear_circled),
+                            // ),
                           ],
                         ),
                       );

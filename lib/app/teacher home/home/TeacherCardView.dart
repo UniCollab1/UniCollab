@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/app/teacher%20home/assignment/TeacherAssignment.dart';
+import 'package:unicollab/app/teacher%20home/material/TeacherMaterial.dart';
+import 'package:unicollab/app/teacher%20home/notice/TeacherNotice.dart';
 
 class MaterialCard extends StatelessWidget {
   MaterialCard(this.document, this.code);
@@ -12,10 +15,10 @@ class MaterialCard extends StatelessWidget {
     return Container(
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute(builder: (_) => StudentMaterialPage(data, code)),
-          // );
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (_) => TeacherMaterial(data, code)),
+          );
         },
         onLongPress: () {
           showDialog(
@@ -64,10 +67,10 @@ class NoticeCard extends StatelessWidget {
     return Container(
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute(builder: (_) => TeacherNoticePage(data, code)),
-          // );
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (_) => TeacherNotice(document, code)),
+          );
         },
         onLongPress: () {
           showDialog(
@@ -125,10 +128,11 @@ class AssignmentCard extends StatelessWidget {
     return Container(
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute(builder: (_) => AssignmentPage(document, code)),
-          // );
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (_) => TeacherAssignment(document, code)),
+          );
         },
         onLongPress: () {
           showDialog(

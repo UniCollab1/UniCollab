@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/models/classroom.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 import 'TeacherCardView.dart';
 
 class TeacherHome extends StatefulWidget {
-  final dynamic data;
+  final ClassRoom data;
   const TeacherHome(this.data);
   @override
   _TeacherHomeState createState() => _TeacherHomeState();
@@ -19,7 +19,7 @@ class _TeacherHomeState extends State<TeacherHome> {
     var fireStore = Provider.of<FireStoreService>(context);
     var data;
     try {
-      data = fireStore.getSubjectData(code: widget.data['class code']);
+      data = fireStore.getSubjectData(code: widget.data.classCode);
     } catch (e) {
       print(e);
     }
@@ -35,9 +35,9 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   Widget cardView(DocumentSnapshot document) {
     var _cardView = [
-      MaterialCard(document, widget.data['class code']),
-      NoticeCard(document, widget.data['class code']),
-      AssignmentCard(document, widget.data['class code'])
+      MaterialCard(document, widget.data.classCode),
+      NoticeCard(document, widget.data.classCode),
+      AssignmentCard(document, widget.data.classCode)
     ];
     return _cardView[document.data()['type']];
   }
@@ -59,14 +59,19 @@ class _TeacherHomeState extends State<TeacherHome> {
                 child: CircularProgressIndicator(),
               );
             }
-            return Expanded(
-              child: ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Container(
-                    child: cardView(document),
-                  );
-                }).toList(),
-              ),
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children:
+                        snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Container(
+                        child: cardView(document),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),
