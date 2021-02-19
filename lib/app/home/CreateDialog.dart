@@ -92,7 +92,7 @@ class _CreateDialogState extends State<CreateDialog> {
                   filled: true,
                   labelText: 'Subject',
                   errorText:
-                      subjectvalidation ? 'Title can not be empty' : null,
+                      subjectvalidation ? 'Subject can not be empty' : null,
                 ),
                 onChanged: (value) {
                   subject = value;
@@ -107,8 +107,9 @@ class _CreateDialogState extends State<CreateDialog> {
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Short name of subject',
-                  errorText:
-                      shortnamevalidation ? 'Title can not be empty' : null,
+                  errorText: shortnamevalidation
+                      ? 'Short Name can not be empty'
+                      : null,
                 ),
                 onChanged: (value) {
                   shortName = value;
