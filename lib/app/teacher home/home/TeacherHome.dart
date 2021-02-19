@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/teacher%20home/material/CreateMaterial.dart';
+import 'package:unicollab/app/teacher%20home/notice/CreateNotice.dart';
+import 'package:unicollab/models/classroom.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 import 'TeacherCardView.dart';
 
 class TeacherHome extends StatefulWidget {
-  final dynamic data;
+  final ClassRoom data;
   const TeacherHome(this.data);
   @override
   _TeacherHomeState createState() => _TeacherHomeState();
@@ -19,7 +21,7 @@ class _TeacherHomeState extends State<TeacherHome> {
     var fireStore = Provider.of<FireStoreService>(context);
     var data;
     try {
-      data = fireStore.getSubjectData(code: widget.data['class code']);
+      data = fireStore.getSubjectData(code: widget.data.classCode);
     } catch (e) {
       print(e);
     }
@@ -35,9 +37,9 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   Widget cardView(DocumentSnapshot document) {
     var _cardView = [
-      MaterialCard(document, widget.data['class code']),
-      NoticeCard(document, widget.data['class code']),
-      AssignmentCard(document, widget.data['class code'])
+      MaterialCard(document, widget.data.classCode),
+      NoticeCard(document, widget.data.classCode),
+      AssignmentCard(document, widget.data.classCode)
     ];
     return _cardView[document.data()['type']];
   }
@@ -48,6 +50,7 @@ class _TeacherHomeState extends State<TeacherHome> {
       appBar: AppBar(
         title: Text("Teacher"),
       ),
+      floatingActionButton: TeacherCreate(widget.data),
       body: Container(
         color: Colors.black12,
         padding: EdgeInsets.all(5.0),
@@ -77,48 +80,66 @@ class _TeacherHomeState extends State<TeacherHome> {
 
 class TeacherCreate extends StatelessWidget {
   const TeacherCreate(this.data);
-  final dynamic data;
+  final ClassRoom data;
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: Text('I want to create a'),
-      children: [
-        ListTile(
-          leading: Icon(Icons.assignment),
-          title: Text('Assignment'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: Icon(Icons.announcement),
-          title: Text('Notice'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (BuildContext context) =>
-            //         CreateNotice(widget.code['class code']),
-            //     // fullscreenDialog: true,
-            //   ),
-            // );
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.description),
-          title: Text('Material'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   // MaterialPageRoute<void>(
-            //   //   builder: (BuildContext context) =>
-            //   //       CreateMaterial(widget.code["class code"]),
-            //   //   fullscreenDialog: true,
-            //   // ),
-            // );
-          },
-        ),
-      ],
-    );
+    return FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  title: Text('I want to create a'),
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.assignment),
+                      title: Text('Assignment'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateMaterial(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.announcement),
+                      title: Text('Notice'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateNotice(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.description),
+                      title: Text('Material'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                CreateMaterial(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              });
+        });
   }
 }

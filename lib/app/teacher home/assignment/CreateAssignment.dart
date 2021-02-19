@@ -62,13 +62,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        leading: CupertinoNavigationBarBackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailing: Row(
+      appBar: AppBar(actions: [
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
@@ -85,7 +80,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
             ),
             TextButton(
               onPressed: () => takeFile(),
-              child: Icon(CupertinoIcons.paperclip),
+              child: Icon(Icons.attachment),
             ),
             TextButton(
               onPressed: () {
@@ -101,11 +96,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                 _createAssignment();
                 Navigator.pop(context);
               },
-              child: Icon(CupertinoIcons.paperplane),
+              child: Icon(Icons.send),
             ),
           ],
         ),
-      ),
+      ]),
       body: Container(
         color: Colors.black12,
         child: Column(
@@ -130,9 +125,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
+
                                   hintText: "Title",
                                   errorText:
                                       tv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -143,9 +140,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               child: TextField(
                                 controller: description,
                                 decoration: InputDecoration(
+
                                   hintText: "Description",
                                   errorText:
                                       dv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 maxLines: null,
                                 minLines: null,
@@ -156,10 +155,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               margin: EdgeInsets.all(10.0),
                               child: TextField(
                                 controller: marks,
-                                decoration: InputDecoration(
+
                                   hintText: "Marks",
                                   errorText:
                                       mv ? 'Value Can\'t Be Empty' : null,
+
                                 ),
                                 keyboardType: TextInputType.number,
                               ),

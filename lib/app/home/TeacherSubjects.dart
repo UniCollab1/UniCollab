@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/teacher%20home/home/TeacherHome.dart';
 import 'package:unicollab/models/classroom.dart';
 import 'package:unicollab/services/firestore_service.dart';
-import 'package:unicollab/teacherSubject.dart';
 
 class Teacher extends StatelessWidget {
   @override

@@ -7,7 +7,7 @@ import 'package:unicollab/services/firestore_service.dart';
 
 class CreateMaterial extends StatefulWidget {
   const CreateMaterial(this.data);
-  final dynamic data;
+  final String data;
   @override
   _CreateMaterialState createState() => _CreateMaterialState();
 }
@@ -29,7 +29,7 @@ class _CreateMaterialState extends State<CreateMaterial> {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     try {
       await fireStore.create(
-          code: widget.data['class code'],
+          code: widget.data,
           title: title.text,
           description: description.text,
           type: 0,
@@ -56,12 +56,9 @@ class _CreateMaterialState extends State<CreateMaterial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: Text('Create a material'),
         actions: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -95,6 +92,18 @@ class _CreateMaterialState extends State<CreateMaterial> {
                 child: Icon(Icons.send),
               ),
             ],
+
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment),
+          ),
+          IconButton(
+            onPressed: () {
+              _createMaterial();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
+
           ),
         ],
       ),
