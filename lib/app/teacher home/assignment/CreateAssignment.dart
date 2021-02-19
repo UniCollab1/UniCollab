@@ -18,6 +18,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
       description = TextEditingController(),
       marks = TextEditingController(),
       time;
+  bool titlevalidation = false;
+  bool marksvalidation = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -68,8 +70,19 @@ class _CreateAssignmentState extends State<CreateAssignment> {
           ),
           IconButton(
             onPressed: () {
-              _createAssignment();
-              Navigator.pop(context);
+              setState(() {
+                title.text.isEmpty
+                    ? titlevalidation = true
+                    : titlevalidation = false;
+
+                marks.text.isEmpty
+                    ? marksvalidation = true
+                    : marksvalidation = false;
+              });
+              if (title.text.isNotEmpty && marks.text.isNotEmpty) {
+                _createAssignment();
+                Navigator.pop(context);
+              }
             },
             icon: Icon(Icons.send),
           ),
@@ -100,7 +113,10 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                 controller: title,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  labelText: 'Title(required)',
+                                  labelText: 'Title',
+                                  errorText: titlevalidation
+                                      ? 'Title can not be empty'
+                                      : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -123,6 +139,9 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                 decoration: InputDecoration(
                                   filled: true,
                                   labelText: 'Marks',
+                                  errorText: marksvalidation
+                                      ? 'Title can not be empty'
+                                      : null,
                                 ),
                                 keyboardType: TextInputType.number,
                               ),

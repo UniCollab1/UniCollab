@@ -23,6 +23,13 @@ class _CreateDialogState extends State<CreateDialog> {
     }
   }
 
+  bool titlevalidation = false,
+      subjectvalidation = false,
+      shortnamevalidation = false;
+  String errormsg;
+  var tcon = TextEditingController(),
+      scon = TextEditingController(),
+      sscon = TextEditingController();
   String title, subject, shortName, description;
   @override
   Widget build(BuildContext context) {
@@ -34,14 +41,25 @@ class _CreateDialogState extends State<CreateDialog> {
             margin: EdgeInsets.all(10.0),
             child: ElevatedButton(
               onPressed: () async {
-                _createClass(context);
-                /*Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => TeacherHome(classRoom),
-                  ),
-                );*/
+                setState(() {
+                  tcon.text.isEmpty
+                      ? titlevalidation = true
+                      : titlevalidation = false;
+                  scon.text.isEmpty
+                      ? subjectvalidation = true
+                      : subjectvalidation = false;
+                  sscon.text.isEmpty
+                      ? shortnamevalidation = true
+                      : shortnamevalidation = false;
+                });
+
+                if (tcon.text.isNotEmpty &&
+                    scon.text.isNotEmpty &&
+                    sscon.text.isNotEmpty &&
+                    sscon.text.length <= 5) {
+                  _createClass(context);
+                  Navigator.pop(context);
+                }
               },
               child: Text('Create'),
             ),
@@ -55,9 +73,11 @@ class _CreateDialogState extends State<CreateDialog> {
             Container(
               margin: EdgeInsets.all(5.0),
               child: TextFormField(
+                controller: tcon,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Class title',
+                  errorText: titlevalidation ? 'Title can not be empty' : null,
                 ),
                 onChanged: (value) {
                   title = value;
@@ -67,9 +87,12 @@ class _CreateDialogState extends State<CreateDialog> {
             Container(
               margin: EdgeInsets.all(5.0),
               child: TextFormField(
+                controller: scon,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Subject',
+                  errorText:
+                      subjectvalidation ? 'Title can not be empty' : null,
                 ),
                 onChanged: (value) {
                   subject = value;
@@ -80,9 +103,12 @@ class _CreateDialogState extends State<CreateDialog> {
               margin: EdgeInsets.all(5.0),
               child: TextFormField(
                 maxLength: 5,
+                controller: sscon,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Short name of subject',
+                  errorText:
+                      shortnamevalidation ? 'Title can not be empty' : null,
                 ),
                 onChanged: (value) {
                   shortName = value;

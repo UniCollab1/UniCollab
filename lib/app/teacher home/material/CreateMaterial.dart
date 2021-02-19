@@ -15,7 +15,6 @@ class CreateMaterial extends StatefulWidget {
 class _CreateMaterialState extends State<CreateMaterial> {
   var title = TextEditingController(), description = TextEditingController();
   bool tv = false;
-  bool dv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -64,8 +63,14 @@ class _CreateMaterialState extends State<CreateMaterial> {
           ),
           IconButton(
             onPressed: () {
-              _createMaterial();
-              Navigator.pop(context);
+              setState(() {
+                title.text.isEmpty ? tv = true : tv = false;
+              });
+              if (title.text.isNotEmpty) {
+                print(title.text.isEmpty);
+                _createMaterial();
+                Navigator.pop(context);
+              }
             },
             icon: Icon(Icons.send),
           ),
