@@ -8,7 +8,7 @@ import 'package:unicollab/services/firestore_service.dart';
 
 class CreateAssignment extends StatefulWidget {
   const CreateAssignment(this.data);
-  final dynamic data;
+  final String data;
   @override
   _CreateAssignmentState createState() => _CreateAssignmentState();
 }
@@ -18,9 +18,6 @@ class _CreateAssignmentState extends State<CreateAssignment> {
       description = TextEditingController(),
       marks = TextEditingController(),
       time;
-  bool tv = false;
-  bool dv = false;
-  bool mv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -34,7 +31,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     try {
       await fireStore.create(
-          code: widget.data['class code'],
+          code: widget.data,
           title: title.text,
           description: description.text,
           marks: int.parse(marks.text),
@@ -62,45 +59,22 @@ class _CreateAssignmentState extends State<CreateAssignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              child: Text(
-                'Create a Assignment',
-                style: GoogleFonts.sourceSansPro(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 25.0,
-            ),
-            TextButton(
-              onPressed: () => takeFile(),
-              child: Icon(Icons.attachment),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  title.text.isEmpty ? tv = true : tv = false;
-                  description.text.isEmpty ? dv = true : dv = false;
-                  marks.text.isEmpty ? mv = true : mv = false;
-                });
-                if (tv && dv && mv) {
-                  _createAssignment();
-                  Navigator.pop(context);
-                }
-                _createAssignment();
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.send),
-            ),
-          ],
-        ),
-      ]),
+      appBar: AppBar(
+        title: Text('Create a assignment'),
+        actions: [
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _createAssignment();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
+          ),
+        ],
+      ),
       body: Container(
         color: Colors.black12,
         child: Column(
@@ -121,15 +95,12 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-
-                                  hintText: "Title",
-                                  errorText:
-                                      tv ? 'Value Can\'t Be Empty' : null,
-
+                                  filled: true,
+                                  labelText: 'Title(required)',
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -137,29 +108,21 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-
-                                  hintText: "Description",
-                                  errorText:
-                                      dv ? 'Value Can\'t Be Empty' : null,
-
+                                  filled: true,
+                                  labelText: 'Description',
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: marks,
-
-                                  hintText: "Marks",
-                                  errorText:
-                                      mv ? 'Value Can\'t Be Empty' : null,
-
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Marks',
                                 ),
                                 keyboardType: TextInputType.number,
                               ),
@@ -215,28 +178,18 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].name.toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(CupertinoIcons.clear_circled),
                             ),
                           ],
                         ),

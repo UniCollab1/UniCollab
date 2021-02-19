@@ -27,15 +27,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Your Profile'),
-          actions: [
-            TextButton(
-              onPressed: () => _signOut(context),
-              child: Icon(
-                CupertinoIcons.square_arrow_left,
-                color: Colors.red,
-              ),
-            ),
-          ],
         ),
         body: Container(
           color: Colors.black12,

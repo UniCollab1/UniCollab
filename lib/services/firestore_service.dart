@@ -32,14 +32,9 @@ class FireStoreService {
         (event) => event.docs.map((e) => ClassRoom.fromMap(e.data())).toList());
   }
 
-  Future<DocumentSnapshot> getClass({@required String code}) async {
-    var data;
-    try {
-      data = await fireStore.collection('classes').doc(code).get();
-    } catch (e) {
-      print(e);
-    }
-    return data;
+  Future<ClassRoom> getClass({@required String code}) async {
+    var classRoom = await fireStore.collection('classes').doc(code).get();
+    return ClassRoom.fromMap(classRoom.data());
   }
 
   Future<void> addUserToFireStore() async {
@@ -52,7 +47,7 @@ class FireStoreService {
     }
   }
 
-  Future<void> addNewClass(
+  Future<ClassRoom> addNewClass(
       {@required String title,
       @required String subject,
       @required String shortName,
@@ -88,16 +83,19 @@ class FireStoreService {
     await fireStore.collection('users').doc(email).update({
       'teacher of': [code]
     }).then((value) => print("Users successfully updated!"));
+
+    var classRoom = await fireStore.collection('classes').doc(code).get();
+    return ClassRoom.fromMap(classRoom.data());
   }
 
   Future<void> create(
       {@required String code,
       @required String title,
-      @required String description,
-      @required DateTime dueDate,
+      String description,
+      DateTime dueDate,
       @required int type,
-      @required int marks,
-      @required List<PlatformFile> files}) async {
+      int marks,
+      List<PlatformFile> files}) async {
     var id;
     try {
       await fireStore
@@ -163,11 +161,11 @@ class FireStoreService {
       @required String id,
       @required String title,
       @required int type,
-      @required String description,
-      @required int marks,
-      @required DateTime dueDate,
-      @required List<PlatformFile> files,
-      @required List<String> temp}) async {
+      String description,
+      int marks,
+      DateTime dueDate,
+      List<PlatformFile> files,
+      List<String> temp}) async {
     try {
       await fireStore
           .collection('classes')
@@ -186,7 +184,6 @@ class FireStoreService {
         'created at': DateTime.now(),
       });
     } catch (e) {
-      print('lol');
       print(e);
     }
     files.forEach((element) async {

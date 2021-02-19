@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class TeacherNoticePage extends StatefulWidget {
-  TeacherNoticePage(this.data, this.code);
-  final dynamic data;
+class TeacherNotice extends StatefulWidget {
+  final DocumentSnapshot document;
   final String code;
+  const TeacherNotice(this.document, this.code);
   @override
-  _TeacherNoticePageState createState() => _TeacherNoticePageState();
+  _TeacherNoticeState createState() => _TeacherNoticeState();
 }
 
-class _TeacherNoticePageState extends State<TeacherNoticePage> {
-  var files, date;
+class _TeacherNoticeState extends State<TeacherNotice> {
+  var files, date, data;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -47,15 +48,16 @@ class _TeacherNoticePageState extends State<TeacherNoticePage> {
   @override
   void initState() {
     super.initState();
-    files = widget.data["files"];
-    date = widget.data["created at"].toDate().toString();
+    data = widget.document.data();
+    files = data["files"];
+    date = data['created at'].toDate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notice: ${widget.data['title']}'),
+        title: Text('Notice'),
       ),
       body: Container(
         color: Colors.black12,
@@ -77,7 +79,7 @@ class _TeacherNoticePageState extends State<TeacherNoticePage> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              widget.data["edited"] == true
+                              data["edited"] == true
                                   ? ("Edited at:")
                                   : ("Created at:"),
                               style: GoogleFonts.sourceSansPro(
@@ -109,7 +111,7 @@ class _TeacherNoticePageState extends State<TeacherNoticePage> {
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              widget.data["description"].toString(),
+                              data["description"].toString(),
                             ),
                           ),
                           Container(
@@ -127,7 +129,7 @@ class _TeacherNoticePageState extends State<TeacherNoticePage> {
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              widget.data["due date"].toDate().toString(),
+                              data["due date"].toDate().toString(),
                             ),
                           ),
                           Container(
@@ -150,24 +152,14 @@ class _TeacherNoticePageState extends State<TeacherNoticePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
+                          InputChip(
+                            backgroundColor: Colors.white,
+                            label: Text(
+                              adjustText(files[index - 1].toString()),
+                            ),
+                            onPressed: () {
                               openFile(index - 1);
                             },
-                            child: Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(files[index - 1].toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
                           ),
                         ],
                       ),

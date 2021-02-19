@@ -80,34 +80,20 @@ class _EditNoticeState extends State<EditNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Edit a notice',
+        ),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Edit a Material',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(CupertinoIcons.paperclip),
-              ),
-              TextButton(
-                onPressed: () {
-                  _editNotice();
-                  Navigator.pop(context);
-                },
-                child: Icon(CupertinoIcons.paperplane),
-              ),
-            ],
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _editNotice();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
           ),
         ],
       ),
@@ -131,25 +117,24 @@ class _EditNoticeState extends State<EditNotice> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: "Tilte(required)",
+                                  filled: true,
+                                  labelText: "Title(required)",
                                 ),
                                 textCapitalization: TextCapitalization.words,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: "Description",
+                                  filled: true,
+                                  labelText: "Description",
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
@@ -203,27 +188,18 @@ class _EditNoticeState extends State<EditNotice> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].toString()),
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(CupertinoIcons.clear_circled),
                             ),
                           ],
                         ),

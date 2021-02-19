@@ -1,20 +1,21 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class TeacherMaterialPage extends StatefulWidget {
+class TeacherMaterial extends StatefulWidget {
   final dynamic data;
   final String code;
-  const TeacherMaterialPage(this.data, this.code);
+  const TeacherMaterial(this.data, this.code);
   @override
-  _TeacherMaterialPageState createState() => _TeacherMaterialPageState();
+  _TeacherMaterialState createState() => _TeacherMaterialState();
 }
 
-class _TeacherMaterialPageState extends State<TeacherMaterialPage> {
+class _TeacherMaterialState extends State<TeacherMaterial> {
   var files, date;
   FirebaseStorage storage = FirebaseStorage.instance;
 
@@ -47,14 +48,14 @@ class _TeacherMaterialPageState extends State<TeacherMaterialPage> {
   void initState() {
     super.initState();
     files = widget.data["files"];
-    date = widget.data['created at'].toDate().toString();
+    date = widget.data['created at'].toDate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Material: ${widget.data['title']}'),
+        title: Text('Material'),
       ),
       body: Container(
         color: Colors.black12,
@@ -131,24 +132,14 @@ class _TeacherMaterialPageState extends State<TeacherMaterialPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
+                          InputChip(
+                            backgroundColor: Colors.white,
+                            label: Text(
+                              adjustText(files[index - 1].toString()),
+                            ),
+                            onPressed: () {
                               openFile(index - 1);
                             },
-                            child: Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(files[index - 1].toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
                           ),
                         ],
                       ),

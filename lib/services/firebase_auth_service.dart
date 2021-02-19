@@ -27,8 +27,6 @@ class FirebaseAuthService {
     } catch (e) {
       print(e);
     }
-    print(user);
-    print('is user');
     return user;
   }
 

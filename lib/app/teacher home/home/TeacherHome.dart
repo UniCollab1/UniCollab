@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/teacher%20home/assignment/CreateAssignment.dart';
 import 'package:unicollab/app/teacher%20home/material/CreateMaterial.dart';
 import 'package:unicollab/app/teacher%20home/notice/CreateNotice.dart';
 import 'package:unicollab/models/classroom.dart';
@@ -53,23 +54,25 @@ class _TeacherHomeState extends State<TeacherHome> {
       floatingActionButton: TeacherCreate(widget.data),
       body: Container(
         color: Colors.black12,
-        padding: EdgeInsets.all(5.0),
         child: StreamBuilder<QuerySnapshot>(
           stream: _getData(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return LinearProgressIndicator();
             }
-            return Expanded(
-              child: ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Container(
-                    child: cardView(document),
-                  );
-                }).toList(),
-              ),
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children:
+                        snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Container(
+                        child: cardView(document),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),
@@ -101,7 +104,7 @@ class TeacherCreate extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                CreateMaterial(data.classCode),
+                                CreateAssignment(data.classCode),
                             fullscreenDialog: true,
                           ),
                         );

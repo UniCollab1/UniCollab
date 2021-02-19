@@ -5,15 +5,17 @@ import 'package:provider/provider.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherViewSubmittedAssignment.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
-class SubmittedAssignment extends StatefulWidget {
+class TeacherSubmittedAssignment extends StatefulWidget {
   final DocumentSnapshot document;
   final String code;
-  const SubmittedAssignment(this.document, this.code);
+  const TeacherSubmittedAssignment(this.document, this.code);
   @override
-  _SubmittedAssignmentState createState() => _SubmittedAssignmentState();
+  _TeacherSubmittedAssignmentState createState() =>
+      _TeacherSubmittedAssignmentState();
 }
 
-class _SubmittedAssignmentState extends State<SubmittedAssignment> {
+class _TeacherSubmittedAssignmentState
+    extends State<TeacherSubmittedAssignment> {
   _getData() {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     return fireStore.getStudentSubmission(
@@ -38,44 +40,50 @@ class _SubmittedAssignmentState extends State<SubmittedAssignment> {
                 child: CupertinoActivityIndicator(),
               );
             }
-            return Expanded(
-              child: ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  var data = document.data();
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (_) => ViewSubmittedAssignment(
-                                  widget.document, document),
-                              fullscreenDialog: true),
-                        );
-                      },
-                      child: Card(
-                        elevation: 0.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        shadowColor: Colors.white,
-                        clipBehavior: Clip.antiAlias,
-                        child: ListTile(
-                          leading: Icon(
-                            CupertinoIcons.person_alt_circle,
-                            size: 40.0,
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children:
+                        snapshot.data.docs.map((DocumentSnapshot document) {
+                      var data = document.data();
+                      return Container(
+                        margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (_) =>
+                                      TeacherViewSubmittedAssignment(
+                                          widget.document, document),
+                                  fullscreenDialog: true),
+                            );
+                          },
+                          child: Card(
+                            elevation: 0.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            shadowColor: Colors.white,
+                            clipBehavior: Clip.antiAlias,
+                            child: ListTile(
+                              leading: Icon(
+                                CupertinoIcons.person_alt_circle,
+                                size: 40.0,
+                              ),
+                              title: Text(document.id.toString()),
+                              subtitle: Text(
+                                "Status: " + data['status'],
+                              ),
+                            ),
                           ),
-                          title: Text(document.id.toString()),
-                          subtitle: Text(
-                            "Submitted: " + data['status'],
-                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),

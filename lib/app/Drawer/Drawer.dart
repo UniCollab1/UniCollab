@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unicollab/profile.dart';
+import 'package:unicollab/services/firebase_auth_service.dart';
 
 class DrawerMain extends StatefulWidget {
   @override
@@ -10,48 +10,18 @@ class DrawerMain extends StatefulWidget {
 }
 
 class _DrawerMainState extends State<DrawerMain> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  bool mode = false;
-  FirebaseStorage storage = FirebaseStorage.instance;
-  String imageurl =
-      "https://firebasestorage.googleapis.com/v0/b/collab-627c8.appspot.com/o/images%2Fdownload.jpg?alt=media&token=a4f8c09d-af58-45f2-a34c-5c05eb007334";
-
-  void initState() {
-    super.initState();
-    setState(() {
-      getimageurl();
-      //getImage();
-    });
-  }
-
   Future<void> signOut() async {
-    await auth.signOut();
-  }
-
-  // void getImage() async {
-  //   Directory appDocDir = await getApplicationDocumentsDirectory();
-  //   _image = File(appDocDir.path + '/' + auth.currentUser.email);
-  //   setState(() {});
-  // }
-
-  getimageurl() async {
-    String url;
     try {
-      url = await storage
-          .ref('images/' + auth.currentUser.email)
-          .getDownloadURL();
-      print("in get image url found");
+      var auth = Provider.of<FirebaseAuthService>(context, listen: false);
+      await auth.signOut();
     } catch (e) {
-      print("notfound");
-      url = await storage.ref('images/download.png').getDownloadURL();
+      print(e);
     }
-    setState(() {
-      imageurl = url;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<User>(context, listen: false);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -63,20 +33,22 @@ class _DrawerMainState extends State<DrawerMain> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 35.0,
-                    backgroundImage: CachedNetworkImageProvider(imageurl),
+                    radius: 40,
+                    backgroundImage: user.photoURL != null
+                        ? NetworkImage(user.photoURL)
+                        : null,
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    'someone',
+                    user.displayName,
                   ),
                   SizedBox(
                     height: 5,
                   ),
                   Text(
-                    auth.currentUser.email,
+                    user.email,
                   ),
                 ],
               ),

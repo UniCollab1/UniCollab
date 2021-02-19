@@ -32,7 +32,7 @@ class _EditAssignmentState extends State<EditAssignment> {
     id = widget.data.id;
     time = data['due date'].toDate();
     title.text = data['title'];
-    marks.text = data['marks'];
+    marks.text = data['marks'].toString();
     description.text = data['description'];
     data['files'].forEach((element) {
       result.add(element.toString());
@@ -82,40 +82,21 @@ class _EditAssignmentState extends State<EditAssignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        leading: CupertinoNavigationBarBackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailing: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              child: Text(
-                'Edit a Material',
-                style: GoogleFonts.sourceSansPro(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 25.0,
-            ),
-            TextButton(
-              onPressed: () => takeFile(),
-              child: Icon(CupertinoIcons.paperclip),
-            ),
-            TextButton(
-              onPressed: () {
-                _editAssignment();
-                Navigator.pop(context);
-              },
-              child: Icon(CupertinoIcons.paperplane),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text('Edit a assignment'),
+        actions: [
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _editAssignment();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
+          ),
+        ],
       ),
       body: Container(
         color: Colors.black12,
@@ -137,28 +118,34 @@ class _EditAssignmentState extends State<EditAssignment> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Title(required)',
+                                ),
                                 textCapitalization: TextCapitalization.words,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: description,
-                                placeholder: 'Description',
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Description',
+                                ),
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: marks,
-                                placeholder: 'Marks',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Marks',
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -213,27 +200,18 @@ class _EditAssignmentState extends State<EditAssignment> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].toString()),
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(CupertinoIcons.clear_circled),
                             ),
                           ],
                         ),

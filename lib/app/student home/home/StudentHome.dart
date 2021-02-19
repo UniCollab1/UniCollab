@@ -39,16 +39,13 @@ class _StudentHomeState extends State<StudentHome> {
       ),
       body: Container(
         color: Colors.black12,
-        padding: EdgeInsets.all(5.0),
         child: Column(
           children: [
             StreamBuilder<QuerySnapshot>(
               stream: getData(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CupertinoActivityIndicator(),
-                  );
+                  return LinearProgressIndicator();
                 } else {
                   return Flexible(
                     child: ListView(

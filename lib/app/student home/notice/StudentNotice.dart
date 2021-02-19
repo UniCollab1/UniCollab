@@ -152,24 +152,14 @@ class _StudentNoticeState extends State<StudentNotice> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
+                          InputChip(
+                            backgroundColor: Colors.white,
+                            label: Text(
+                              adjustText(files[index - 1].toString()),
+                            ),
+                            onPressed: () {
                               openFile(index - 1);
                             },
-                            child: Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(files[index - 1].toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
                           ),
                         ],
                       ),

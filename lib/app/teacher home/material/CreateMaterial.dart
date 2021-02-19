@@ -58,44 +58,9 @@ class _CreateMaterialState extends State<CreateMaterial> {
       appBar: AppBar(
         title: Text('Create a material'),
         actions: [
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Create a Material',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(Icons.attachment),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    title.text.isEmpty ? tv = true : tv = false;
-                    description.text.isEmpty ? dv = true : dv = false;
-                  });
-                  if (tv && dv) {
-                    _createMaterial();
-                    Navigator.pop(context);
-                  }
-                },
-                child: Icon(Icons.send),
-              ),
-            ],
-
           IconButton(
             onPressed: () => takeFile(),
-            icon: Icon(Icons.attachment),
+            icon: Icon(Icons.attachment_outlined),
           ),
           IconButton(
             onPressed: () {
@@ -103,7 +68,6 @@ class _CreateMaterialState extends State<CreateMaterial> {
               Navigator.pop(context);
             },
             icon: Icon(Icons.send),
-
           ),
         ],
       ),
@@ -125,13 +89,14 @@ class _CreateMaterialState extends State<CreateMaterial> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: 'Title(required)',
+                                  filled: true,
+                                  labelText: 'Title(required)',
                                   errorText:
-                                      tv ? 'Value Can\'t Be Empty' : null,
+                                      tv ? 'Title can not be empty' : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -139,16 +104,12 @@ class _CreateMaterialState extends State<CreateMaterial> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: 'Description',
-                                  errorText:
-                                      dv ? 'Value Can\'t Be Empty' : null,
+                                  filled: true,
+                                  labelText: 'Description',
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
@@ -171,28 +132,18 @@ class _CreateMaterialState extends State<CreateMaterial> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].name.toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(Icons.highlight_off),
                             ),
                           ],
                         ),

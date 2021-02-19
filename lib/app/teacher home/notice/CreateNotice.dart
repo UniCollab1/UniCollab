@@ -8,14 +8,12 @@ import 'package:unicollab/services/firestore_service.dart';
 
 class CreateNotice extends StatefulWidget {
   const CreateNotice(this.data);
-  final dynamic data;
+  final String data;
   @override
   _CreateNoticeState createState() => _CreateNoticeState();
 }
 
 class _CreateNoticeState extends State<CreateNotice> {
-  bool tv = false;
-  bool dv = false;
   var title = TextEditingController(),
       description = TextEditingController(),
       time;
@@ -32,7 +30,7 @@ class _CreateNoticeState extends State<CreateNotice> {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     try {
       await fireStore.create(
-          code: widget.data['class code'],
+          code: widget.data,
           title: title.text,
           description: description.text,
           type: 1,
@@ -60,41 +58,18 @@ class _CreateNoticeState extends State<CreateNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Notice"),
+        title: Text("Create a notice"),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Create a notice',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(Icons.attachment_outlined),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    title.text.isEmpty ? tv = true : tv = false;
-                    description.text.isEmpty ? dv = true : dv = false;
-                  });
-                  if (tv && dv) {
-                    _createNotice();
-                    Navigator.pop(context);
-                  }
-                },
-                child: Icon(Icons.send),
-              ),
-            ],
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _createNotice();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
           ),
         ],
       ),
@@ -118,13 +93,12 @@ class _CreateNoticeState extends State<CreateNotice> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: "Title(required)",
-                                  errorText:
-                                      tv ? 'Value Can\'t Be Empty' : null,
+                                  filled: true,
+                                  labelText: 'Title(required)',
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -132,16 +106,12 @@ class _CreateNoticeState extends State<CreateNotice> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: "Description",
-                                  errorText:
-                                      dv ? 'Value Can\'t Be Empty' : null,
+                                  filled: true,
+                                  labelText: 'Description',
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
@@ -195,28 +165,17 @@ class _CreateNoticeState extends State<CreateNotice> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].name.toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(Icons.highlight_off_outlined),
                             ),
                           ],
                         ),
