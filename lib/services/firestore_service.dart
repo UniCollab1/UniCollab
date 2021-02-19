@@ -45,7 +45,7 @@ class FireStoreService {
   Future<void> addUserToFireStore() async {
     var result = await fireStore.collection('users').doc(email).get();
     if (!result.exists) {
-      await fireStore.collection('users').doc(email).update({
+      await fireStore.collection('users').doc(email).set({
         'teacher of': [],
         'student of': [],
       });

@@ -45,7 +45,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
 
   takeFile() async {
     FilePickerResult res =
-    await FilePicker.platform.pickFiles(allowMultiple: true);
+        await FilePicker.platform.pickFiles(allowMultiple: true);
 
     setState(() {
       if (res != null) {
@@ -59,13 +59,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        leading: CupertinoNavigationBarBackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        trailing: Row(
+      appBar: AppBar(actions: [
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
@@ -82,18 +77,18 @@ class _CreateAssignmentState extends State<CreateAssignment> {
             ),
             TextButton(
               onPressed: () => takeFile(),
-              child: Icon(CupertinoIcons.paperclip),
+              child: Icon(Icons.attachment),
             ),
             TextButton(
               onPressed: () {
                 _createAssignment();
                 Navigator.pop(context);
               },
-              child: Icon(CupertinoIcons.paperplane),
+              child: Icon(Icons.send),
             ),
           ],
         ),
-      ),
+      ]),
       body: Container(
         color: Colors.black12,
         child: Column(
@@ -114,19 +109,23 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  hintText: 'Title(required)',
+                                ),
                                 textCapitalization:
-                                TextCapitalization.sentences,
+                                    TextCapitalization.sentences,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: description,
-                                placeholder: 'Description',
+                                decoration: InputDecoration(
+                                  hintText: 'Description',
+                                ),
                                 maxLines: null,
                                 minLines: null,
                                 expands: true,
@@ -134,9 +133,11 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextField(
                                 controller: marks,
-                                placeholder: 'Marks',
+                                decoration: InputDecoration(
+                                  hintText: 'Marks',
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -159,10 +160,10 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                                     minTime: DateTime.now(),
                                     currentTime: DateTime.now(),
                                     locale: LocaleType.en, onConfirm: (date) {
-                                      setState(() {
-                                        time = date;
-                                      });
-                                    });
+                                  setState(() {
+                                    time = date;
+                                  });
+                                });
                               },
                               child: Text(
                                 (time == null)
