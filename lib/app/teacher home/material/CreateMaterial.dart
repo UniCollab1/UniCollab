@@ -7,13 +7,15 @@ import 'package:unicollab/services/firestore_service.dart';
 
 class CreateMaterial extends StatefulWidget {
   const CreateMaterial(this.data);
-  final dynamic data;
+  final String data;
   @override
   _CreateMaterialState createState() => _CreateMaterialState();
 }
 
 class _CreateMaterialState extends State<CreateMaterial> {
   var title = TextEditingController(), description = TextEditingController();
+  bool tv = false;
+  bool dv = false;
   List<PlatformFile> result = [];
 
   adjustText(String text) {
@@ -27,7 +29,7 @@ class _CreateMaterialState extends State<CreateMaterial> {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     try {
       await fireStore.create(
-          code: widget.data['class code'],
+          code: widget.data,
           title: title.text,
           description: description.text,
           type: 0,
@@ -54,39 +56,18 @@ class _CreateMaterialState extends State<CreateMaterial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: Text('Create a material'),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Create a Material',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(Icons.attachment),
-              ),
-              TextButton(
-                onPressed: () {
-                  _createMaterial();
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.send),
-              ),
-            ],
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _createMaterial();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
           ),
         ],
       ),
@@ -108,11 +89,14 @@ class _CreateMaterialState extends State<CreateMaterial> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: 'Title(required)',
+                                  filled: true,
+                                  labelText: 'Title(required)',
+                                  errorText:
+                                      tv ? 'Title can not be empty' : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
@@ -120,14 +104,12 @@ class _CreateMaterialState extends State<CreateMaterial> {
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: 'Description',
+                                  filled: true,
+                                  labelText: 'Description',
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
@@ -150,28 +132,18 @@ class _CreateMaterialState extends State<CreateMaterial> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].name.toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(Icons.highlight_off),
                             ),
                           ],
                         ),

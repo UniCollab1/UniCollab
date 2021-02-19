@@ -184,7 +184,6 @@ class FireStoreService {
         'created at': DateTime.now(),
       });
     } catch (e) {
-      print('lol');
       print(e);
     }
     files.forEach((element) async {

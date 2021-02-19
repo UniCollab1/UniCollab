@@ -8,7 +8,7 @@ import 'package:unicollab/services/firestore_service.dart';
 
 class CreateNotice extends StatefulWidget {
   const CreateNotice(this.data);
-  final dynamic data;
+  final String data;
   @override
   _CreateNoticeState createState() => _CreateNoticeState();
 }
@@ -30,7 +30,7 @@ class _CreateNoticeState extends State<CreateNotice> {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
     try {
       await fireStore.create(
-          code: widget.data['class code'],
+          code: widget.data,
           title: title.text,
           description: description.text,
           type: 1,
@@ -58,18 +58,18 @@ class _CreateNoticeState extends State<CreateNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Notice"),
+        title: Text("Create a notice"),
         actions: [
-          TextButton(
+          IconButton(
             onPressed: () => takeFile(),
-            child: Icon(Icons.attachment_outlined),
+            icon: Icon(Icons.attachment_outlined),
           ),
-          TextButton(
+          IconButton(
             onPressed: () {
               _createNotice();
               Navigator.pop(context);
             },
-            child: Icon(Icons.send),
+            icon: Icon(Icons.send),
           ),
         ],
       ),
@@ -93,22 +93,25 @@ class _CreateNoticeState extends State<CreateNotice> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
-                                placeholder: 'Title(required)',
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Title(required)',
+                                ),
                                 textCapitalization:
                                     TextCapitalization.sentences,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: CupertinoTextField(
+                              child: TextFormField(
                                 controller: description,
-                                placeholder: 'Description',
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  labelText: 'Description',
+                                ),
                               ),
                             ),
                             Container(
@@ -162,28 +165,17 @@ class _CreateNoticeState extends State<CreateNotice> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].name.toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].name.toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(Icons.highlight_off_outlined),
                             ),
                           ],
                         ),

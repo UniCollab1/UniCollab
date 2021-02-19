@@ -13,6 +13,7 @@ class MaterialCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -55,6 +56,7 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -105,6 +107,7 @@ class AssignmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(

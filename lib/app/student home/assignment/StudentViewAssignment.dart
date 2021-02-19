@@ -175,24 +175,17 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              openFile(index - 1);
-                            },
-                            child: Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(files[index - 1].toString()),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                          InputChip(
+                            backgroundColor: Colors.white,
+                            label: Text(
+                              adjustText(files[index - 1].toString()),
                             ),
+                            onPressed: () {
+                              print(index);
+                              setState(() {
+                                openFile(index - 1);
+                              });
+                            },
                           ),
                         ],
                       ),

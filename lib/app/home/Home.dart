@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/Drawer/Drawer.dart';
 import 'package:unicollab/app/home/CreateDialog.dart';
 import 'package:unicollab/app/home/JoinDialog.dart';
 import 'package:unicollab/app/home/StudentSubjects.dart';
 import 'package:unicollab/app/home/TeacherSubjects.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
-import '../../Drawer.dart';
 
 class HomePage extends StatefulWidget {
   @override

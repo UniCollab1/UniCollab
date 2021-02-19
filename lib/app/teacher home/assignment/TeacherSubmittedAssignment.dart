@@ -54,8 +54,9 @@ class _TeacherSubmittedAssignmentState
                             Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (_) => ViewSubmittedAssignment(
-                                      widget.document, document),
+                                  builder: (_) =>
+                                      TeacherViewSubmittedAssignment(
+                                          widget.document, document),
                                   fullscreenDialog: true),
                             );
                           },
@@ -73,7 +74,7 @@ class _TeacherSubmittedAssignmentState
                               ),
                               title: Text(document.id.toString()),
                               subtitle: Text(
-                                "Submitted: " + data['status'],
+                                "Status: " + data['status'],
                               ),
                             ),
                           ),

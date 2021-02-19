@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentViewAssignment.dart';
@@ -17,31 +18,14 @@ class StudentAssignment extends StatefulWidget {
 }
 
 class _StudentAssignmentState extends State<StudentAssignment> {
-  int _sliding = 0;
   List<String> result = [];
   List<PlatformFile> files = [];
   var grades, status;
-  var _children = {
-    0: Container(
-      child: Text("Instruction"),
-    ),
-    1: Container(
-      child: Text("Submit"),
-    )
-  };
 
   @override
   void initState() {
     super.initState();
     getData();
-  }
-
-  Widget _body() {
-    var lol = [
-      StudentViewAssignment(widget.document, widget.code),
-      submitAssignment(),
-    ];
-    return lol[_sliding];
   }
 
   submit() async {
@@ -99,127 +83,175 @@ class _StudentAssignmentState extends State<StudentAssignment> {
 
   Widget submitAssignment() {
     return SafeArea(
-      child: Container(
-        color: Colors.black12,
-        child: Column(
-          children: [
-            Flexible(
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: result.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                                  EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                              child: Text(
-                                'Your submission status:',
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
+      child: Scaffold(
+        floatingActionButton: _getFAB(),
+        body: Container(
+          color: Colors.black12,
+          child: Column(
+            children: [
+              Flexible(
+                child: MediaQuery.removePadding(
+                  context: context,
+                  removeTop: true,
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: result.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin:
+                                    EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                                child: Text(
+                                  'Your submission status:',
+                                  style: GoogleFonts.sourceSansPro(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: Text(
-                                status,
-                              ),
-                            ),
-                            Container(
-                              margin:
-                                  EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                              child: Text(
-                                'Your marks:',
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: Text(
-                                grades,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(10.0),
-                              child: Text(
-                                'Attachments: ',
-                                style: GoogleFonts.sourceSansPro(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => takeFile(),
-                              child: Container(
+                              Container(
                                 margin: EdgeInsets.all(10.0),
                                 child: Text(
-                                  'Click here to add attachments',
+                                  status,
                                 ),
                               ),
-                            )
-                          ],
-                        );
-                      }
-                      if (result.length == 0) {
-                        return Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: Text(
-                            'No attachments',
-                          ),
-                        );
-                      }
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
+                              Container(
+                                margin:
+                                    EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                                 child: Text(
+                                  'Your marks:',
+                                  style: GoogleFonts.sourceSansPro(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: Text(
+                                  grades,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.all(10.0),
+                                child: Text(
+                                  'Attachments: ',
+                                  style: GoogleFonts.sourceSansPro(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => takeFile(),
+                                child: Container(
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'Click here to add attachments',
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        }
+                        if (result.length == 0) {
+                          return Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              'No attachments',
+                            ),
+                          );
+                        }
+                        return Container(
+                          margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              InputChip(
+                                backgroundColor: Colors.white,
+                                label: Text(
                                   adjustText(result[index - 1].toString()),
                                 ),
+                                onDeleted: () {
+                                  print(index);
+                                  setState(() {
+                                    print('deleted');
+                                    result.removeAt(index - 1);
+                                  });
+                                },
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  result.removeAt(index - 1);
-                                });
-                              },
-                              child: Icon(CupertinoIcons.clear_circled),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _getFAB() {
+    return SpeedDial(
+      backgroundColor: Colors.blue,
+      animatedIcon: AnimatedIcons.menu_close,
+      visible: true,
+      curve: Curves.bounceIn,
+      children: [
+        SpeedDialChild(
+          child: Icon(Icons.attachment_outlined),
+          onTap: () {
+            takeFile();
+          },
+          label: 'Add attachment',
+          backgroundColor: Colors.blue,
+        ),
+        SpeedDialChild(
+          child: Icon(Icons.assignment_turned_in),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Center(
+                  child: AlertDialog(
+                    title: Text('Confirmation'),
+                    content: Text(
+                        'Your are going to submit assignment. Do you want submit?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          submit();
+                          Navigator.pop(context);
+                        },
+                        child: Text('Submit'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          label: 'Submit',
+          backgroundColor: Colors.blue,
+        )
+      ],
     );
   }
 

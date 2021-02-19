@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/teacher%20home/assignment/CreateAssignment.dart';
+import 'package:unicollab/app/teacher%20home/material/CreateMaterial.dart';
+import 'package:unicollab/app/teacher%20home/notice/CreateNotice.dart';
 import 'package:unicollab/models/classroom.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
@@ -48,16 +51,14 @@ class _TeacherHomeState extends State<TeacherHome> {
       appBar: AppBar(
         title: Text("Teacher"),
       ),
+      floatingActionButton: TeacherCreate(widget.data),
       body: Container(
         color: Colors.black12,
-        padding: EdgeInsets.all(5.0),
         child: StreamBuilder<QuerySnapshot>(
           stream: _getData(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return LinearProgressIndicator();
             }
             return Column(
               children: [
@@ -82,48 +83,66 @@ class _TeacherHomeState extends State<TeacherHome> {
 
 class TeacherCreate extends StatelessWidget {
   const TeacherCreate(this.data);
-  final dynamic data;
+  final ClassRoom data;
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: Text('I want to create a'),
-      children: [
-        ListTile(
-          leading: Icon(Icons.assignment),
-          title: Text('Assignment'),
-          onTap: () {},
-        ),
-        ListTile(
-          leading: Icon(Icons.announcement),
-          title: Text('Notice'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (BuildContext context) =>
-            //         CreateNotice(widget.code['class code']),
-            //     // fullscreenDialog: true,
-            //   ),
-            // );
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.description),
-          title: Text('Material'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   // MaterialPageRoute<void>(
-            //   //   builder: (BuildContext context) =>
-            //   //       CreateMaterial(widget.code["class code"]),
-            //   //   fullscreenDialog: true,
-            //   // ),
-            // );
-          },
-        ),
-      ],
-    );
+    return FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  title: Text('I want to create a'),
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.assignment),
+                      title: Text('Assignment'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateAssignment(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.announcement),
+                      title: Text('Notice'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CreateNotice(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.description),
+                      title: Text('Material'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                CreateMaterial(data.classCode),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              });
+        });
   }
 }

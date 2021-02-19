@@ -76,39 +76,18 @@ class _EditMaterialState extends State<EditMaterial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: Text('Edit a material'),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: Text(
-                  'Edit a Material',
-                  style: GoogleFonts.sourceSansPro(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 25.0,
-              ),
-              TextButton(
-                onPressed: () => takeFile(),
-                child: Icon(Icons.attachment),
-              ),
-              TextButton(
-                onPressed: () {
-                  _editMaterial();
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.send),
-              ),
-            ],
+          IconButton(
+            onPressed: () => takeFile(),
+            icon: Icon(Icons.attachment_outlined),
+          ),
+          IconButton(
+            onPressed: () {
+              _editMaterial();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.send),
           ),
         ],
       ),
@@ -132,25 +111,24 @@ class _EditMaterialState extends State<EditMaterial> {
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: true,
                                 controller: title,
                                 decoration: InputDecoration(
-                                  hintText: 'Title(required)',
+                                  labelText: 'Title(required)',
+                                  filled: true,
                                 ),
                                 textCapitalization: TextCapitalization.words,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.all(10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: description,
                                 decoration: InputDecoration(
-                                  hintText: 'Description',
+                                  labelText: 'Description',
+                                  filled: true,
                                 ),
-                                maxLines: null,
-                                minLines: null,
-                                expands: true,
                               ),
                             ),
                             Container(
@@ -173,27 +151,18 @@ class _EditMaterialState extends State<EditMaterial> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                            InputChip(
+                              backgroundColor: Colors.white,
+                              label: Text(
+                                adjustText(result[index - 1].toString()),
                               ),
-                              shadowColor: Colors.white,
-                              child: Container(
-                                margin: EdgeInsets.all(12.0),
-                                child: Text(
-                                  adjustText(result[index - 1].toString()),
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
+                              onDeleted: () {
+                                print(index);
                                 setState(() {
                                   print('deleted');
                                   result.removeAt(index - 1);
                                 });
                               },
-                              child: Icon(Icons.highlight_off),
                             ),
                           ],
                         ),

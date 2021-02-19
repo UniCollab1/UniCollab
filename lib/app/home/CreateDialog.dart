@@ -79,6 +79,7 @@ class _CreateDialogState extends State<CreateDialog> {
             Container(
               margin: EdgeInsets.all(5.0),
               child: TextFormField(
+                maxLength: 5,
                 decoration: InputDecoration(
                   filled: true,
                   labelText: 'Short name of subject',

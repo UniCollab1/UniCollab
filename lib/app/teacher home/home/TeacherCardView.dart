@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicollab/app/teacher%20home/assignment/EditAssignment.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherAssignment.dart';
+import 'package:unicollab/app/teacher%20home/material/EditMaterial.dart';
 import 'package:unicollab/app/teacher%20home/material/TeacherMaterial.dart';
+import 'package:unicollab/app/teacher%20home/notice/EditNotice.dart';
 import 'package:unicollab/app/teacher%20home/notice/TeacherNotice.dart';
 
 class MaterialCard extends StatelessWidget {
@@ -13,6 +16,7 @@ class MaterialCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -42,13 +46,13 @@ class MaterialCard extends StatelessWidget {
               data["description"],
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: GestureDetector(
-              onTap: () {
+            trailing: IconButton(
+              onPressed: () {
                 showCupertinoModalPopup(
                     context: context,
                     builder: (context) => ContextMenu(document, code, 0));
               },
-              child: Icon(CupertinoIcons.ellipsis_vertical),
+              icon: Icon(Icons.more_vert),
             ),
           ),
         ),
@@ -65,6 +69,7 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -103,13 +108,13 @@ class NoticeCard extends StatelessWidget {
                 ),
               ],
             ),
-            trailing: GestureDetector(
-              onTap: () {
+            trailing: IconButton(
+              onPressed: () {
                 showDialog(
                     context: context,
                     builder: (context) => ContextMenu(document, code, 1));
               },
-              child: Icon(CupertinoIcons.ellipsis_vertical),
+              icon: Icon(Icons.more_vert),
             ),
           ),
         ),
@@ -126,6 +131,7 @@ class AssignmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = document.data();
     return Container(
+      margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -168,13 +174,13 @@ class AssignmentCard extends StatelessWidget {
                 ),
               ],
             ),
-            trailing: GestureDetector(
-              onTap: () {
+            trailing: IconButton(
+              onPressed: () {
                 showDialog(
                     context: context,
                     builder: (context) => ContextMenu(document, code, 2));
               },
-              child: Icon(CupertinoIcons.ellipsis_vertical),
+              icon: Icon(Icons.more_vert),
             ),
           ),
         ),
@@ -191,9 +197,9 @@ class ContextMenu extends StatelessWidget {
 
   Widget pushTo() {
     var _list = [
-      // EditMaterial(data, code),
-      // EditNotice(data, code),
-      // EditAssignment(data, code),
+      EditMaterial(data, code),
+      EditNotice(data, code),
+      EditAssignment(data, code),
     ];
     return _list[type];
   }
@@ -206,37 +212,21 @@ class ContextMenu extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.assignment),
           title: Text('Edit'),
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => pushTo(),
+                // fullscreenDialog: true,
+              ),
+            );
+          },
         ),
         ListTile(
           leading: Icon(Icons.announcement),
           title: Text('Delete'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (BuildContext context) =>
-            //         CreateNotice(widget.code['class code']),
-            //     // fullscreenDialog: true,
-            //   ),
-            // );
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.description),
-          title: Text('Cancel'),
-          onTap: () {
-            // Navigator.pop(context);
-            // Navigator.push(
-            //   context,
-            //   // MaterialPageRoute<void>(
-            //   //   builder: (BuildContext context) =>
-            //   //       CreateMaterial(widget.code["class code"]),
-            //   //   fullscreenDialog: true,
-            //   // ),
-            // );
-          },
+          onTap: () {},
         ),
       ],
     );
