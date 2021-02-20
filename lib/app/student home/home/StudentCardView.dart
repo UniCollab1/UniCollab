@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentAssignment.dart';
 import 'package:unicollab/app/student%20home/material/StudentMaterial.dart';
 import 'package:unicollab/app/student%20home/notice/StudentNotice.dart';
+import 'package:unicollab/services/firestore_service.dart';
 
 class MaterialCard extends StatelessWidget {
   MaterialCard(this.document, this.code);
@@ -99,9 +102,18 @@ class AssignmentCard extends StatelessWidget {
   AssignmentCard(this.document, this.code);
   final String code;
   final DocumentSnapshot document;
+
+  getData(context) async {
+    var fireStore = Provider.of<FireStoreService>(context, listen: false);
+    var user = Provider.of<User>(context, listen: false);
+    await fireStore.getSubmission(
+        code: code, id: document.id, email: user.email);
+  }
+
   @override
   Widget build(BuildContext context) {
     var data = document.data();
+    getData(context);
     return Container(
       margin: EdgeInsets.fromLTRB(3.0, 1.0, 3.0, 1.0),
       child: GestureDetector(
