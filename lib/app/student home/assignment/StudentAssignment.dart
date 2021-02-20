@@ -257,7 +257,6 @@ class _StudentAssignmentState extends State<StudentAssignment> {
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return SafeArea(
       child: DefaultTabController(
         length: 2,

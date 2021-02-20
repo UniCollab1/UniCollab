@@ -47,10 +47,10 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
 
   @override
   void initState() {
-    super.initState();
     data = widget.document.data();
     files = data["files"];
     date = data['created at'].toDate();
+    super.initState();
   }
 
   @override
