@@ -146,3 +146,21 @@ class TeacherCreate extends StatelessWidget {
         });
   }
 }
+
+/*return CustomScrollView(
+slivers: [
+SliverAppBar(
+title: Text(widget.data.title),
+),
+SliverList(
+delegate: SliverChildBuilderDelegate(
+(context, index) {
+return Container(
+child: cardView(snapshot.data.docs.elementAt(index)),
+);
+},
+childCount: snapshot.data.docs.length,
+),
+)
+],
+);*/

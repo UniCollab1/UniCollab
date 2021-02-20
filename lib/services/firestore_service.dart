@@ -237,6 +237,24 @@ class FireStoreService {
           .collection('submission')
           .doc(email)
           .get();
+      if (!data.exists) {
+        try {
+          await fireStore
+              .collection('classes')
+              .doc(code)
+              .collection('general')
+              .doc(id)
+              .collection('submission')
+              .doc(email)
+              .set({
+            'status': 'not submitted',
+            'files': [],
+            'grades': null,
+          });
+        } catch (e) {
+          print(e);
+        }
+      }
     } catch (e) {
       print(e);
     }
