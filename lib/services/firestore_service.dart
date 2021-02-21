@@ -143,7 +143,7 @@ class FireStoreService {
               .collection('general')
               .doc(id)
               .collection('submission')
-              .doc(email)
+              .doc(element)
               .set({
             'status': 'not submitted',
             'files': [],
