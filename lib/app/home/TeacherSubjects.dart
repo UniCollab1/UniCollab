@@ -49,7 +49,7 @@ class Teacher extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              data.title,
+                              data.classCode,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 color: Colors.black.withOpacity(0.6),
