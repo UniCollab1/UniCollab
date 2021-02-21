@@ -3,23 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:unicollab/services/firebase_auth_service.dart';
 
-class EditProfilePage extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _ProfileState createState() => _ProfileState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
-  Future<void> _signOut(context) async {
-    try {
-      var auth = Provider.of<FirebaseAuthService>(context, listen: false);
-      await auth.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
-
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context, listen: false);

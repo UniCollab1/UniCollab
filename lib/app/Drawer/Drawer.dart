@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:unicollab/profile.dart';
+import 'package:unicollab/app/Drawer/Profile.dart';
 import 'package:unicollab/services/firebase_auth_service.dart';
 
 class DrawerMain extends StatefulWidget {
@@ -75,7 +75,7 @@ class _DrawerMainState extends State<DrawerMain> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditProfilePage()),
+                MaterialPageRoute(builder: (context) => Profile()),
               );
             },
           ),
@@ -106,7 +106,6 @@ class _DrawerMainState extends State<DrawerMain> {
             ),
             onTap: () {
               signOut();
-              Navigator.popUntil(context, ModalRoute.withName("login"));
             },
           ),
         ],

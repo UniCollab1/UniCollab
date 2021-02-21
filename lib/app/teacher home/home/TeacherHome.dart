@@ -50,6 +50,12 @@ class _TeacherHomeState extends State<TeacherHome> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data.title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          )
+        ],
       ),
       floatingActionButton: TeacherCreate(widget.data),
       body: Container(
