@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/home/comments.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentViewAssignment.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
@@ -263,6 +264,24 @@ class _StudentAssignmentState extends State<StudentAssignment> {
         child: Scaffold(
           appBar: AppBar(
             title: Text('Assignment'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: IconButton(
+                  icon: Icon(Icons.message),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            ShowComments(widget.document),
+                        // fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
             bottom: TabBar(
               tabs: [
                 Tab(
