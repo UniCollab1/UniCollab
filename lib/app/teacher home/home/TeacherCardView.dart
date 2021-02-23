@@ -23,7 +23,8 @@ class MaterialCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            CupertinoPageRoute(builder: (_) => TeacherMaterial(data, code)),
+            CupertinoPageRoute(
+                builder: (_) => TeacherMaterial(data, code, document.id)),
           );
         },
         onLongPress: () {
@@ -184,7 +185,7 @@ class ContextMenu extends StatelessWidget {
     return PopupMenuButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-      ) ,
+      ),
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         PopupMenuItem(
           child: ListTile(

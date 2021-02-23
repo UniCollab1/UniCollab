@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:unicollab/app/teacher%20home/home/comments.dart';
 
 class TeacherNotice extends StatefulWidget {
   final DocumentSnapshot document;
@@ -56,9 +57,24 @@ class _TeacherNoticeState extends State<TeacherNotice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Notice'),
-      ),
+      appBar: AppBar(title: Text('Notice'), actions: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: IconButton(
+            icon: Icon(Icons.message),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ShowComments(widget.document.data(), widget.document.id),
+                  // fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
       body: Container(
         color: Colors.black12,
         child: Column(

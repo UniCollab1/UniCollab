@@ -49,10 +49,6 @@ class _StudentMaterialState extends State<StudentMaterial> {
     super.initState();
     files = widget.data["files"];
     title = "Material";
-    print(widget.data["edited"]);
-    if (widget.data["edited"]) {
-      title += "(edited)";
-    }
     title += ": " + widget.data["title"];
     date = widget.data['created at'].toDate().toString();
 
