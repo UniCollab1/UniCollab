@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:unicollab/app/teacher%20home/home/comments.dart';
 
 class TeacherMaterial extends StatefulWidget {
   final dynamic data;
   final String code;
-  const TeacherMaterial(this.data, this.code);
+  final String id;
+  const TeacherMaterial(this.data, this.code, this.id);
   @override
   _TeacherMaterialState createState() => _TeacherMaterialState();
 }
@@ -54,9 +56,24 @@ class _TeacherMaterialState extends State<TeacherMaterial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Material'),
-      ),
+      appBar: AppBar(title: Text('Material'), actions: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: IconButton(
+            icon: Icon(Icons.message),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ShowComments(widget.data, widget.id),
+                  // fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
       body: Container(
         color: Colors.black12,
         child: Column(
