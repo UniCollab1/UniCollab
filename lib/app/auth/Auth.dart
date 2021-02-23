@@ -17,7 +17,6 @@ class AuthWidget extends StatelessWidget {
         ),
       );
     } else if (userSnapshot.connectionState == ConnectionState.active) {
-      print('going to');
       return userSnapshot.hasData ? HomePage() : SignInPage();
     }
     return Scaffold(

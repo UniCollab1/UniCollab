@@ -27,9 +27,7 @@ class MaterialCard extends StatelessWidget {
           );
         },
         onLongPress: () {
-          showDialog(
-              context: context,
-              builder: (context) => ContextMenu(document, code, 0));
+          return ContextMenu(document, code, 0);
         },
         child: Card(
           elevation: 0.0,
@@ -73,9 +71,7 @@ class NoticeCard extends StatelessWidget {
           );
         },
         onLongPress: () {
-          showDialog(
-              context: context,
-              builder: (context) => ContextMenu(document, code, 1));
+          return ContextMenu(document, code, 1);
         },
         child: Card(
           elevation: 0.0,
@@ -129,9 +125,7 @@ class AssignmentCard extends StatelessWidget {
           );
         },
         onLongPress: () {
-          showDialog(
-              context: context,
-              builder: (context) => ContextMenu(document, code, 2));
+          return ContextMenu(document, code, 2);
         },
         child: Card(
           elevation: 0.0,
@@ -188,6 +182,9 @@ class ContextMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ) ,
       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
         PopupMenuItem(
           child: ListTile(
@@ -208,6 +205,7 @@ class ContextMenu extends StatelessWidget {
           child: ListTile(
             title: Text('Delete'),
             onTap: () async {
+              Navigator.pop(context);
               var fireStore =
                   Provider.of<FireStoreService>(context, listen: false);
               await fireStore.delete(code: code, id: data.id);

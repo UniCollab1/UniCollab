@@ -11,7 +11,6 @@ class Student extends StatelessWidget {
   Widget build(BuildContext context) {
     var studentSubject = Provider.of<FireStoreService>(context);
     return Container(
-      padding: EdgeInsets.all(5.0),
       color: Colors.black12,
       child: StreamBuilder<List<ClassRoom>>(
         stream: studentSubject.getStudentSubject(),
