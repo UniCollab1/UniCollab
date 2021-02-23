@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:unicollab/app/teacher%20home/assignment/CreateAssignment.dart';
 import 'package:unicollab/app/teacher%20home/material/CreateMaterial.dart';
 import 'package:unicollab/app/teacher%20home/notice/CreateNotice.dart';
@@ -45,12 +47,33 @@ class _TeacherHomeState extends State<TeacherHome> {
     return _cardView[document.data()['type']];
   }
 
+  Future<Uri> createDynamicLink() async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://unicollab.page.link/',
+      link:
+          Uri.parse('https://www.unicollab.com/?code=${widget.data.classCode}'),
+      androidParameters: AndroidParameters(
+        packageName: 'com.prs.unicollab',
+      ),
+    );
+    var dynamicUrl = await parameters.buildUrl();
+
+    return dynamicUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data.title),
         actions: [
+          IconButton(
+              icon: Icon(Icons.share),
+              onPressed: () async {
+                var link = await createDynamicLink();
+                print(link.toString());
+                Share.share(link.toString());
+              }),
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {},

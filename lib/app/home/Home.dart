@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/Drawer/Drawer.dart';
@@ -5,18 +7,43 @@ import 'package:unicollab/app/home/CreateDialog.dart';
 import 'package:unicollab/app/home/JoinDialog.dart';
 import 'package:unicollab/app/home/StudentSubjects.dart';
 import 'package:unicollab/app/home/TeacherSubjects.dart';
+import 'package:unicollab/services/dynamic_link_service.dart';
 import 'package:unicollab/services/firestore_service.dart';
-
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  final DynamicLinkService _dynamicLinkService = DynamicLinkService();
+  Timer _timerLink;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _timerLink = new Timer(
+        const Duration(milliseconds: 1000),
+        () {
+          _dynamicLinkService.retrieveDynamicLink(context);
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (_timerLink != null) {
+      _timerLink.cancel();
+    }
+    super.dispose();
   }
 
   _addUserToFireStore() async {
