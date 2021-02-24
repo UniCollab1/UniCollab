@@ -144,9 +144,13 @@ class _TeacherNoticeState extends State<TeacherNotice> {
                           ),
                           Container(
                             margin: EdgeInsets.all(10.0),
-                            child: Text(
-                              data["due date"].toDate().toString(),
-                            ),
+                            child: Text((() {
+                              if (data["due date"] == null) {
+                                return "No Deadline";
+                              }
+
+                              return data["due date"].toDate().toString();
+                            })()),
                           ),
                           Container(
                             margin: EdgeInsets.all(10.0),
