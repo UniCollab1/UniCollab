@@ -65,7 +65,7 @@ class _StudentMaterialState extends State<StudentMaterial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: title,
+        title: Text(title),
       ),
       body: Container(
         color: Colors.black12,

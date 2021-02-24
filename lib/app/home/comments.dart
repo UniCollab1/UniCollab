@@ -168,7 +168,7 @@ class _ShowCommentsState extends State<ShowComments> {
                       ),
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (cmt != null) {
                         sendComment(cmt);
