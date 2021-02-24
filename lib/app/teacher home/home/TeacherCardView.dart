@@ -23,7 +23,7 @@ class MaterialCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            CupertinoPageRoute(
+            MaterialPageRoute(
                 builder: (_) => TeacherMaterial(data, code, document.id)),
           );
         },
