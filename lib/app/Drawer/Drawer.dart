@@ -46,17 +46,21 @@ class _DrawerMainState extends State<DrawerMain> {
                         : null,
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
-                  Text(
-                    user.displayName,
+                  Expanded(
+                    child: Text(
+                      user.displayName,
+                    ),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 2,
                   ),
-                  Text(
-                    adjustText(user.email),
-                  ),
+                  Expanded(
+                    child: Text(
+                      adjustText(user.email),
+                    ),
+                  )
                 ],
               ),
             ),
