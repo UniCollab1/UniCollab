@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 class CreateNotice extends StatefulWidget {
@@ -18,6 +21,16 @@ class _CreateNoticeState extends State<CreateNotice> {
       description = TextEditingController(),
       time;
   List<PlatformFile> result = [];
+  FirebaseAuth auth = FirebaseAuth.instance;
+  var recipients, classname;
+
+  bool titlevalidation = false;
+
+  void initstate() {
+    super.initState();
+    getStudents();
+    setState(() {});
+  }
 
   adjustText(String text) {
     if (text.length > 45) {
@@ -54,8 +67,26 @@ class _CreateNoticeState extends State<CreateNotice> {
     });
   }
 
+  getStudents() {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    var students = _firestore
+        .collection('classes')
+        .doc(widget.data)
+        .get()
+        .then((value) => {
+              {
+                recipients = value.data()['students'].cast<String>(),
+                classname = value.data()['subject'],
+              }
+            });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    getStudents();
+    SendMail sendMail = SendMail();
+    var body = auth.currentUser.email + " announce something in ";
     return Scaffold(
       appBar: AppBar(
         title: Text("Create a notice"),
@@ -66,8 +97,16 @@ class _CreateNoticeState extends State<CreateNotice> {
           ),
           IconButton(
             onPressed: () {
-              _createNotice();
-              Navigator.pop(context);
+              setState(() {
+                title.text.isEmpty
+                    ? titlevalidation = true
+                    : titlevalidation = false;
+              });
+              if (title.text.isNotEmpty) {
+                _createNotice();
+                Navigator.pop(context);
+                sendMail.mail(recipients, "Notice", body + classname);
+              }
             },
             icon: Icon(Icons.send),
           ),
@@ -98,7 +137,10 @@ class _CreateNoticeState extends State<CreateNotice> {
                                 controller: title,
                                 decoration: InputDecoration(
                                   filled: true,
-                                  labelText: 'Title(required)',
+                                  labelText: 'Title',
+                                  errorText: titlevalidation
+                                      ? 'Title can not be empty'
+                                      : null,
                                 ),
                                 textCapitalization:
                                     TextCapitalization.sentences,

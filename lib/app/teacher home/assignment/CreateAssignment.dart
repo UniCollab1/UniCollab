@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 class CreateAssignment extends StatefulWidget {
@@ -20,7 +23,15 @@ class _CreateAssignmentState extends State<CreateAssignment> {
       time;
   bool titlevalidation = false;
   bool marksvalidation = false;
+  var recipients, classname;
+  FirebaseAuth auth = FirebaseAuth.instance;
   List<PlatformFile> result = [];
+
+  void initstate() {
+    super.initState();
+    getStudents();
+    setState(() {});
+  }
 
   adjustText(String text) {
     if (text.length > 45) {
@@ -31,6 +42,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
 
   Future<void> _createAssignment() async {
     var fireStore = Provider.of<FireStoreService>(context, listen: false);
+
     try {
       await fireStore.create(
           code: widget.data,
@@ -43,6 +55,21 @@ class _CreateAssignmentState extends State<CreateAssignment> {
     } catch (e) {
       print(e);
     }
+  }
+
+  getStudents() {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    var students = _firestore
+        .collection('classes')
+        .doc(widget.data)
+        .get()
+        .then((value) => {
+              {
+                recipients = value.data()['students'].cast<String>(),
+                classname = value.data()['subject'],
+              }
+            });
+    setState(() {});
   }
 
   takeFile() async {
@@ -60,6 +87,9 @@ class _CreateAssignmentState extends State<CreateAssignment> {
 
   @override
   Widget build(BuildContext context) {
+    getStudents();
+    SendMail sendMail = SendMail();
+    var body = auth.currentUser.email + " Added new Assignment in ";
     return Scaffold(
       appBar: AppBar(
         title: Text('Create a assignment'),
@@ -82,6 +112,7 @@ class _CreateAssignmentState extends State<CreateAssignment> {
               if (title.text.isNotEmpty && marks.text.isNotEmpty) {
                 _createAssignment();
                 Navigator.pop(context);
+                sendMail.mail(recipients, 'New Assignment', body + classname);
               }
             },
             icon: Icon(Icons.send),

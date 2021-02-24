@@ -6,7 +6,7 @@ class SendMail {
   mail(recipients, subject, body) async {
     var options = new GmailSmtpOptions()
       ..username = 'rajkalathiya143@gmail.com'
-      ..password = '123456789R@j';
+      ..password = '123456R@j';
     var emailTransport = new SmtpTransport(options);
 
     var envelope = new Envelope()
