@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 class CreateMaterial extends StatefulWidget {
@@ -16,6 +19,14 @@ class _CreateMaterialState extends State<CreateMaterial> {
   var title = TextEditingController(), description = TextEditingController();
   bool tv = false;
   List<PlatformFile> result = [];
+  var recipients, classname;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  void initstate() {
+    super.initState();
+    getStudents();
+    setState(() {});
+  }
 
   adjustText(String text) {
     if (text.length > 45) {
@@ -38,6 +49,21 @@ class _CreateMaterialState extends State<CreateMaterial> {
     }
   }
 
+  getStudents() {
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    var students = _firestore
+        .collection('classes')
+        .doc(widget.data)
+        .get()
+        .then((value) => {
+              {
+                recipients = value.data()['students'].cast<String>(),
+                classname = value.data()['subject'],
+              }
+            });
+    setState(() {});
+  }
+
   takeFile() async {
     FilePickerResult res =
         await FilePicker.platform.pickFiles(allowMultiple: true);
@@ -53,6 +79,9 @@ class _CreateMaterialState extends State<CreateMaterial> {
 
   @override
   Widget build(BuildContext context) {
+    getStudents();
+    SendMail sendMail = SendMail();
+    var body = auth.currentUser.email + " Added new Material in ";
     return Scaffold(
       appBar: AppBar(
         title: Text('Create a material'),
@@ -67,9 +96,9 @@ class _CreateMaterialState extends State<CreateMaterial> {
                 title.text.isEmpty ? tv = true : tv = false;
               });
               if (title.text.isNotEmpty) {
-                print(title.text.isEmpty);
                 _createMaterial();
                 Navigator.pop(context);
+                sendMail.mail(recipients, "New Material", body + classname);
               }
             },
             icon: Icon(Icons.send),
