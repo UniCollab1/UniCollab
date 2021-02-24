@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:unicollab/app/home/comments.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentViewAssignment.dart';
+import 'package:unicollab/app/teacher%20home/assignment/comments.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
 class StudentAssignment extends StatefulWidget {

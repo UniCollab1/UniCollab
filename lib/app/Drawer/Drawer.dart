@@ -19,6 +19,13 @@ class _DrawerMainState extends State<DrawerMain> {
     }
   }
 
+  adjustText(String text) {
+    if (text.length > 25) {
+      return text.substring(0, 22) + "...";
+    }
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User>(context, listen: false);
@@ -48,7 +55,7 @@ class _DrawerMainState extends State<DrawerMain> {
                     height: 5,
                   ),
                   Text(
-                    user.email,
+                    adjustText(user.email),
                   ),
                 ],
               ),
