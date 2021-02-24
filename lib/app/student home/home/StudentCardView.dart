@@ -87,9 +87,13 @@ class NoticeCard extends StatelessWidget {
                   data["description"],
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  "Deadline: " + data["due date"].toDate().toString(),
-                ),
+                Text((() {
+                  if (data["due date"] == null) {
+                    return "No Deadline";
+                  }
+
+                  return data["due date"].toDate().toString();
+                })()),
               ],
             ),
           ),
