@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:unicollab/app/home/comments.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherSubmittedAssignment.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherViewInstruction.dart';
+
+import 'comments.dart';
 
 class TeacherAssignment extends StatefulWidget {
   final DocumentSnapshot document;
