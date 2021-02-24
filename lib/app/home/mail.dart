@@ -5,12 +5,12 @@ class SendMail {
 
   mail(recipients, subject, body) async {
     var options = new GmailSmtpOptions()
-      ..username = 'xxxxx@gmail.com'
-      ..password = 'xxxxx';
+      ..username = 'whyghost133@gmail.com'
+      ..password = 'WHYg#ost33';
     var emailTransport = new SmtpTransport(options);
 
     var envelope = new Envelope()
-      ..from = 'xxxx@gmail.com'
+      ..from = 'whyghost133@gmail.com'
       ..recipients.addAll(recipients)
       ..subject = subject
       ..text = body;
