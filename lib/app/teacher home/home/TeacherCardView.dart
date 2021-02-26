@@ -95,9 +95,6 @@ class NoticeCard extends StatelessWidget {
                   data["description"],
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  "Deadline: " + data["due date"].toDate().toString(),
-                ),
               ],
             ),
             trailing: ContextMenu(document, code, 1),
@@ -151,9 +148,6 @@ class AssignmentCard extends StatelessWidget {
                 ),
                 Text(
                   "Marks: " + data['marks'].toString() + " marks",
-                ),
-                Text(
-                  "Deadline: " + data['due date'].toDate().toString(),
                 ),
               ],
             ),

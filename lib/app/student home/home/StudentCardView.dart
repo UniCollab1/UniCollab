@@ -21,7 +21,7 @@ class MaterialCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => StudentMaterial(data, code)),
+            MaterialPageRoute(builder: (_) => StudentMaterial(document, code)),
           );
         },
         child: Card(
@@ -52,7 +52,6 @@ class NoticeCard extends StatelessWidget {
   NoticeCard(this.document, this.code);
   final String code;
   final DocumentSnapshot document;
-
   @override
   Widget build(BuildContext context) {
     var data = document.data();

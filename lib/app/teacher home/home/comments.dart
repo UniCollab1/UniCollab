@@ -12,11 +12,11 @@ class ShowComments extends StatefulWidget {
 }
 
 class _ShowCommentsState extends State<ShowComments> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
   sendComment(String cmt) {
-    firestore
+    fireStore
         .collection('classes')
         .doc(widget.data['class code'])
         .collection('general')
@@ -30,7 +30,7 @@ class _ShowCommentsState extends State<ShowComments> {
   }
 
   getComments() {
-    return firestore
+    return fireStore
         .collection('classes')
         .doc(widget.data['class code'])
         .collection('general')
@@ -47,7 +47,7 @@ class _ShowCommentsState extends State<ShowComments> {
     String cmt;
     String type;
 
-    var textcon = TextEditingController();
+    var textCon = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data['title']),
@@ -62,7 +62,7 @@ class _ShowCommentsState extends State<ShowComments> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final comments = snapshot.data.docs.reversed;
-                    List<commentwidget> commentwidgets = [];
+                    List<CommentWidget> commentWidgets = [];
                     for (var comment in comments) {
                       final message = comment['comment'];
                       final sender = comment['sender'];
@@ -72,14 +72,14 @@ class _ShowCommentsState extends State<ShowComments> {
                         type = "receiver";
                       }
                       final commentWidget =
-                          commentwidget(message, sender, type);
-                      commentwidgets.add(commentWidget);
+                          CommentWidget(message, sender, type);
+                      commentWidgets.add(commentWidget);
                     }
                     return Expanded(
                       child: Scrollbar(
                         child: ListView.builder(
                           reverse: true,
-                          itemCount: commentwidgets.length,
+                          itemCount: commentWidgets.length,
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10, bottom: 10),
                           itemBuilder: (context, index) {
@@ -88,24 +88,24 @@ class _ShowCommentsState extends State<ShowComments> {
                                   left: 14, right: 14, top: 10, bottom: 10),
                               child: Align(
                                 alignment:
-                                    (commentwidgets[index].type == "receiver"
+                                    (commentWidgets[index].type == "receiver"
                                         ? Alignment.topLeft
                                         : Alignment.topRight),
                                 child: Column(
                                   crossAxisAlignment:
-                                      (commentwidgets[index].type == "receiver"
+                                      (commentWidgets[index].type == "receiver"
                                           ? CrossAxisAlignment.start
                                           : CrossAxisAlignment.end),
                                   children: [
                                     Text(
-                                      commentwidgets[index].sender,
+                                      commentWidgets[index].sender,
                                       style: TextStyle(
                                           fontSize: 13.0,
                                           color: Colors.black45),
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: (commentwidgets[index]
+                                        borderRadius: (commentWidgets[index]
                                                     .type ==
                                                 "receiver"
                                             ? BorderRadius.only(
@@ -122,14 +122,14 @@ class _ShowCommentsState extends State<ShowComments> {
                                                 bottomRight:
                                                     Radius.circular(20.0),
                                               )),
-                                        color: (commentwidgets[index].type ==
+                                        color: (commentWidgets[index].type ==
                                                 "receiver"
                                             ? Colors.grey.shade200
                                             : Colors.blue[200]),
                                       ),
                                       padding: EdgeInsets.all(16),
                                       child: Text(
-                                        commentwidgets[index].comment,
+                                        commentWidgets[index].comment,
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ),
@@ -157,7 +157,7 @@ class _ShowCommentsState extends State<ShowComments> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      controller: textcon,
+                      controller: textCon,
                       onChanged: (value) {
                         cmt = value;
                       },
@@ -169,12 +169,12 @@ class _ShowCommentsState extends State<ShowComments> {
                       ),
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (cmt != null) {
                         sendComment(cmt);
                       }
-                      textcon.clear();
+                      textCon.clear();
                     },
                     child: Text(
                       'Send',
@@ -195,12 +195,12 @@ class _ShowCommentsState extends State<ShowComments> {
   }
 }
 
-class commentwidget extends StatelessWidget {
+class CommentWidget extends StatelessWidget {
   final String comment;
   final String sender;
   final String type;
 
-  commentwidget(this.comment, this.sender, this.type);
+  CommentWidget(this.comment, this.sender, this.type);
   @override
   Widget build(BuildContext context) {
     return Container();

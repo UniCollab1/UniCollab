@@ -18,7 +18,7 @@ class StudentNotice extends StatefulWidget {
 }
 
 class _StudentNoticeState extends State<StudentNotice> {
-  var files, date, data;
+  var files, date, data, dueDate;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -52,12 +52,17 @@ class _StudentNoticeState extends State<StudentNotice> {
     data = widget.document.data();
     files = data["files"];
     date = data['created at'].toDate();
+    if (data['due date'] != null) {
+      dueDate = data['due date'].toDate();
+    } else {
+      dueDate = "No deadline";
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Notice'), actions: [
+      appBar: AppBar(title: Text('Notice: ${data['title']}'), actions: [
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: IconButton(
@@ -145,7 +150,7 @@ class _StudentNoticeState extends State<StudentNotice> {
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              data["due date"].toDate().toString(),
+                              dueDate.toString(),
                             ),
                           ),
                           Container(

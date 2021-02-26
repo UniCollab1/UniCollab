@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +9,15 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 class StudentMaterial extends StatefulWidget {
-  final dynamic data;
+  final DocumentSnapshot document;
   final String code;
-  const StudentMaterial(this.data, this.code);
+  const StudentMaterial(this.document, this.code);
   @override
   _StudentMaterialState createState() => _StudentMaterialState();
 }
 
 class _StudentMaterialState extends State<StudentMaterial> {
-  var files, date, title, description, attachments;
+  var files, date, title, description, attachments, data;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -47,14 +48,15 @@ class _StudentMaterialState extends State<StudentMaterial> {
   @override
   void initState() {
     super.initState();
-    files = widget.data["files"];
+    data = widget.document.data();
+    files = data["files"];
     title = "Material";
-    title += ": " + widget.data["title"];
-    date = widget.data['created at'].toDate().toString();
+    title += ": " + data["title"];
+    date = data['created at'].toDate().toString();
 
     description = "No Description.";
-    if (widget.data["description"] != null) {
-      description = widget.data["description"];
+    if (data["description"] != null) {
+      description = data["description"];
     }
     if (files.length == 0) {
       attachments = "No attachments";
@@ -87,9 +89,7 @@ class _StudentMaterialState extends State<StudentMaterial> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              widget.data["edited"] == true
-                                  ? ("Edited at:")
-                                  : ("Created at:"),
+                              "Created at:",
                               style: GoogleFonts.sourceSansPro(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
@@ -119,7 +119,7 @@ class _StudentMaterialState extends State<StudentMaterial> {
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              widget.data["description"].toString(),
+                              data["description"].toString(),
                             ),
                           ),
                           Container(

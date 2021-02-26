@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:random_string/random_string.dart';
 import 'package:unicollab/models/classroom.dart';
+import 'package:unicollab/services/notification_service.dart';
 
 class FireStoreService {
-  FireStoreService({@required this.email}) : assert(email != null);
+  FireStoreService({
+    @required this.email,
+  }) : assert(email != null);
 
   final String email;
   final fireStore = FirebaseFirestore.instance;
@@ -32,26 +36,59 @@ class FireStoreService {
         (event) => event.docs.map((e) => ClassRoom.fromMap(e.data())).toList());
   }
 
-  Future<ClassRoom> getClass({@required String code}) async {
+  Future<ClassRoom> getClass({
+    @required String code,
+  }) async {
     var classRoom = await fireStore.collection('classes').doc(code).get();
     return ClassRoom.fromMap(classRoom.data());
   }
 
   Future<void> addUserToFireStore() async {
     var result = await fireStore.collection('users').doc(email).get();
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    var token = _firebaseMessaging.getToken();
     if (!result.exists) {
       await fireStore.collection('users').doc(email).set({
         'teacher of': [],
         'student of': [],
+        'token': token,
       });
     }
   }
 
-  Future<ClassRoom> addNewClass(
-      {@required String title,
-      @required String subject,
-      @required String shortName,
-      @required String description}) async {
+  Future<void> checkTokenUpdate() async {
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    var token = await _firebaseMessaging.getToken();
+    var document;
+    try {
+      document = await fireStore.collection('users').doc(email).get();
+    } catch (e) {
+      print(e);
+    }
+    var studentOf = document.data()['student of'];
+    var oldToken = document.data()['token'];
+    if (oldToken != token.toString()) {
+      await fireStore.collection('users').doc(email).update({
+        'token': token,
+      });
+      for (var classCode in studentOf) {
+        try {
+          await fireStore.collection('classes').doc(classCode).update({
+            'tokens': FieldValue.arrayUnion([token]),
+          });
+        } catch (e) {
+          print(e);
+        }
+      }
+    }
+  }
+
+  Future<ClassRoom> addNewClass({
+    @required String title,
+    @required String subject,
+    @required String shortName,
+    @required String description,
+  }) async {
     var code = randomAlphaNumeric(7);
     try {
       while (true) {
@@ -88,14 +125,15 @@ class FireStoreService {
     return ClassRoom.fromMap(classRoom.data());
   }
 
-  Future<void> create(
-      {@required String code,
-      @required String title,
-      String description,
-      DateTime dueDate,
-      @required int type,
-      int marks,
-      List<PlatformFile> files}) async {
+  Future<void> create({
+    @required String code,
+    @required String title,
+    String description,
+    DateTime dueDate,
+    @required int type,
+    int marks,
+    List<PlatformFile> files,
+  }) async {
     var id;
     try {
       await fireStore
@@ -154,18 +192,26 @@ class FireStoreService {
         }
       });
     }
+    await sendNotification(
+      classCode: code,
+      type: type,
+      docId: id,
+      title: title,
+      description: description,
+    );
   }
 
-  Future<void> edit(
-      {@required String code,
-      @required String id,
-      @required String title,
-      @required int type,
-      String description,
-      int marks,
-      DateTime dueDate,
-      List<PlatformFile> files,
-      List<String> temp}) async {
+  Future<void> edit({
+    @required String code,
+    @required String id,
+    @required String title,
+    @required int type,
+    String description,
+    int marks,
+    DateTime dueDate,
+    List<PlatformFile> files,
+    List<String> temp,
+  }) async {
     try {
       await fireStore
           .collection('classes')
@@ -211,8 +257,10 @@ class FireStoreService {
     }
   }
 
-  Stream<QuerySnapshot> getStudentSubmission(
-      {@required String code, @required String id}) {
+  Stream<QuerySnapshot> getStudentSubmission({
+    @required String code,
+    @required String id,
+  }) {
     var snapshots = fireStore
         .collection('classes')
         .doc(code)
@@ -283,12 +331,13 @@ class FireStoreService {
     }
   }
 
-  Future<void> submit(
-      {@required String code,
-      @required String id,
-      @required String status,
-      @required List<PlatformFile> files,
-      @required List<String> temp}) async {
+  Future<void> submit({
+    @required String code,
+    @required String id,
+    @required String status,
+    @required List<PlatformFile> files,
+    @required List<String> temp,
+  }) async {
     try {
       await fireStore
           .collection('classes')
@@ -319,7 +368,9 @@ class FireStoreService {
     });
   }
 
-  Stream<QuerySnapshot> getSubjectData({@required String code}) {
+  Stream<QuerySnapshot> getSubjectData({
+    @required String code,
+  }) {
     var lol = fireStore
         .collection('classes')
         .doc(code)
@@ -329,24 +380,33 @@ class FireStoreService {
     return lol;
   }
 
-  Future<void> joinClass({@required String code}) async {
+  Future<void> joinClass({
+    @required String code,
+  }) async {
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    var token = _firebaseMessaging.getToken();
     try {
       await fireStore.collection('users').doc(email).update({
-        'student of': FieldValue.arrayUnion([code])
+        'student of': FieldValue.arrayUnion([code]),
       });
       await fireStore.collection('classes').doc(code).update({
-        'students': FieldValue.arrayUnion([email])
+        'students': FieldValue.arrayUnion([email]),
+        'tokens': FieldValue.arrayUnion([token]),
       });
     } catch (e) {
       print(e);
     }
   }
 
-  Future<DocumentSnapshot> doesClassExist({@required String code}) async {
+  Future<DocumentSnapshot> doesClassExist({
+    @required String code,
+  }) async {
     return await fireStore.collection('classes').doc(code).get();
   }
 
-  Future<DocumentSnapshot> getUsers({@required String code}) async {
+  Future<DocumentSnapshot> getUsers({
+    @required String code,
+  }) async {
     return await fireStore.collection('users').doc(email).get();
   }
 }
