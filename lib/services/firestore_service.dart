@@ -98,6 +98,7 @@ class FireStoreService {
       'description': description,
       'teachers': [email],
       'students': [],
+      'tokens': [],
       'created by': email,
       'created at': DateTime.now(),
     }).then((value) => (print('Class added successfully!')));
