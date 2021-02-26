@@ -112,20 +112,6 @@ class _DrawerMainState extends State<DrawerMain> {
           ),
           ListTile(
             leading: Icon(
-              Icons.wb_sunny,
-            ),
-            title: Text(
-              'Dark Mode',
-            ),
-            trailing: Switch(
-              value: isTheme,
-              onChanged: (value) {
-                AdaptiveTheme.of(context).toggleThemeMode();
-              },
-            ),
-          ),
-          ListTile(
-            leading: Icon(
               Icons.exit_to_app,
             ),
             title: Text(
