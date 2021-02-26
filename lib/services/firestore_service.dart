@@ -42,6 +42,7 @@ class FireStoreService {
     var newToken = await _firebaseMessaging.getToken();
     if (oldToken != newToken) {
       var studentOf = document.data()['student of'];
+      await fireStore.collection('users').doc(email).update({'token': newToken,});
       for (var classRoom in studentOf) {
         await fireStore.collection('classes').doc(classRoom).update({
           'tokens': FieldValue.arrayUnion([newToken]),
