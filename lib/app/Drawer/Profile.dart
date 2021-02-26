@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -16,10 +15,15 @@ class _ProfileState extends State<Profile> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Your Profile'),
+          title: Text(
+            'Your Profile',
+            style: TextStyle(
+              fontSize: 30.0,
+            ),
+          ),
         ),
         body: Container(
-          color: Colors.black12,
+          padding: EdgeInsets.all(30.0),
           child: ListView(
             children: [
               Center(
@@ -37,7 +41,7 @@ class _ProfileState extends State<Profile> {
                 margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                 child: Text(
                   'Display name:',
-                  style: GoogleFonts.sourceSansPro(
+                  style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -55,7 +59,7 @@ class _ProfileState extends State<Profile> {
                 margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                 child: Text(
                   'Email:',
-                  style: GoogleFonts.sourceSansPro(
+                  style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,

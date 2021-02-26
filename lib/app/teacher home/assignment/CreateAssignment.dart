@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
@@ -27,7 +26,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
   FirebaseAuth auth = FirebaseAuth.instance;
   List<PlatformFile> result = [];
 
-  void initstate() {
+  @override
+  void initState() {
     super.initState();
     getStudents();
     setState(() {});
@@ -112,7 +112,8 @@ class _CreateAssignmentState extends State<CreateAssignment> {
               if (title.text.isNotEmpty && marks.text.isNotEmpty) {
                 _createAssignment();
                 Navigator.pop(context);
-                sendMail.mail(recipients, 'New Assignment', body + classname);
+                sendMail.mail(recipients, 'New Assignment: ${title.text}',
+                    body + classname);
               }
             },
             icon: Icon(Icons.send),
@@ -181,10 +182,13 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Deadline of assignment: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),
@@ -212,10 +216,13 @@ class _CreateAssignmentState extends State<CreateAssignment> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Attachments: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),

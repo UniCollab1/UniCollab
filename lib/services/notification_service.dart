@@ -85,7 +85,7 @@ Future<void> receiveNotification(BuildContext context) async {
 Future<void> onNotificationReceived(
     RemoteMessage message, BuildContext context) async {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   //configuring channel(adding channel)
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -96,13 +96,13 @@ Future<void> onNotificationReceived(
   );
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   print("Notification received");
   //Initialization of flutter_local_notification
   const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
+      AndroidInitializationSettings('app_icon');
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
@@ -133,9 +133,9 @@ Future<void> onNotificationReceived(
 }
 
 Future<void> selectNotification(
-    Map<String, dynamic> data,
-    BuildContext context,
-    ) async {
+  Map<String, dynamic> data,
+  BuildContext context,
+) async {
   var classCode = data['classCode'],
       docId = data['docId'],
       type = int.parse(data['docType']),

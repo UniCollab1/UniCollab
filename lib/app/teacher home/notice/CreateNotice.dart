@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
@@ -105,7 +104,8 @@ class _CreateNoticeState extends State<CreateNotice> {
               if (title.text.isNotEmpty) {
                 _createNotice();
                 Navigator.pop(context);
-                sendMail.mail(recipients, "Notice", body + classname);
+                sendMail.mail(
+                    recipients, "Notice: ${title.text}", body + classname);
               }
             },
             icon: Icon(Icons.send),
@@ -160,10 +160,13 @@ class _CreateNoticeState extends State<CreateNotice> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Deadline of notice: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),
@@ -191,10 +194,13 @@ class _CreateNoticeState extends State<CreateNotice> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Attachments: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),

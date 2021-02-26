@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -145,10 +144,13 @@ class _TeacherViewSubmittedAssignmentState
                                     EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                                 child: Text(
                                   'Submission date and time:',
-                                  style: GoogleFonts.sourceSansPro(
+                                  style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color,
                                     decoration: TextDecoration.none,
                                   ),
                                 ),
@@ -163,10 +165,13 @@ class _TeacherViewSubmittedAssignmentState
                                 margin: EdgeInsets.all(10.0),
                                 child: Text(
                                   'Attachments: ',
-                                  style: GoogleFonts.sourceSansPro(
+                                  style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color,
                                     decoration: TextDecoration.none,
                                   ),
                                 ),

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/app/teacher%20home/home/comments.dart';
@@ -107,10 +106,11 @@ class _StudentMaterialState extends State<StudentMaterial> {
                               widget.data["edited"] == true
                                   ? ("Edited at:")
                                   : ("Created at:"),
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -125,10 +125,11 @@ class _StudentMaterialState extends State<StudentMaterial> {
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
                               'Description:',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -143,10 +144,11 @@ class _StudentMaterialState extends State<StudentMaterial> {
                             margin: EdgeInsets.all(10.0),
                             child: Text(
                               'Attachments: ',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -160,7 +162,7 @@ class _StudentMaterialState extends State<StudentMaterial> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           InputChip(
-                            backgroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).cardColor,
                             label: Text(
                               adjustText(files[index - 1].toString()),
                             ),

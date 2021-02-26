@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentViewAssignment.dart';
 import 'package:unicollab/app/teacher%20home/assignment/comments.dart';
@@ -107,10 +106,13 @@ class _StudentAssignmentState extends State<StudentAssignment> {
                                     EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                                 child: Text(
                                   'Your submission status:',
-                                  style: GoogleFonts.sourceSansPro(
+                                  style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color,
                                     decoration: TextDecoration.none,
                                   ),
                                 ),
@@ -126,10 +128,13 @@ class _StudentAssignmentState extends State<StudentAssignment> {
                                     EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                                 child: Text(
                                   'Your marks:',
-                                  style: GoogleFonts.sourceSansPro(
+                                  style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color,
                                     decoration: TextDecoration.none,
                                   ),
                                 ),
@@ -144,10 +149,13 @@ class _StudentAssignmentState extends State<StudentAssignment> {
                                 margin: EdgeInsets.all(10.0),
                                 child: Text(
                                   'Attachments: ',
-                                  style: GoogleFonts.sourceSansPro(
+                                  style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .color,
                                     decoration: TextDecoration.none,
                                   ),
                                 ),
@@ -208,7 +216,6 @@ class _StudentAssignmentState extends State<StudentAssignment> {
       backgroundColor: Colors.blue,
       animatedIcon: AnimatedIcons.menu_close,
       visible: true,
-      curve: Curves.bounceIn,
       children: [
         SpeedDialChild(
           child: Icon(Icons.attachment_outlined),
