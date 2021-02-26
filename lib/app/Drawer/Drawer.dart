@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ class DrawerMain extends StatefulWidget {
 }
 
 class _DrawerMainState extends State<DrawerMain> {
+  var isTheme = false;
   Future<void> signOut() async {
     try {
       var auth = Provider.of<FirebaseAuthService>(context, listen: false);
@@ -37,7 +39,7 @@ class _DrawerMainState extends State<DrawerMain> {
             padding: EdgeInsets.zero,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Theme.of(context).accentColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +57,7 @@ class _DrawerMainState extends State<DrawerMain> {
                     child: Text(
                       user.displayName,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).textTheme.caption.color,
                         fontSize: 20.0,
                       ),
                     ),
@@ -67,7 +69,7 @@ class _DrawerMainState extends State<DrawerMain> {
                     child: Text(
                       adjustText(user.email),
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).textTheme.caption.color,
                         fontSize: 15.0,
                       ),
                     ),
@@ -107,6 +109,20 @@ class _DrawerMainState extends State<DrawerMain> {
               'Feedback',
             ),
             onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.wb_sunny,
+            ),
+            title: Text(
+              'Dark Mode',
+            ),
+            trailing: Switch(
+              value: isTheme,
+              onChanged: (value) {
+                AdaptiveTheme.of(context).toggleThemeMode();
+              },
+            ),
           ),
           ListTile(
             leading: Icon(

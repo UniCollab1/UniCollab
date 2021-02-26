@@ -39,6 +39,7 @@ dependencies:
   firebase_messaging:
   flutter_local_notifications: ^4.0.1+1
   firebase_admin: ^0.1.4
+  adaptive_theme: ^1.1.0
 
 dev_dependencies:
   flutter_test:
