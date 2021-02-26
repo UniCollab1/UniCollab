@@ -9,6 +9,7 @@ import 'package:unicollab/app/home/StudentSubjects.dart';
 import 'package:unicollab/app/home/TeacherSubjects.dart';
 import 'package:unicollab/services/dynamic_link_service.dart';
 import 'package:unicollab/services/firestore_service.dart';
+import 'package:unicollab/services/notification_service.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,9 +20,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final DynamicLinkService _dynamicLinkService = DynamicLinkService();
   Timer _timerLink;
 
+  receive() async {
+    final _fireStore = Provider.of<FireStoreService>(context, listen: false);
+    await _fireStore.checkTokenUpdate();
+    await receiveNotification(context);
+  }
+
   @override
   void initState() {
     super.initState();
+    receive();
     WidgetsBinding.instance.addObserver(this);
   }
 
