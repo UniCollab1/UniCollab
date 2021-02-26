@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
@@ -143,10 +142,13 @@ class _EditMaterialState extends State<EditMaterial> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Attachments: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -75,10 +74,10 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                           data["edited"] == true
                               ? ("Edited at:")
                               : ("Created at:"),
-                          style: GoogleFonts.sourceSansPro(
+                          style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.headline1.color,
                             decoration: TextDecoration.none,
                           ),
                         ),
@@ -93,10 +92,10 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                         child: Text(
                           'Marks:',
-                          style: GoogleFonts.sourceSansPro(
+                          style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.headline1.color,
                             decoration: TextDecoration.none,
                           ),
                         ),
@@ -111,10 +110,10 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                         child: Text(
                           'Description:',
-                          style: GoogleFonts.sourceSansPro(
+                          style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.headline1.color,
                             decoration: TextDecoration.none,
                           ),
                         ),
@@ -129,10 +128,10 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                         margin: EdgeInsets.all(10.0),
                         child: Text(
                           'Deadline of assignment: ',
-                          style: GoogleFonts.sourceSansPro(
+                          style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.headline1.color,
                             decoration: TextDecoration.none,
                           ),
                         ),
@@ -151,10 +150,10 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                         margin: EdgeInsets.all(10.0),
                         child: Text(
                           'Attachments: ',
-                          style: GoogleFonts.sourceSansPro(
+                          style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.headline1.color,
                             decoration: TextDecoration.none,
                           ),
                         ),
@@ -167,24 +166,14 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
+                      InputChip(
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          adjustText(files[index - 1].toString()),
+                        ),
+                        onPressed: () {
                           openFile(index - 1);
                         },
-                        child: Card(
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          shadowColor: Colors.white,
-                          child: Container(
-                            margin: EdgeInsets.all(12.0),
-                            child: Text(
-                              adjustText(files[index - 1].toString()),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),

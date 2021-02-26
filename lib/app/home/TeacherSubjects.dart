@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/teacher%20home/home/TeacherHome.dart';
 import 'package:unicollab/models/classroom.dart';
@@ -50,15 +49,17 @@ class Teacher extends StatelessWidget {
                             Text(
                               data.classCode,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                color: Colors.black.withOpacity(0.6),
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textTheme.headline2.color,
                               ),
                             ),
                             Text(
                               data.subject,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                color: Colors.black.withOpacity(0.6),
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textTheme.headline2.color,
                               ),
                             ),
                           ],
@@ -71,7 +72,7 @@ class Teacher extends StatelessWidget {
                             fit: BoxFit.fitWidth,
                             child: new Text(
                               data.shortName,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 80.0,
                                 fontWeight: FontWeight.w900,
                               ),

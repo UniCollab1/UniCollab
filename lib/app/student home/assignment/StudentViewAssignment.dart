@@ -82,7 +82,8 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                               style: GoogleFonts.sourceSansPro(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -97,10 +98,11 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
                               'Marks:',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -115,10 +117,11 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
                               'Description:',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -133,10 +136,11 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                             margin: EdgeInsets.all(10.0),
                             child: Text(
                               'Deadline of assignment: ',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),
@@ -155,10 +159,11 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                             margin: EdgeInsets.all(10.0),
                             child: Text(
                               'Attachments: ',
-                              style: GoogleFonts.sourceSansPro(
+                              style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
                                 decoration: TextDecoration.none,
                               ),
                             ),

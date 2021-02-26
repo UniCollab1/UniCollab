@@ -3,7 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/home/mail.dart';
 import 'package:unicollab/services/firestore_service.dart';
@@ -98,7 +97,8 @@ class _CreateMaterialState extends State<CreateMaterial> {
               if (title.text.isNotEmpty) {
                 _createMaterial();
                 Navigator.pop(context);
-                sendMail.mail(recipients, "New Material", body + classname);
+                sendMail.mail(recipients, "New Material: ${title.text} ",
+                    body + classname);
               }
             },
             icon: Icon(Icons.send),
@@ -150,10 +150,13 @@ class _CreateMaterialState extends State<CreateMaterial> {
                               margin: EdgeInsets.all(10.0),
                               child: Text(
                                 'Attachments: ',
-                                style: GoogleFonts.sourceSansPro(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline1
+                                      .color,
                                   decoration: TextDecoration.none,
                                 ),
                               ),

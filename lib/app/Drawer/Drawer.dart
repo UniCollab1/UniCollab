@@ -36,6 +36,9 @@ class _DrawerMainState extends State<DrawerMain> {
           Padding(
             padding: EdgeInsets.zero,
             child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,6 +54,10 @@ class _DrawerMainState extends State<DrawerMain> {
                   Expanded(
                     child: Text(
                       user.displayName,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -59,22 +66,15 @@ class _DrawerMainState extends State<DrawerMain> {
                   Expanded(
                     child: Text(
                       adjustText(user.email),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.home,
-            ),
-            title: Text(
-              'Home',
-            ),
-            onTap: () {
-              Navigator.popUntil(context, ModalRoute.withName("homepage"));
-            },
           ),
           ListTile(
             leading: Icon(

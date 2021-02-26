@@ -9,7 +9,6 @@ import 'package:unicollab/services/firebase_auth_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(MyApp());
 }
@@ -25,7 +24,14 @@ class MyApp extends StatelessWidget {
         builder: (context, userSnapshot) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(),
+            theme: ThemeData(
+              textTheme: TextTheme(
+                  headline1: TextStyle(
+                color: Colors.black,
+              )),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+              fontFamily: 'SFPro',
+            ),
             home: AuthWidget(
               userSnapshot: userSnapshot,
             ),

@@ -1,6 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/student%20home/home/StudentHome.dart';
 import 'package:unicollab/models/classroom.dart';
@@ -51,15 +52,17 @@ class Student extends StatelessWidget {
                             Text(
                               data.title,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                color: Colors.black.withOpacity(0.6),
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textTheme.headline2.color,
                               ),
                             ),
                             Text(
                               data.createdBy,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
-                                color: Colors.black.withOpacity(0.6),
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textTheme.headline2.color,
                               ),
                             ),
                           ],
@@ -70,11 +73,11 @@ class Student extends StatelessWidget {
                           margin: EdgeInsets.all(10.0),
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
-                            child: new Text(
+                            child: Text(
                               data.shortName,
-                              style: GoogleFonts.poppins(
-                                fontSize: 80.0,
+                              style: TextStyle(
                                 fontWeight: FontWeight.w900,
+                                fontSize: 80.0,
                               ),
                             ),
                           ),
