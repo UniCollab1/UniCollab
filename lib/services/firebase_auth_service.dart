@@ -34,11 +34,7 @@ class FirebaseAuthService {
     return await _firebaseAuth.signOut();
   }
 
-  User _userFromFirebase(User user) {
-    return user == null ? null : user;
-  }
-
   Stream<User> get onAuthStateChanged {
-    return _firebaseAuth.authStateChanges().map(_userFromFirebase);
+    return _firebaseAuth.authStateChanges();
   }
 }

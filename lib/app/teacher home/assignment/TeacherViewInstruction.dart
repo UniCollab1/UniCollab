@@ -56,7 +56,6 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.black12,
         child: Flexible(
           child: MediaQuery.removePadding(
             context: context,

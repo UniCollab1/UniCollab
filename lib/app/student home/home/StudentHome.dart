@@ -38,7 +38,7 @@ class _StudentHomeState extends State<StudentHome> {
         title: Text(widget.classRoom.title),
       ),
       body: Container(
-        color: Colors.black12,
+        color: Colors.white,
         child: Column(
           children: [
             StreamBuilder<QuerySnapshot>(

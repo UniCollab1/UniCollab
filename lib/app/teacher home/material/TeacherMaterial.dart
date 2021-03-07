@@ -74,7 +74,6 @@ class _TeacherMaterialState extends State<TeacherMaterial> {
         ),
       ]),
       body: Container(
-        color: Colors.black12,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,

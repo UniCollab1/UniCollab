@@ -97,7 +97,6 @@ class _EditNoticeState extends State<EditNotice> {
         ],
       ),
       body: Container(
-        color: Colors.black12,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,

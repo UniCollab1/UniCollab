@@ -1,6 +1,9 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:unicollab/app/teacher%20home/home/TeacherHome.dart';
 import 'package:unicollab/models/classroom.dart';
 import 'package:unicollab/services/firestore_service.dart';
@@ -10,7 +13,7 @@ class Teacher extends StatelessWidget {
   Widget build(BuildContext context) {
     var teacherSubject = Provider.of<FireStoreService>(context);
     return Container(
-      color: Colors.black12,
+      color: Colors.white,
       child: StreamBuilder<List<ClassRoom>>(
         stream: teacherSubject.getTeacherSubject(),
         builder: (_, snapshot) {
@@ -36,18 +39,24 @@ class Teacher extends StatelessWidget {
                     );
                   },
                   child: new Card(
+                    color: Theme.of(context).cardColor,
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    shadowColor: Colors.white,
-                    child: new GridTile(
+                    child: GridTile(
+                      header: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ContextMenu(data.classCode),
+                        ],
+                      ),
                       footer: Container(
                         margin: EdgeInsets.all(10.0),
                         child: Column(
                           children: [
                             Text(
-                              data.classCode,
+                              data.createdBy,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color:
@@ -91,6 +100,58 @@ class Teacher extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+Future<Uri> createDynamicLink(String classCode) async {
+  final DynamicLinkParameters parameters = DynamicLinkParameters(
+    uriPrefix: 'https://unicollab.page.link/',
+    link: Uri.parse('https://www.unicollab.com/?code=$classCode}'),
+    androidParameters: AndroidParameters(
+      packageName: 'com.prs.unicollab',
+    ),
+  );
+  var dynamicUrl = await parameters.buildUrl();
+
+  return dynamicUrl;
+}
+
+class ContextMenu extends StatelessWidget {
+  const ContextMenu(this.code);
+  final String code;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      color: Theme.of(context).canvasColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Copy class code'),
+            onTap: () {
+              Clipboard.setData(new ClipboardData(text: code));
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Class code $code is copied!!!")));
+            },
+          ),
+        ),
+        PopupMenuItem(
+          child: ListTile(
+            title: Text('Share this classroom'),
+            onTap: () async {
+              var link = await createDynamicLink(code);
+              print(link.toString());
+              Share.share(link.toString());
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

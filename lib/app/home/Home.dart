@@ -75,12 +75,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             'UniCollab',
           ),
           bottom: TabBar(
+            enableFeedback: true,
+            indicatorWeight: 5.0,
+            labelStyle: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w600,
+            ),
             tabs: [
               Tab(
-                text: "I'm Student",
+                text: "I'M STUDENT",
               ),
               Tab(
-                text: "I'm Teacher",
+                text: "I'M TEACHER",
               )
             ],
           ),

@@ -86,7 +86,6 @@ class _StudentAssignmentState extends State<StudentAssignment> {
       child: Scaffold(
         floatingActionButton: _getFAB(),
         body: Container(
-          color: Colors.black12,
           child: Column(
             children: [
               Flexible(
@@ -223,10 +222,12 @@ class _StudentAssignmentState extends State<StudentAssignment> {
             takeFile();
           },
           label: 'Add attachment',
+          labelBackgroundColor: Colors.white,
           backgroundColor: Colors.blue,
         ),
         SpeedDialChild(
           child: Icon(Icons.assignment_turned_in),
+          labelBackgroundColor: Colors.white,
           onTap: () {
             showDialog(
               context: context,

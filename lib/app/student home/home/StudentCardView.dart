@@ -26,11 +26,11 @@ class MaterialCard extends StatelessWidget {
           );
         },
         child: Card(
+          color: Theme.of(context).cardColor,
           elevation: 0.0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
-          shadowColor: Colors.white,
           clipBehavior: Clip.antiAlias,
           child: ListTile(
             leading: Icon(
