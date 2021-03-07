@@ -75,7 +75,6 @@ class _TeacherNoticeState extends State<TeacherNotice> {
         ),
       ]),
       body: Container(
-        color: Colors.black12,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,

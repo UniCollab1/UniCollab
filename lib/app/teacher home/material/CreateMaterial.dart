@@ -106,7 +106,6 @@ class _CreateMaterialState extends State<CreateMaterial> {
         ],
       ),
       body: Container(
-        color: Colors.black12,
         child: Column(
           children: [
             Flexible(

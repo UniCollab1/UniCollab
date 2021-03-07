@@ -57,7 +57,6 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.black12,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,

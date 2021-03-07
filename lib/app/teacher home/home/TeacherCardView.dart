@@ -194,6 +194,7 @@ class ContextMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+      color: Theme.of(context).canvasColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),

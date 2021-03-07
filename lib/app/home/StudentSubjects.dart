@@ -12,7 +12,7 @@ class Student extends StatelessWidget {
   Widget build(BuildContext context) {
     var studentSubject = Provider.of<FireStoreService>(context);
     return Container(
-      color: Colors.black12,
+      color: Colors.white,
       child: StreamBuilder<List<ClassRoom>>(
         stream: studentSubject.getStudentSubject(),
         builder: (_, snapshot) {
@@ -39,9 +39,10 @@ class Student extends StatelessWidget {
                     );
                   },
                   child: new Card(
+                    color: Theme.of(context).cardColor,
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     shadowColor: Colors.white,
                     child: new GridTile(

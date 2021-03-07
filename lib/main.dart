@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/auth/Auth.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              cardColor: Color.fromRGBO(238, 238, 238, 100.0),
               textTheme: TextTheme(
                   headline1: TextStyle(
                 color: Colors.black,

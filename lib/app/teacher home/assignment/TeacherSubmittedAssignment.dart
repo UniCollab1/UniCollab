@@ -31,7 +31,6 @@ class _TeacherSubmittedAssignmentState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.black12,
         child: StreamBuilder<QuerySnapshot>(
           stream: _getData(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
