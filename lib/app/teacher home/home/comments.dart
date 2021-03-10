@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ShowComments extends StatefulWidget {
   final String id;
@@ -50,7 +51,7 @@ class _ShowCommentsState extends State<ShowComments> {
     var textcon = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data['title']),
+        title: Text("Comments of " + widget.data['title']),
       ),
       body: SafeArea(
         child: Column(
@@ -71,8 +72,13 @@ class _ShowCommentsState extends State<ShowComments> {
                       } else {
                         type = "receiver";
                       }
-                      final commentWidget =
-                          commentwidget(message, sender, type);
+                      final commentWidget = commentwidget(
+                        message,
+                        sender,
+                        type,
+                        DateFormat("dd MMMM yy")
+                            .format(comment['create'].toDate()),
+                      );
                       commentwidgets.add(commentWidget);
                     }
                     return Expanded(
@@ -84,8 +90,11 @@ class _ShowCommentsState extends State<ShowComments> {
                           padding: EdgeInsets.only(top: 10, bottom: 10),
                           itemBuilder: (context, index) {
                             return Container(
-                              padding: EdgeInsets.only(
-                                  left: 14, right: 14, top: 10, bottom: 10),
+                              padding: (commentwidgets[index].type == "receiver"
+                                  ? EdgeInsets.only(
+                                      left: 14, right: 50, top: 5, bottom: 5)
+                                  : EdgeInsets.only(
+                                      left: 50, right: 14, top: 5, bottom: 5)),
                               child: Align(
                                 alignment:
                                     (commentwidgets[index].type == "receiver"
@@ -97,12 +106,6 @@ class _ShowCommentsState extends State<ShowComments> {
                                           ? CrossAxisAlignment.start
                                           : CrossAxisAlignment.end),
                                   children: [
-                                    Text(
-                                      commentwidgets[index].sender,
-                                      style: TextStyle(
-                                          fontSize: 13.0,
-                                          color: Colors.black45),
-                                    ),
                                     Container(
                                       decoration: BoxDecoration(
                                         borderRadius: (commentwidgets[index]
@@ -128,9 +131,34 @@ class _ShowCommentsState extends State<ShowComments> {
                                             : Colors.blue[200]),
                                       ),
                                       padding: EdgeInsets.all(16),
-                                      child: Text(
-                                        commentwidgets[index].comment,
-                                        style: TextStyle(fontSize: 15),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            (commentwidgets[index].type ==
+                                                    "receiver"
+                                                ? CrossAxisAlignment.start
+                                                : CrossAxisAlignment.end),
+                                        children: [
+                                          Text(
+                                            (commentwidgets[index].type ==
+                                                    "receiver"
+                                                ? commentwidgets[index].sender
+                                                : "You"),
+                                            style: TextStyle(
+                                                fontSize: 13.0,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          Text(
+                                            commentwidgets[index].comment,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          Text(
+                                            commentwidgets[index].time,
+                                            style: TextStyle(
+                                                fontSize: 13.0,
+                                                color: Colors.black45),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -199,8 +227,9 @@ class commentwidget extends StatelessWidget {
   final String comment;
   final String sender;
   final String type;
+  final String time;
 
-  commentwidget(this.comment, this.sender, this.type);
+  commentwidget(this.comment, this.sender, this.type, this.time);
   @override
   Widget build(BuildContext context) {
     return Container();

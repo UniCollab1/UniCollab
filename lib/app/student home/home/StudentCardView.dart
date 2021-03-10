@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/student%20home/assignment/StudentAssignment.dart';
 import 'package:unicollab/app/student%20home/material/StudentMaterial.dart';
@@ -37,6 +38,7 @@ class MaterialCard extends StatelessWidget {
               Icons.description,
               size: 40.0,
             ),
+            contentPadding: EdgeInsets.all(10.0),
             title: Text("Material: " + data["title"]),
             subtitle: Text(
               data["description"],
@@ -78,8 +80,8 @@ class NoticeCard extends StatelessWidget {
               Icons.announcement,
               size: 40.0,
             ),
+            contentPadding: EdgeInsets.all(10.0),
             title: Text("Notice: " + data["title"]),
-            isThreeLine: data["description"] != null ? true : false,
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,7 +94,9 @@ class NoticeCard extends StatelessWidget {
                     return "No Deadline";
                   }
 
-                  return data["due date"].toDate().toString();
+                  return "Deadline: " +
+                      DateFormat("dd MMMM yy KK:MM")
+                          .format(data["due date"].toDate());
                 })()),
               ],
             ),
@@ -141,7 +145,7 @@ class AssignmentCard extends StatelessWidget {
               Icons.assignment,
               size: 40.0,
             ),
-            isThreeLine: data["description"] != null ? true : false,
+            contentPadding: EdgeInsets.all(10.0),
             title: Text("Assignment: " + data["title"]),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,12 +155,13 @@ class AssignmentCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  "Marks: " + data['marks'].toString() + " marks",
+                  data['marks'].toString() + " marks",
                 ),
                 Text(
                   "Deadline: " +
                       ((data['due date'] != null)
-                          ? data['due date'].toDate().toString()
+                          ? DateFormat("dd MMMM yy KK:MM")
+                              .format(data["due date"].toDate())
                           : "No deadline"),
                 ),
               ],

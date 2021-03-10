@@ -270,42 +270,67 @@ class _StudentAssignmentState extends State<StudentAssignment> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('Assignment'),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: IconButton(
-                  icon: Icon(Icons.message),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ShowComments(widget.document),
-                        // fullscreenDialog: true,
+          body: NestedScrollView(
+            headerSliverBuilder: (context, value) {
+              return [
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverSafeArea(
+                    top: false,
+                    sliver: SliverAppBar(
+                      title: Text(
+                        'Assignment',
                       ),
-                    );
-                  },
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: IconButton(
+                            icon: Icon(Icons.message),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ShowComments(widget.document),
+                                  // fullscreenDialog: true,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                      floating: true,
+                      pinned: true,
+                      snap: false,
+                      primary: true,
+                      bottom: TabBar(
+                        enableFeedback: true,
+                        indicatorWeight: 5.0,
+                        labelStyle: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        tabs: [
+                          Tab(
+                            text: "INSTRUCTIONS",
+                          ),
+                          Tab(
+                            text: "SUBMISSION",
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  text: "Instructions",
-                ),
-                Tab(
-                  text: "Submission",
-                )
+              ];
+            },
+            body: TabBarView(
+              children: [
+                StudentViewAssignment(widget.document, widget.code),
+                submitAssignment(),
               ],
             ),
-          ),
-          body: TabBarView(
-            children: [
-              StudentViewAssignment(widget.document, widget.code),
-              submitAssignment(),
-            ],
           ),
         ),
       ),

@@ -13,8 +13,8 @@ import 'package:unicollab/services/firestore_service.dart';
 import 'TeacherCardView.dart';
 
 class TeacherHome extends StatefulWidget {
-  final ClassRoom data;
-  const TeacherHome(this.data);
+  TeacherHome(this.classRoom);
+  final ClassRoom classRoom;
   @override
   _TeacherHomeState createState() => _TeacherHomeState();
 }
@@ -24,7 +24,7 @@ class _TeacherHomeState extends State<TeacherHome> {
     var fireStore = Provider.of<FireStoreService>(context);
     var data;
     try {
-      data = fireStore.getSubjectData(code: widget.data.classCode);
+      data = fireStore.getSubjectData(code: widget.classRoom.classCode);
     } catch (e) {
       print(e);
     }
@@ -40,9 +40,9 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   Widget cardView(DocumentSnapshot document) {
     var _cardView = [
-      MaterialCard(document, widget.data.classCode),
-      NoticeCard(document, widget.data.classCode),
-      AssignmentCard(document, widget.data.classCode)
+      MaterialCard(document, widget.classRoom.classCode),
+      NoticeCard(document, widget.classRoom.classCode),
+      AssignmentCard(document, widget.classRoom.classCode)
     ];
     return _cardView[document.data()['type']];
   }
@@ -50,8 +50,8 @@ class _TeacherHomeState extends State<TeacherHome> {
   Future<Uri> createDynamicLink() async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://unicollab.page.link/',
-      link:
-          Uri.parse('https://www.unicollab.com/?code=${widget.data.classCode}'),
+      link: Uri.parse(
+          'https://www.unicollab.com/?code=${widget.classRoom.classCode}'),
       androidParameters: AndroidParameters(
         packageName: 'com.prs.unicollab',
       ),
@@ -64,46 +64,54 @@ class _TeacherHomeState extends State<TeacherHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.data.title),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.share),
-              onPressed: () async {
-                var link = await createDynamicLink();
-                print(link.toString());
-                Share.share(link.toString());
-              }),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {},
-          )
-        ],
-      ),
-      floatingActionButton: TeacherCreate(widget.data),
-      body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: _getData(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LinearProgressIndicator();
-            }
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    children:
-                        snapshot.data.docs.map((DocumentSnapshot document) {
+      floatingActionButton: TeacherCreate(widget.classRoom),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _getData(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_outlined),
+                  ),
+                  title: Text(widget.classRoom.title),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () async {
+                        var link = await createDynamicLink();
+                        print(link.toString());
+                        Share.share(link.toString());
+                      },
+                    ),
+                  ],
+                  expandedHeight: 100.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(widget.classRoom.subject),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
                       return Container(
-                        child: cardView(document),
+                        child: cardView(snapshot.data.docs[index]),
                       );
-                    }).toList(),
+                    },
+                    childCount: snapshot.data.docs.length,
                   ),
                 ),
               ],
             );
-          },
-        ),
+          }
+        },
       ),
     );
   }
@@ -174,21 +182,3 @@ class TeacherCreate extends StatelessWidget {
         });
   }
 }
-
-/*return CustomScrollView(
-slivers: [
-SliverAppBar(
-title: Text(widget.data.title),
-),
-SliverList(
-delegate: SliverChildBuilderDelegate(
-(context, index) {
-return Container(
-child: cardView(snapshot.data.docs.elementAt(index)),
-);
-},
-childCount: snapshot.data.docs.length,
-),
-)
-],
-);*/

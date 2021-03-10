@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:unicollab/app/teacher%20home/assignment/EditAssignment.dart';
 import 'package:unicollab/app/teacher%20home/assignment/TeacherAssignment.dart';
@@ -42,6 +43,7 @@ class MaterialCard extends StatelessWidget {
               Icons.description,
               size: 40.0,
             ),
+            contentPadding: EdgeInsets.all(10.0),
             title: Text('Material: ' + data["title"]),
             subtitle: Text(
               data["description"],
@@ -86,8 +88,8 @@ class NoticeCard extends StatelessWidget {
               Icons.announcement,
               size: 40.0,
             ),
+            contentPadding: EdgeInsets.all(10.0),
             title: Text('Notice: ' + data["title"]),
-            isThreeLine: data["description"] != null ? true : false,
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -103,7 +105,9 @@ class NoticeCard extends StatelessWidget {
                     return "No Deadline";
                   }
 
-                  return data["due date"].toDate().toString();
+                  return "Deadline: " +
+                      DateFormat("dd MMMM yy KK:MM")
+                          .format(data["due date"].toDate());
                 })()),
               ],
             ),
@@ -147,8 +151,8 @@ class AssignmentCard extends StatelessWidget {
               Icons.assignment,
               size: 40.0,
             ),
+            contentPadding: EdgeInsets.all(10.0),
             title: Text('Assignment: ' + data["title"]),
-            isThreeLine: data["description"] != null ? true : false,
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -157,14 +161,16 @@ class AssignmentCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  "Marks: " + data['marks'].toString() + " marks",
+                  data['marks'].toString() + " marks",
                 ),
                 Text((() {
                   if (data["due date"] == null) {
                     return "No Deadline";
                   }
 
-                  return data["due date"].toDate().toString();
+                  return "Deadline: " +
+                      DateFormat("dd MMMM yy KK:MM")
+                          .format(data["due date"].toDate());
                 })()),
               ],
             ),

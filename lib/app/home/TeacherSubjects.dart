@@ -25,6 +25,7 @@ class Teacher extends StatelessWidget {
               );
             }
             return GridView.builder(
+              padding: EdgeInsets.only(top: 0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
@@ -96,7 +97,9 @@ class Teacher extends StatelessWidget {
             );
           }
           return Scaffold(
-            body: LinearProgressIndicator(),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         },
       ),

@@ -40,6 +40,7 @@ dependencies:
   flutter_local_notifications: ^4.0.1+1
   firebase_admin: ^0.1.4
   marquee: ^1.7.0
+  intl:
 
 dev_dependencies:
   flutter_test:
