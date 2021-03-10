@@ -54,7 +54,10 @@ class _StudentHomeState extends State<StudentHome> {
                   title: Text(widget.classRoom.title),
                   expandedHeight: 100.0,
                   flexibleSpace: FlexibleSpaceBar(
-                    title: Text(widget.classRoom.subject),
+                    title: Text(
+                      widget.classRoom.subject,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 SliverList(

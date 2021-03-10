@@ -82,7 +82,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                     },
                     icon: Icon(Icons.arrow_back_outlined),
                   ),
-                  title: Text(widget.classRoom.title),
+                  title: Text(
+                    widget.classRoom.title,
+                  ),
                   actions: [
                     IconButton(
                       icon: Icon(Icons.share),
@@ -95,7 +97,10 @@ class _TeacherHomeState extends State<TeacherHome> {
                   ],
                   expandedHeight: 100.0,
                   flexibleSpace: FlexibleSpaceBar(
-                    title: Text(widget.classRoom.subject),
+                    title: Text(
+                      widget.classRoom.subject,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 SliverList(

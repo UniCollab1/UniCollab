@@ -21,10 +21,12 @@ class DynamicLinkService {
           onSuccess: (PendingDynamicLinkData dynamicLink) async {
         print('dynamicLink $dynamicLink');
         final Uri deepLink = dynamicLink?.link;
-        String code = deepLink.queryParameters['code'];
-        print("deepLink2 $deepLink code $code");
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DynamicJoin(code)));
+        if (deepLink != null) {
+          String code = deepLink.queryParameters['code'];
+          print("deepLink2 $deepLink code $code");
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => DynamicJoin(code)));
+        }
       });
     } catch (e) {
       print(e.toString());

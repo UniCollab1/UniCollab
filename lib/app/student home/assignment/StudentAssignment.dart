@@ -308,7 +308,7 @@ class _StudentAssignmentState extends State<StudentAssignment> {
                         enableFeedback: true,
                         indicatorWeight: 5.0,
                         labelStyle: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 15.0,
                           fontWeight: FontWeight.w600,
                         ),
                         tabs: [

@@ -110,7 +110,7 @@ class Teacher extends StatelessWidget {
 Future<Uri> createDynamicLink(String classCode) async {
   final DynamicLinkParameters parameters = DynamicLinkParameters(
     uriPrefix: 'https://unicollab.page.link/',
-    link: Uri.parse('https://www.unicollab.com/?code=$classCode}'),
+    link: Uri.parse('https://www.unicollab.com/?code=$classCode'),
     androidParameters: AndroidParameters(
       packageName: 'com.prs.unicollab',
     ),

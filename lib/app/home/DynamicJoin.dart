@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:unicollab/app/home/StudentSubjects.dart';
+import 'package:unicollab/app/home/Home.dart';
 import 'package:unicollab/app/student%20home/home/StudentHome.dart';
 import 'package:unicollab/services/firestore_service.dart';
 
@@ -49,7 +49,7 @@ class DynamicJoin extends StatelessWidget {
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => Student()),
+                        MaterialPageRoute(builder: (_) => HomePage()),
                       );
                     },
                     child: Text('Dismiss'),
