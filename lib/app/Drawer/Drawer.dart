@@ -93,24 +93,6 @@ class _DrawerMainState extends State<DrawerMain> {
           ),
           ListTile(
             leading: Icon(
-              Icons.settings,
-            ),
-            title: Text(
-              'Setting',
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.feedback,
-            ),
-            title: Text(
-              'Feedback',
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(
               Icons.exit_to_app,
             ),
             title: Text(

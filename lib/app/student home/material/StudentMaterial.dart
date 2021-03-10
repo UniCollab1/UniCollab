@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/app/teacher%20home/home/comments.dart';
@@ -117,7 +118,27 @@ class _StudentMaterialState extends State<StudentMaterial> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              date.toString(),
+                              DateFormat("dd MMMM yy KK:MM")
+                                  .format(widget.data["created at"].toDate()),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                            child: Text(
+                              'Title:',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              widget.data["title"].toString(),
                             ),
                           ),
                           Container(

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/app/teacher%20home/home/comments.dart';
@@ -17,7 +18,7 @@ class StudentNotice extends StatefulWidget {
 }
 
 class _StudentNoticeState extends State<StudentNotice> {
-  var files, date, data;
+  var files, data;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -50,30 +51,32 @@ class _StudentNoticeState extends State<StudentNotice> {
     super.initState();
     data = widget.document.data();
     files = data["files"];
-    date = data['created at'].toDate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Notice'), actions: [
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: IconButton(
-            icon: Icon(Icons.message),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      ShowComments(widget.document.data(), widget.document.id),
-                  // fullscreenDialog: true,
-                ),
-              );
-            },
+      appBar: AppBar(
+        title: Text('Notice'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: IconButton(
+              icon: Icon(Icons.message),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ShowComments(
+                        widget.document.data(), widget.document.id),
+                    // fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +111,27 @@ class _StudentNoticeState extends State<StudentNotice> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              date.toString(),
+                              DateFormat("dd MMMM yy KK:MM")
+                                  .format(data["created at"].toDate()),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                            child: Text(
+                              'Title:',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              data["title"].toString(),
                             ),
                           ),
                           Container(
@@ -150,7 +173,8 @@ class _StudentNoticeState extends State<StudentNotice> {
                                 return "No Deadline";
                               }
 
-                              return data["due date"].toDate().toString();
+                              return DateFormat("dd MMMM yy KK:MM")
+                                  .format(data["due date"].toDate());
                             })()),
                           ),
                           Container(

@@ -22,42 +22,67 @@ class _TeacherAssignmentState extends State<TeacherAssignment> {
       child: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('Assignment'),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: IconButton(
-                  icon: Icon(Icons.message),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ShowComments(widget.document),
-                        // fullscreenDialog: true,
+          body: NestedScrollView(
+            headerSliverBuilder: (context, value) {
+              return [
+                SliverOverlapAbsorber(
+                  handle:
+                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverSafeArea(
+                    top: false,
+                    sliver: SliverAppBar(
+                      title: Text(
+                        'Assignment',
                       ),
-                    );
-                  },
+                      actions: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: IconButton(
+                            icon: Icon(Icons.message),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ShowComments(widget.document),
+                                  // fullscreenDialog: true,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                      floating: true,
+                      pinned: true,
+                      snap: false,
+                      primary: true,
+                      bottom: TabBar(
+                        enableFeedback: true,
+                        indicatorWeight: 5.0,
+                        labelStyle: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        tabs: [
+                          Tab(
+                            text: "INSTRUCTIONS",
+                          ),
+                          Tab(
+                            text: "STUDENT'S WORK",
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  text: "Instructions",
-                ),
-                Tab(
-                  text: "Student's work",
-                )
+              ];
+            },
+            body: TabBarView(
+              children: [
+                TeacherViewInstruction(widget.document, widget.code),
+                TeacherSubmittedAssignment(widget.document, widget.code),
               ],
             ),
-          ),
-          body: TabBarView(
-            children: [
-              TeacherViewInstruction(widget.document, widget.code),
-              TeacherSubmittedAssignment(widget.document, widget.code),
-            ],
           ),
         ),
       ),

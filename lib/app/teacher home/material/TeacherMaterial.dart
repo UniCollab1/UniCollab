@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:unicollab/app/teacher%20home/home/comments.dart';
@@ -17,7 +18,7 @@ class TeacherMaterial extends StatefulWidget {
 }
 
 class _TeacherMaterialState extends State<TeacherMaterial> {
-  var files, date;
+  var files;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -49,30 +50,32 @@ class _TeacherMaterialState extends State<TeacherMaterial> {
   void initState() {
     super.initState();
     files = widget.data["files"];
-    date = widget.data['created at'].toDate();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Material'), actions: [
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: IconButton(
-            icon: Icon(Icons.message),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      ShowComments(widget.data, widget.id),
-                  // fullscreenDialog: true,
-                ),
-              );
-            },
+      appBar: AppBar(
+        title: Text('Material'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: IconButton(
+              icon: Icon(Icons.message),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        ShowComments(widget.data, widget.id),
+                    // fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +110,27 @@ class _TeacherMaterialState extends State<TeacherMaterial> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              date.toString(),
+                              DateFormat("dd MMMM yy KK:MM")
+                                  .format(widget.data["created at"].toDate()),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                            child: Text(
+                              'Title:',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              widget.data["title"].toString(),
                             ),
                           ),
                           Container(

@@ -34,32 +34,43 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.classRoom.title),
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            StreamBuilder<QuerySnapshot>(
-              stream: getData(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LinearProgressIndicator();
-                } else {
-                  return Flexible(
-                    child: ListView(
-                      children:
-                          snapshot.data.docs.map((DocumentSnapshot document) {
-                        return cardView(document);
-                      }).toList(),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: getData(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_outlined),
+                  ),
+                  title: Text(widget.classRoom.title),
+                  expandedHeight: 100.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(widget.classRoom.subject),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        child: cardView(snapshot.data.docs[index]),
+                      );
+                    },
+                    childCount: snapshot.data.docs.length,
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

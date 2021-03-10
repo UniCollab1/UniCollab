@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,7 +18,7 @@ class StudentViewAssignment extends StatefulWidget {
 }
 
 class _StudentViewAssignmentState extends State<StudentViewAssignment> {
-  var files, date, data;
+  var files, data;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -49,7 +50,6 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
   void initState() {
     data = widget.document.data();
     files = data["files"];
-    date = data['created at'].toDate();
     super.initState();
   }
 
@@ -90,13 +90,14 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              date.toString(),
+                              DateFormat("dd MMMM yy KK:MM")
+                                  .format(data["created at"].toDate()),
                             ),
                           ),
                           Container(
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                             child: Text(
-                              'Marks:',
+                              'Title:',
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
@@ -109,7 +110,7 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              data["marks"].toString() + " marks",
+                              data["title"].toString(),
                             ),
                           ),
                           Container(
@@ -132,6 +133,25 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                             ),
                           ),
                           Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                            child: Text(
+                              'Marks:',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).textTheme.headline1.color,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              data["marks"].toString() + " marks",
+                            ),
+                          ),
+                          Container(
                             margin: EdgeInsets.all(10.0),
                             child: Text(
                               'Deadline of assignment: ',
@@ -150,8 +170,8 @@ class _StudentViewAssignmentState extends State<StudentViewAssignment> {
                               if (data["due date"] == null) {
                                 return "No Deadline";
                               }
-
-                              return data["due date"].toDate().toString();
+                              return DateFormat("dd MMMM yy kk:MM")
+                                  .format(data["due date"].toDate());
                             })()),
                           ),
                           Container(

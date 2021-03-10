@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,7 +17,7 @@ class TeacherViewInstruction extends StatefulWidget {
 }
 
 class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
-  var files, date, data;
+  var files, data;
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void openFile(index) async {
@@ -49,7 +50,6 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
     super.initState();
     data = widget.document.data();
     files = data["files"];
-    date = data['created at'].toDate();
   }
 
   @override
@@ -84,13 +84,14 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                       Container(
                         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                         child: Text(
-                          date.toString(),
+                          DateFormat("dd MMMM yy KK:MM")
+                              .format(data["created at"].toDate()),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                         child: Text(
-                          'Marks:',
+                          'Title:',
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -102,7 +103,7 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text(
-                          data["marks"].toString() + " marks",
+                          data["title"].toString(),
                         ),
                       ),
                       Container(
@@ -124,6 +125,24 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                         ),
                       ),
                       Container(
+                        margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                        child: Text(
+                          'Marks:',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).textTheme.headline1.color,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10.0),
+                        child: Text(
+                          data["marks"].toString() + " marks",
+                        ),
+                      ),
+                      Container(
                         margin: EdgeInsets.all(10.0),
                         child: Text(
                           'Deadline of assignment: ',
@@ -142,7 +161,8 @@ class _TeacherViewInstructionState extends State<TeacherViewInstruction> {
                             return "No Deadline";
                           }
 
-                          return data["due date"].toDate().toString();
+                          return DateFormat("dd MMMM yy KK:MM")
+                              .format(data["due date"].toDate());
                         })()),
                       ),
                       Container(

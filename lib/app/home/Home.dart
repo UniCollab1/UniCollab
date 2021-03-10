@@ -69,34 +69,51 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButton: RecentFloat(),
         drawer: DrawerMain(),
-        appBar: AppBar(
-          title: Text(
-            'UniCollab',
-          ),
-          bottom: TabBar(
-            enableFeedback: true,
-            indicatorWeight: 5.0,
-            labelStyle: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-            ),
-            tabs: [
-              Tab(
-                text: "I'M STUDENT",
+        body: NestedScrollView(
+          headerSliverBuilder: (context, value) {
+            return [
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverSafeArea(
+                  top: false,
+                  sliver: SliverAppBar(
+                    title: Text(
+                      'UniCollab',
+                    ),
+                    floating: true,
+                    pinned: true,
+                    snap: false,
+                    primary: true,
+                    bottom: TabBar(
+                      enableFeedback: true,
+                      indicatorWeight: 5.0,
+                      labelStyle: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      tabs: [
+                        Tab(
+                          text: "I'M STUDENT",
+                        ),
+                        Tab(
+                          text: "I'M TEACHER",
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              Tab(
-                text: "I'M TEACHER",
-              )
+            ];
+          },
+          body: TabBarView(
+            children: [
+              Student(),
+              Teacher(),
             ],
           ),
-        ),
-        floatingActionButton: RecentFloat(),
-        body: TabBarView(
-          children: [
-            Student(),
-            Teacher(),
-          ],
         ),
       ),
     );
